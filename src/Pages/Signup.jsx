@@ -197,7 +197,7 @@ ParentDiv.style.marginLeft = "50px"
           setErrMsg("Wrong Verification code");
         }
          if (res?.data?.code === -3) {
-           setErrMsg("Email has already been registered.");
+           setErrMsg("Email/Name has already been registered.");
          }
         // document.getElementById('user_captcha_input').value = "";
       }
