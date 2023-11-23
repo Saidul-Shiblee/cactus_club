@@ -115,11 +115,11 @@ const Footer = () => {
           <div className="block mx-auto md:mx-0">
             <Link
               className=" text-lime-950 font-poppins lg:ml-0 md:ml-[20px] mr-[30px] md:mr-[84px]"
-              to={"/"}
+              to={"/privacy-policy"}
             >
               Privacy Policy
             </Link>
-            <Link className=" text-lime-950 mr-[20px] font-poppins" to={"/"}>
+            <Link className=" text-lime-950 mr-[20px] font-poppins" to={"/terms-conditions"}>
               Terms Of Service
             </Link>
           </div>

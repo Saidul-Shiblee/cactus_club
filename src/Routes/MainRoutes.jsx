@@ -6,6 +6,9 @@ const Home = lazy(() => import("../Pages/Home"));
 const Login = lazy(() => import("../Pages/Login"));
 const Signup = lazy(() => import("../Pages/Signup"));
 const FAQ = lazy(() => import("../Pages/FAQ"));
+const Deposite = lazy(() => import("../Pages/Deposite"));
+const PrivacyPolicy = lazy(() => import("../Pages/PrivacyPolicy"));
+const TermsCondition = lazy(() => import("../Pages/TermsCondition"));
 
 const MainRoutes = () => {
   return (
@@ -15,6 +18,9 @@ const MainRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/deposite" element={<Deposite />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-conditions" element={<TermsCondition />} />
       </Routes>
     </Suspense>
   );

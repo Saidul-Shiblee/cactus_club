@@ -19,6 +19,8 @@ export default {
     backgroundImage: {
       "hero-lg": "url('./assets/image/Rectangle281.svg')",
       "hero-sm": "url('./assets/image/hero_bg_mobile.png')",
+      "deposite-lg": "url('./assets/image/deposite_desktop.png')",
+      "deposite-sm": "url('./assets/image/deposite_mobile.png')",
       "keno-bg": "url('./assets/image/Rectangle282.png')",
       "login": "url('./assets/image/login_bg.png')",
       "login-mobile": "url('./assets/image/login_mobile.png')",
@@ -39,7 +41,9 @@ export default {
       "s-button-text":"#9FA3A9",
       "link2":"#18BD89",
       "under_line":"#178BBD",
-      "primary-hover": "#F5AA52"
+      "primary-hover": "#F5AA52",
+      "deposite-hover": "rgba(94, 61, 28, 0.10)",
+      "input-link": "#178BBD",
     }),
     
   },
