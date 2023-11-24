@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import QRCode from './../assets/image/qr-code.png';
+// import QRCode from './../assets/image/qr-code.png';
 import axios from 'axios';
 import useSWR from 'swr';
 // import { getPlayerWallet } from '../ApiFetcher/fetcher';
-// import QRCode from 'qrcode.react';
+import QRCode from 'qrcode.react';
 
 const DepositQRCode = () => {
     // const { data: data2 } = useSWR('wallet', getPlayerWallet);
@@ -35,7 +35,7 @@ const DepositQRCode = () => {
                 <p className='font-[16px]'>to deposit to this address</p>
             </div>
             <div className='text-center justify-center bg-none md:bg-deposite-lg bg-cover bg-no-repeat h-full md:h-[100vh] w-full'>
-                <img src={QRCode} className='justify-center mx-auto' alt='qr code' />
+                {/* <img src={QRCode} className='justify-center mx-auto' alt='qr code' /> */}
                 {/* <div style={{ height: "116px", margin: "0 auto", width: "116px" }}>
                     <QRCode
                         size={256}
@@ -44,9 +44,9 @@ const DepositQRCode = () => {
                         viewBox={`0 0 256 256`}
                     />
                 </div> */}
-                {/* <div>
-                    <QRCode value={playerWalletQr?.data?.wallet}/>
-                </div> */}
+                <div className='mx-auto justify-center'>
+                    <QRCode className='mx-auto justify-center h-[116px] w-[116px] mt-[12px]' value={playerWalletQr?.data?.wallet}/>
+                </div>
                 <ul className='list-disc list-inside font-IBM font-[16px] mt-[58px] mx-2 md:mx-[440px] '>
                     <li className=''>Send at least 0.01 ETH to this address. if you send less than 0.01 ETH, your account won’t be credited</li>
                     <li className=''>Only send ETH to this address. if you send other crypto tokens to this address it can result in a loss of funds</li>

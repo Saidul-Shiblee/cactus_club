@@ -8,11 +8,15 @@ import RightIcon from "../../assets/icons/chevron-right.svg"
 import UiButton from "../Ui/UiButton";
 import AvartarDropdown from "../Ui/AvartarDropdown";
 import { useGlobalContext } from "../../context/context";
+import useSWR from "swr";
+import { getPlayerBalance } from "../../ApiFetcher/fetcher";
 
 const Navbar = () => {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const { isLoggedIn, setIsLoggedIn, } = useGlobalContext();
+  const {data} = useSWR("balance", getPlayerBalance);
+  console.log(data)
   return (
     <nav
       className={`bg-white relative z-[3] ${
@@ -80,7 +84,12 @@ const Navbar = () => {
               <div>
                 <UiButton
                   label="Deposite & Play "
-                  classes="!h-[43px] md:!w-[197px] !text-[14px]"
+                  classes={`!h-[43px] md:!w-[197px] !text-[14px] ${location.pathname.toLowerCase()==="/deposite"? "hidden": "block"}`}
+                  svgMargin={true}
+                />
+                <UiButton
+                  label={`BALANCE: ${data?.data?.ETHER} ETH`}
+                  classes={`!h-[43px] md:!w-[197px] !text-[14px] ${location.pathname.toLowerCase()==="/deposite"? "block": "hidden"}`}
                   svgMargin={true}
                 />
               </div>

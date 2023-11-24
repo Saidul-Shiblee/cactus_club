@@ -100,7 +100,7 @@ const DepositeInputs = () => {
 
                                 <span className="flex items-center">
                                     <img src={Icon} alt="Icon" />
-                                    <span className="block ml-3 truncate">
+                                    <span className="block ml-3 truncate uppercase">
                                         eth (Ethereum Mainnet) - BALANCE: {data?.data?.ETHER}
                                     </span>
                                     <span className='ml-3'>
