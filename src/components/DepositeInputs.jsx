@@ -1,13 +1,62 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import Icon from './../assets/icons/ETH.svg'
+import Icon from './../assets/icons/ETH.svg';
+import Icon2 from './../assets/icons/USDC.svg';
+import Icon3 from './../assets/icons/USDT.svg';
+import { getPlayerBalance, getPlayerWallet } from '../ApiFetcher/fetcher';
+import useSWR from 'swr';
+import { useGlobalContext } from '../context/context';
+import axios from 'axios';
+import { URL } from '../ApiFetcher/fetcher';
 
 const DepositeInputs = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    // const [playerWallet, setPlayerWallet] = useState();
+    const {setCurrencyBalance} = useGlobalContext();
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
+    //get Player Balance
+    const {data} = useSWR('balance', getPlayerBalance);
+    // setCurrencyBalance({
+    //     ETHER: data?.data?.ETHER,
+    //     USDC: data?.data?.USDC,
+    //     USDT: data?.data?.USDT,
+    // })
+    const {data: data1} = useSWR('wallet', getPlayerWallet);
+    useEffect(() => {
+        setCurrencyBalance({
+            ETHER: data?.data?.ETHER,
+            USDC: data?.data?.USDC,
+            USDT: data?.data?.USDT,
+        })
+    },[])
+    // const getPlayerWallets = async() => {
+    //    try {
+    //     const res = await axios.get("https://apis.yummylabs.io/getPlayerWallet", {
+    //         headers: {
+    //             "Authorization": localStorage.getItem("cactus_club_token")
+    //         }
+    //     })
+    //     // console.log(res.data.data.wallet)
+    //     setPlayerWallet(res.data);
+    //    } catch (error) {
+    //     console.log(error)
+    //    }
+
+    // }
+    // useEffect(() => {
+    //     // setPlayerWallet(getPlayerWallet);
+    //     // console.log(getPlayerWallet);
+    //     getPlayerWallets();
+    // },[])
+    
+    // const {walletData} = useSWR('wallet', getPlayerWallet);
+
+    console.log(data);
+
     return (
         <div className=''>
             <div className="flex items-center h-[34px] justify-center md:mt-[93px] text-primary-title">
@@ -52,11 +101,11 @@ const DepositeInputs = () => {
                                 <span className="flex items-center">
                                     <img src={Icon} alt="Icon" />
                                     <span className="block ml-3 truncate">
-                                        eth (Ethereum Mainnet) - BALANCE: 0.123
+                                        eth (Ethereum Mainnet) - BALANCE: {data?.data?.ETHER}
                                     </span>
                                     <span className='ml-3'>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
-                                            <g clip-path="url(#clip0_1_1292)">
+                                            <g clipPath="url(#clip0_1_1292)">
                                                 <path d="M8.61309 10.0293L13.8849 4.75758C14.7234 3.91904 14.1295 2.48528 12.9436 2.48528L2.40011 2.48528C1.21424 2.48528 0.620357 3.91904 1.45889 4.75758L6.73066 10.0293C7.25048 10.5492 8.09327 10.5492 8.61309 10.0293Z" fill="#5E3D1C" />
                                             </g>
                                             <defs>
@@ -67,77 +116,41 @@ const DepositeInputs = () => {
                                         </svg>
                                     </span>
                                 </span>
-                                {/* {
-                                    isDropdownOpen && 
-                                    <div className={`absolute top-full bottom-0 left-0 z-10 w-full mt-1 bg-orange-primary rounded-md shadow-lg`}>
-                                    <ul tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-item-3" className="py-1 overflow-auto text-base rounded-md max-h-56 ring-1 ring-black ring-opacity-5 mx-[40px] focus:outline-none sm:text-sm">
-                                        <h3>Select</h3>
-                                        <li id="listbox-item-0" role="option" className="relative py-2 text-gray-900 cursor-default select-none hover:bg-deposite-hover pr-9">
-                                            <div className="flex items-center">
-                                                <span class="block ml-3 font-normal truncate">
-                                                    Mick Poulaz
-                                                </span>
-                                            </div>
-                                            <span className="absolute inset-y-0 right-0 flex items-center pr-4">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
-                                                    <g clip-path="url(#clip0_1_1292)">
-                                                        <path d="M8.61309 10.0293L13.8849 4.75758C14.7234 3.91904 14.1295 2.48528 12.9436 2.48528L2.40011 2.48528C1.21424 2.48528 0.620357 3.91904 1.45889 4.75758L6.73066 10.0293C7.25048 10.5492 8.09327 10.5492 8.61309 10.0293Z" fill="#5E3D1C" />
-                                                    </g>
-                                                    <defs>
-                                                        <clipPath id="clip0_1_1292">
-                                                            <rect width="16" height="12" fill="white" />
-                                                        </clipPath>
-                                                    </defs>
-                                                </svg>
-                                            </span>
-                                        </li>
-                                        <li id="listbox-item-1" role="option" className="relative py-2 text-gray-900 cursor-default select-none hover:bg-deposite-hover pr-9">
-                                            <div className="flex items-center">
-                                                <span className="block ml-3 font-normal truncate">
-                                                    Julien Schiano
-                                                </span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                } */}
-                                
+
 
                             </button>
                             {
-                                    isDropdownOpen && 
-                                    <div className={`absolute top-full bottom-0 left-0 z-10 w-full bg-orange-primary rounded-[20px] dropdown-shadow h-min py-[24px] mt-[-2px]`}>
-                                    <ul tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-item-3" className="py-1 overflow-auto text-base rounded-md max-h-56 ring-1 ring-black ring-opacity-5 mx-[40px] focus:outline-none sm:text-sm">
-                                        <h3>Select</h3>
+                                isDropdownOpen &&
+                                <div className={`absolute top-full bottom-0 left-0 z-10 w-full bg-orange-primary rounded-[20px] dropdown-shadow h-min py-[24px] mt-[-2px]`}>
+                                    <ul className="py-1 overflow-auto text-base rounded-md max-h-56 focus:outline-none sm:text-sm">
+                                        <h3 className=' mx-[40px]'>Select</h3>
                                         <li id="listbox-item-0" role="option" className="relative py-2 text-gray-900 cursor-default select-none hover:bg-deposite-hover pr-9">
-                                            <div className="flex items-center">
-                                                <span class="block ml-3 font-normal truncate">
-                                                    Mick Poulaz
+                                            <span className="flex items-center mx-[40px]">
+                                                <img src={Icon2} alt="Icon" />
+                                                <span className="block ml-3 truncate text-primary-title font-bold uppercase">
+                                                USDC (Ethereum Mainnet) - BALANCE: {data?.data?.USDC}
                                                 </span>
-                                            </div>
-                                            <span className="absolute inset-y-0 right-0 flex items-center pr-4">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
-                                                    <g clip-path="url(#clip0_1_1292)">
-                                                        <path d="M8.61309 10.0293L13.8849 4.75758C14.7234 3.91904 14.1295 2.48528 12.9436 2.48528L2.40011 2.48528C1.21424 2.48528 0.620357 3.91904 1.45889 4.75758L6.73066 10.0293C7.25048 10.5492 8.09327 10.5492 8.61309 10.0293Z" fill="#5E3D1C" />
-                                                    </g>
-                                                    <defs>
-                                                        <clipPath id="clip0_1_1292">
-                                                            <rect width="16" height="12" fill="white" />
-                                                        </clipPath>
-                                                    </defs>
-                                                </svg>
                                             </span>
                                         </li>
-                                        <li id="listbox-item-1" role="option" className="relative py-2 text-gray-900 cursor-default select-none hover:bg-deposite-hover pr-9">
-                                            <div className="flex items-center">
-                                                <span className="block ml-3 font-normal truncate">
-                                                    Julien Schiano
+                                        <li id="listbox-item-0" role="option" className="relative py-2 text-gray-900 cursor-default select-none hover:bg-deposite-hover pr-9">
+                                            <span className="flex items-center mx-[40px]">
+                                                <img src={Icon3} alt="Icon" />
+                                                <span className="block ml-3 truncate text-primary-title font-bold uppercase">
+                                                USDT (Ethereum Mainnet) - BALANCE: {data?.data?.USDT}
                                                 </span>
-                                            </div>
+                                            </span>
+                                        </li>
+                                        <li id="listbox-item-0" role="option" className="relative py-2 text-gray-900 cursor-default select-none hover:bg-deposite-hover pr-9">
+                                            <span className="flex items-center mx-[40px]">
+                                                <img src={Icon} alt="Icon" />
+                                                <span className="block ml-3 truncate text-primary-title font-bold uppercase">
+                                                    eth (Ethereum Mainnet) - BALANCE: {data?.data?.ETHER}
+                                                </span>
+                                            </span>
                                         </li>
                                     </ul>
                                 </div>
-                                }
+                            }
                         </div>
                     </div>
 
@@ -153,9 +166,11 @@ const DepositeInputs = () => {
                     <input
                         type="text"
                         id="deposite"
-                        className=" w-full rounded-[20px] px-[40px] py-[24px] bg-orange-primary
+                        className=" w-full rounded-[20px] px-2 md:px-[40px] py-[24px] bg-orange-primary
                    cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none border-r-2"
                         name="deposite"
+                        disabled
+                        value={data1?.data?.wallet}
 
                     />
                 </div>
