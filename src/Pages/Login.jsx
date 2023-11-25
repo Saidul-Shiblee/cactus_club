@@ -199,7 +199,7 @@ setPending(true)
             <div>
 
             <UiModal isOpen={isModalOpen} onClose={closeModal}>
-                <div className="px-[118px] justify-center text-center">
+                <div className=" px-2 md:px-[118px] justify-center text-center">
                     <img src={ModalImg} className='mx-auto' alt="Modal image"/>
                     <h1 className='text-2xl font-rubik text-primary-title mt-[28px] uppercase'>Login Failed</h1>
                     <p className='text-stone-950 text-opacity-50'>Invalid username or password was entered. Please try again!</p>
