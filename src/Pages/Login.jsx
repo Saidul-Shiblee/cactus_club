@@ -6,10 +6,17 @@ import { useState } from "react";
 import Spinner from "../utilities/spinner";
 import axios from "axios";
 import { useGlobalContext } from "../context/context";
+import LoginModal from "../components/LoginModal";
+import UiModal from "../components/Ui/UiModal";
+import ModalImg from './../assets/image/modalimg.png'
 
 
 const Login = () => {
   const [pending, setPending] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
+
+
   const navigate = useNavigate();
 
   const {
@@ -17,8 +24,18 @@ const Login = () => {
     clientInfo,
     setIsLoggedIn,
     setAuthToken,
+    isLoggedIn,
     setCurrencyBalance,
   } =useGlobalContext()
+
+
+  const openModal = () => {
+      setModalOpen(true);
+  };
+
+  const closeModal = () => {
+      setModalOpen(false);
+  };
 
   const {
     register,
@@ -31,7 +48,7 @@ const Login = () => {
   } = useForm();
   // console.log(formState.isValid) // false
   const onSubmit = async(data) => {
-
+setPending(true)
     try {
       const res = await axios.post("https://apis.yummylabs.io/login", {
         Username: data.username,
@@ -52,6 +69,9 @@ const Login = () => {
           USDC: res?.data?.data?.USDC,
           USDT: res?.data?.data?.USDT,
         });
+        if(res?.data?.code === -3){
+          setErrMsg(res?.data?.msg);
+        }
 
         localStorage.setItem(
           "cactus_club_currency_balance",
@@ -66,12 +86,14 @@ const Login = () => {
       
     } catch (error) {
       console.log(error);
+    } finally{
+      setPending(false)
     }
   };
   return (
     <div className="w-full h-screen font-sans md:bg-cover bg-login-mobile md:bg-login relative bg-no-repeat">
       <div className="flex justify-end md:flex-1 md:h-full mx-auto absolute left-0 right-0 top-[138px] md:static">
-        <div className="w-full md:w-[845px] rounded-t-[34px] md:rounded-tr-none md:rounded-l-[50px] bg-white flex md:justify-center flex-col md:pl-[85px] px-[15px] py-[32px] md:px-0 md:py-0">
+        <div className="w-full md:w-[845px] rounded-t-[34px] md:rounded-tr-none md:rounded-l-[50px] bg-white flex md:justify-center flex-col md:pl-[85px] px-[15px] py-[32px] md:px-0 md:py-[114px]">
           <h4 className="text-center md:text-start signup-text font-luckiest text-[29.606px] font-normal">
             Cactus Club
           </h4>
@@ -89,7 +111,7 @@ const Login = () => {
               className="signup-link font-poppins text-[24px] font-bold uppercase hover:border-b-2 hover:border-b-[#13BC87]"
               to="/sign-up"
             >
-              Login
+              Sign Up
             </Link>
           </div>
           <h6 className="text-[32px] md:text-[60px] font-rubik uppercase font-normal cactus-text-color">
@@ -108,8 +130,9 @@ const Login = () => {
                 type="text"
                 className={` w-full md:w-[585px] height-[62px] px-[23px] md:px-[40px] py-[12px] md:py-[14px] rounded-[20px] ${getValues("username") ? "bg-orange-secondary" : 'bg-white'} cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${errors?.username?.message ? "outline-none ring-1 ring-red-500 border-transparent" : "input-border"
                   }`}
-                {...register("username", { required: "Use letters and numbers. Min 6 chars and Max 25 chars." })}
+                {...register("username")}
                 name="username"
+                required
               />
               <p className=" text-primary-title">{errors.username?.message}</p>
             </div>
@@ -124,18 +147,9 @@ const Login = () => {
                 type="password"
                 className={`w-full md:w-[585px] height-[62px] px-[23px] md:px-[40px] py-[12px] md:py-[14px] rounded-[20px] ${getValues("password") ? "bg-orange-secondary" : 'bg-white'} cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${errors.password?.message ? "outline-none ring-1 ring-red-500 border-transparent" : "input-border"
                   }`}
-                  {...register("password", {
-                    minLength: {
-                      value: 6,
-                      message: "Min 8 chars.",
-                    },
-                    maxLength: {
-                      value: 25,
-                      message: "Max 25 chars.",
-                    },
-                    required: "Min 8 chars and Max 25 chars.",
-                  })}
+                  {...register("password")}
                 name="password"
+                required
               />
               <p className=" text-primary-title">{errors.password?.message}</p>
 
@@ -155,12 +169,13 @@ const Login = () => {
                 errors?.password
               }
               className={`hidden md:flex ${ formState?.isValid ? "hero-button text-white" : "bg-submit-button"} rounded-full px-[81px] items-center h-[63px] text-s-button-text font-poppins font-bold text-center text-[20px] uppercase mt-[10px]`}
+              onClick={pending? null : (isLoggedIn?closeModal: openModal)}
             >
        {pending ? (
                   <Spinner />
                 ) : (
                   <div className="flex">
-                    sign up
+                    Log In
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="10"
@@ -181,6 +196,17 @@ const Login = () => {
                   </div>
                 )}
             </button>
+            <div>
+
+            <UiModal isOpen={isModalOpen} onClose={closeModal}>
+                <div className="px-[118px] justify-center text-center">
+                    <img src={ModalImg} className='mx-auto' alt="Modal image"/>
+                    <h1 className='text-2xl font-rubik text-primary-title mt-[28px] uppercase'>Login Failed</h1>
+                    <p className='text-stone-950 text-opacity-50'>Invalid username or password was entered. Please try again!</p>
+                   <UiButton label="OK" onClose={closeModal} classes='!w-full h-16 mt-[30px] mb-[56px]'/>
+                </div>
+            </UiModal>
+        </div>
             <div className="block md:hidden">
               <UiButton label="login" classes="w-full justify-center" />
             </div>

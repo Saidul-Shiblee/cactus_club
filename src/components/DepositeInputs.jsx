@@ -102,7 +102,7 @@ const DepositeInputs = () => {
                                     <img src={Icon} alt="Icon" />
                                     <span className="block ml-3 truncate uppercase">
                                         eth (Ethereum Mainnet) - BALANCE: {data?.data?.ETHER}
-                                    </span>
+                                    </span>   
                                     <span className='ml-3'>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
                                             <g clipPath="url(#clip0_1_1292)">
