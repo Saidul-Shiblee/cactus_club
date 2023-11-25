@@ -54,7 +54,7 @@ const DepositQRCode = () => {
                     <li className=''>New Deposit addresses can only be generated once a week</li>
                     <li className=''>You can close this window at any time</li>
                 </ul>
-                <div className=' bg-deposite-sm md:bg-none h-[210px] bg-no-repeat'>
+                <div className=' bg-deposite-sm block md:hidden md:bg-none h-[210px] bg-no-repeat'>
 
                 </div>
             </div>

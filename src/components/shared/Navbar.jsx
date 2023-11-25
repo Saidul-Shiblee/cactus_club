@@ -10,6 +10,7 @@ import AvartarDropdown from "../Ui/AvartarDropdown";
 import { useGlobalContext } from "../../context/context";
 import useSWR from "swr";
 import { getPlayerBalance } from "../../ApiFetcher/fetcher";
+import UiDropdownBtn from "../Ui/UiDropdownBtn";
 
 const Navbar = () => {
   const location = useLocation();
@@ -87,11 +88,14 @@ const Navbar = () => {
                   classes={`!h-[43px] md:!w-[197px] !text-[14px] ${location.pathname.toLowerCase()==="/deposite"? "hidden": "block"}`}
                   svgMargin={true}
                 />
-                <UiButton
+                {/* <UiButton
                   label={`BALANCE: ${data?.data?.ETHER} ETH`}
                   classes={`!h-[43px] md:!w-[197px] !text-[14px] ${location.pathname.toLowerCase()==="/deposite"? "block": "hidden"}`}
                   svgMargin={true}
-                />
+                /> */}
+                <div className={`${location.pathname.toLowerCase()==="/deposite"? "block": "hidden"}`}>
+                  <UiDropdownBtn/>
+                </div>
               </div>
               <div className="ml-8 flex items-center mt-2">
                 <AvartarDropdown />

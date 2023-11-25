@@ -80,6 +80,12 @@ a {
 
 }
 
+.deposit-btn {
+  border-radius: 10px;
+  background: linear-gradient(94deg, #45caa0 13.79%, #10bb85 92.08%);
+  box-shadow: 0px 4px 0px 0px #017f58;
+}
+
 /* button style */
 
 .button__custom {
