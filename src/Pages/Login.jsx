@@ -1,14 +1,12 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import InputField from "../components/Ui/InputField";
 import UiButton from "../components/Ui/UiButton";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Spinner from "../utilities/spinner";
 import axios from "axios";
 import { useGlobalContext } from "../context/context";
-import LoginModal from "../components/LoginModal";
 import UiModal from "../components/Ui/UiModal";
-import ModalImg from "./../assets/image/modalimg.png";
+import ModalImg from "../assets/image/modalImg.png";
 
 const Login = () => {
   const [pending, setPending] = useState(false);
