@@ -85,7 +85,7 @@ const UiDropdownBtn = () => {
             </div>
 
             <div
-              className={`  ounded-full absolute left-[-8px]  z-10 w-[266px] md:w-[286px] mt-10 md:mt-16 origin-top-right bg-white  md:rounded-[20px] dropdown-shadow`}
+              className={` absolute top-[15px] md:top-0 -left-[105%] md:left-[-8px]  z-10 w-[266px] md:w-[286px] mt-10 md:mt-16 origin-top-right bg-white  rounded-[20px] dropdown-shadow`}
             >
               {isOpen ? (
                 <div className="w-full relative ">
