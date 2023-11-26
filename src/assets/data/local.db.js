@@ -24,12 +24,12 @@
  export const AvartarDropDownItem = [
     {
         id:1,
-        label: "DEPOSITE",
-        href: "/",
+        label: "DEPOSIT",
+        href: "/deposite",
     },
     {
         id:2,
-        label: "WITHDROW",
+        label: "WITHDRAW",
         href: "/",
     },
     {

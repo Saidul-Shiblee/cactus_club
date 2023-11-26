@@ -21,13 +21,11 @@ export function ContextProvider({ children }) {
     const [authToken,setAuthToken]=useState("")
     const [currencyBalance, setCurrencyBalance]=useState(null)
     const [isLoggedIn,setIsLoggedIn]=useState(false)
+    const [selectedCurrency,setSelectedCurrency]=useState("ETH")
 
     
     useEffect(() => {
-
       const token=localStorage.getItem("cactus_club_token")
-    //   console.log("stor token", token)
-
       const balance = JSON.parse(localStorage.getItem("cactus_club_currency_balance"))
         if (balance) {
             setCurrencyBalance(balance)
@@ -78,7 +76,7 @@ export function ContextProvider({ children }) {
 
 
     return (
-        <Context.Provider value={{ deviceInfo, authToken,clientInfo, currencyBalance, isLoggedIn, setIsLoggedIn, setAuthToken, setCurrencyBalance}}>
+        <Context.Provider value={{ deviceInfo, authToken,clientInfo, currencyBalance, isLoggedIn,selectedCurrency,setSelectedCurrency, setIsLoggedIn, setAuthToken, setCurrencyBalance}}>
             {children}
         </Context.Provider>
     );

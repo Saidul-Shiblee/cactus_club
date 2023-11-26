@@ -1,6 +1,11 @@
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loader from "../assets/image/Loader.png";
+import { PrivateRoute } from "./PrivateRoute";
+
+import { useGlobalContext } from "../context/context";
+import { PublicRoute } from "./PublicRoute";
+
 
 const Home = lazy(() => import("../Pages/Home"));
 const Login = lazy(() => import("../Pages/Login"));
@@ -10,15 +15,44 @@ const Deposite = lazy(() => import("../Pages/Deposite"));
 const PrivacyPolicy = lazy(() => import("../Pages/PrivacyPolicy"));
 const TermsCondition = lazy(() => import("../Pages/TermsCondition"));
 
+
+
 const MainRoutes = () => {
+
+   const { isLoggedIn } = useGlobalContext();
+ 
   return (
     <Suspense fallback={<Lodaer />}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<Signup />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute isLoggedIn={isLoggedIn}>
+              <Login />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/sign-up"
+          element={
+            <PublicRoute isLoggedIn={isLoggedIn}>
+              <Signup />
+            </PublicRoute>
+          }
+        />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/deposite" element={<Deposite />} />
+
+        <Route
+          path="/deposite"
+          element={
+            <PrivateRoute isLoggedIn={isLoggedIn}>
+              <Deposite />
+            </PrivateRoute>
+          }
+        />
+
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsCondition />} />
       </Routes>

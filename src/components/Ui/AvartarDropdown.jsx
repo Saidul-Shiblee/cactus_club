@@ -4,11 +4,14 @@ import CactusTree from './../../assets/icons/cactusTree.svg';
 import RightIcon from './../../assets/icons/chevron-right.svg';
 import LogOut from './../../assets/icons/log-out.svg';
 import { AvartarDropDownItem } from '../../assets/data/local.db';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../context/context';
+import Uparrow from "./../../assets/icons/uparrow.svg";
 
 
 const AvartarDropdown = (classes = '') => {
+
+   const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const {
       
@@ -23,6 +26,8 @@ const AvartarDropdown = (classes = '') => {
     setCurrencyBalance(null)
     localStorage.removeItem("cactus_club_token");
     localStorage.removeItem("cactus_club_currency_balance");
+    navigate('/')
+    
    }
 
     return (
@@ -60,11 +65,16 @@ const AvartarDropdown = (classes = '') => {
             </div>
 
             <div
-              className={`-translate-x-1/2 left-1/2 md:left-auto md:translate-x-0  rounded-full absolute right-0 md:right-[153px] z-10 w-[375px] md:w-[309px] mt-10 md:mt-16 origin-top-right bg-white  md:rounded-[20px] shadow-lg ${classes}`}
+              className={`-translate-x-1/2 left-1/2 md:left-auto md:translate-x-0  rounded-full absolute right-0 md:right-[153px] z-10 w-[375px] md:w-[309px] mt-10 md:mt-[60px] origin-top-right bg-white  md:rounded-[20px] dropdown-shadow ${classes}`}
             >
               {isOpen && (
                 <div className="relative">
-                  <div className="hidden md:block absolute arrow-up right-[30px] -top-2 "></div>
+                  <img
+                    src={Uparrow}
+                    alt="Icon"
+                    className="hidden md:block absolute h-[31px] w-[32px] right-[25px]  -top-[15px]"
+                  />
+               
                 </div>
               )}
               {isOpen ? (
@@ -87,7 +97,10 @@ const AvartarDropdown = (classes = '') => {
                       </li>
                     ))}
                   </div>
-                  <li onClick={handleLogOut} className=" mx-[10px] mb-[45px] cursor-pointer  ">
+                  <li
+                    onClick={handleLogOut}
+                    className=" mx-[10px] mb-[45px] cursor-pointer  "
+                  >
                     <div className=" text-link font-poppins text-[14px] font-semibold  uppercase py-[10px] px-[12px] flex justify-between">
                       Log Out <img src={LogOut} alt="icon" />
                     </div>

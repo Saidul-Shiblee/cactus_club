@@ -1,8 +1,10 @@
 import React from "react";
 
-const UiButton = ({ label, classes = "", svgMargin }) => {
+const UiButton = ({ label, classes = "", svgMargin,onClick=undefined }) => {
+  console.log(onClick);
   return (
     <button
+      onClick={onClick}
       className={`hero-button font-poppins text-[20px] font-bold uppercase text-white flex items-center justify-center gap-2 md:w-[294px] w-full h-[63px] ${classes}`}
     >
       <span className="h-min inline-block">{label}</span>

@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 
 function Hero() {
 
-  //h-[calc(100vh_-_64px)]
+
   return (
     <div className="relative">
       <div className="hidden md:block w-full bg-hero-lg h-[752px] relative bg-no-repeat  bg-cover">
@@ -40,10 +40,10 @@ function Hero() {
           quench your thirst on our growing lineup of crypto games!
         </p>
         <Link
-          to="/sign-up"
+          to="/deposite"
           className="flex items-center mt-[40px] md:mt-[32px] w-full justify-center md:block md:w-min"
         >
-          <UiButton label="Deposit & Play" />
+          <UiButton label="Deposit & Play"  />
         </Link>
       </div>
     </div>

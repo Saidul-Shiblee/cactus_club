@@ -228,7 +228,7 @@ ParentDiv.style.marginLeft = "50px"
           <h4 className="text-center md:text-start signup-text font-luckiest text-[29.606px] font-normal">
             Cactus Club
           </h4>
-          <div className="flex items-center h-[34px] justify-center md:justify-start md:mt-[52px]">
+          <div className="flex items-center h-[34px] justify-center md:justify-start mt-[52px]">
             <NavLink
               className={({ isActive }) =>
                 isActive

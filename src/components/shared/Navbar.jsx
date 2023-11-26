@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavItem } from "../../assets/data/local.db";
 import Logo from "/CactusClub.png";
 import barIcon from "../../assets/icons/ion_menu.svg";
@@ -8,20 +8,21 @@ import RightIcon from "../../assets/icons/chevron-right.svg"
 import UiButton from "../Ui/UiButton";
 import AvartarDropdown from "../Ui/AvartarDropdown";
 import { useGlobalContext } from "../../context/context";
-import useSWR from "swr";
-import { getPlayerBalance } from "../../ApiFetcher/fetcher";
 import UiDropdownBtn from "../Ui/UiDropdownBtn";
 
 const Navbar = () => {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isLoggedIn, setIsLoggedIn, } = useGlobalContext();
-  const {data} = useSWR("balance", getPlayerBalance);
-  console.log(data)
+  const { isLoggedIn } = useGlobalContext();
+  const navigate =useNavigate()
+
+
   return (
     <nav
       className={`bg-white relative z-[3] ${
-        location.pathname.toLowerCase() === "/faq" ? "nav-shadow" : ""
+        location.pathname.toLowerCase() === "/faq" || "/deposite"
+          ? "nav-shadow"
+          : ""
       }`}
     >
       <div className="flex flex-row justify-between h-[78px] items-center px-[15px] xl:px-[145px] lg:px-[50px] md:px-[20px]">
@@ -34,22 +35,26 @@ const Navbar = () => {
         {isLoggedIn ? (
           <div className="flex gap-4 md:hidden">
             <div>
-              <button className="hero-button font-poppins text-[12px] font-bold uppercase text-white flex items-center justify-center px-3 w-full h-[33px] ">
-                <span className="h-min inline-block">Deposit</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  className="h-min mt-[6px] ml-2"
-                >
-                  <path
-                    d="M9.5 8V2.82843C9.5 1.04662 7.34572 0.154284 6.08579 1.41421L0.914215 6.58578C-0.345714 7.84571 0.546618 10 2.32843 10H7.5C8.60457 10 9.5 9.10457 9.5 8Z"
-                    fill="#FFD55A"
-                  />
-                </svg>
-              </button>
+              {location.pathname.toLowerCase() === "/deposite" ? (
+                <UiDropdownBtn />
+              ) : (
+                <button className="hero-button font-poppins text-[12px] font-bold uppercase text-white flex items-center justify-center px-3 w-full h-[33px] ">
+                  <span className="h-min inline-block">Deposit</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="10"
+                    height="10"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    className="h-min mt-[6px] ml-2"
+                  >
+                    <path
+                      d="M9.5 8V2.82843C9.5 1.04662 7.34572 0.154284 6.08579 1.41421L0.914215 6.58578C-0.345714 7.84571 0.546618 10 2.32843 10H7.5C8.60457 10 9.5 9.10457 9.5 8Z"
+                      fill="#FFD55A"
+                    />
+                  </svg>
+                </button>
+              )}
             </div>
             <div className=" mt-[2px] md:mt-0">
               <AvartarDropdown classes="w-[375px] right-0 " />
@@ -84,8 +89,13 @@ const Navbar = () => {
             <div className="flex items-center">
               <div>
                 <UiButton
-                  label="Deposite & Play "
-                  classes={`!h-[43px] md:!w-[197px] !text-[14px] ${location.pathname.toLowerCase()==="/deposite"? "hidden": "block"}`}
+                  onClick={() => navigate("/deposite")}
+                  label="Deposit & Play "
+                  classes={`!h-[43px] md:!w-[197px] !text-[14px] ${
+                    location.pathname.toLowerCase() === "/deposite"
+                      ? "hidden"
+                      : "block"
+                  }`}
                   svgMargin={true}
                 />
                 {/* <UiButton
@@ -93,8 +103,14 @@ const Navbar = () => {
                   classes={`!h-[43px] md:!w-[197px] !text-[14px] ${location.pathname.toLowerCase()==="/deposite"? "block": "hidden"}`}
                   svgMargin={true}
                 /> */}
-                <div className={`${location.pathname.toLowerCase()==="/deposite"? "block": "hidden"}`}>
-                  <UiDropdownBtn/>
+                <div
+                  className={`${
+                    location.pathname.toLowerCase() === "/deposite"
+                      ? "block"
+                      : "hidden"
+                  }`}
+                >
+                  <UiDropdownBtn />
                 </div>
               </div>
               <div className="ml-8 flex items-center mt-2">

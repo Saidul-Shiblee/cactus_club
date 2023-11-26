@@ -3,77 +3,123 @@ import { useGlobalContext } from '../../context/context';
 import useSWR from 'swr';
 import { getPlayerBalance } from '../../ApiFetcher/fetcher';
 import Icon2 from './../../assets/icons/USDC.svg';
-import Icon from './../../assets/icons/USDT.svg';
+import Icon1 from './../../assets/icons/USDT.svg';
+import Icon from './../../assets/icons/ETH.svg';
+import Uparrow from './../../assets/icons/uparrow.svg';
+import RightIcon from "./../../assets/icons/chevron-right.svg";
 
 const UiDropdownBtn = () => {
     const [isOpen, setIsOpen] = useState(false);
     const {
-
-        setIsLoggedIn,
-        setAuthToken,
-        setCurrencyBalance,
+      selectedCurrency, setSelectedCurrency,
+        currencyBalance,
     } = useGlobalContext();
-    const {data} = useSWR("balance", getPlayerBalance);
+
+    
+    const CurrencyDetails = [
+      {
+        id: 1,
+        name:'ETH',
+        balance: currencyBalance.ETHER,
+        logo: Icon,
+      },
+      {
+        id: 2,
+        name:'USDT',
+        balance: currencyBalance.USDT,
+        logo: Icon1,
+      },
+      {
+        id: 3,
+        name:'USDC',
+        balance: currencyBalance.USDC,
+        logo: Icon2,
+      },
+    ];
+
+    const filteredCurrency = CurrencyDetails.filter(
+      (el) => el.name !== selectedCurrency
+    );
+  
     // console.log(data.data.ETHER)
     return (
-        <div>
-            <div className="inline-flex bg-white ">
-                <div onClick={() => setIsOpen(!isOpen)} className="inline-flex">
-                    <div>
-                        <button
-                            className={`deposit-btn relative rounded font-poppins text-[14px] font-bold uppercase text-white flex items-center justify-center gap-2 md:w-[197px] w-full h-[43px]`}
-                        >
-                            <span className="h-min inline-block">BALANCE: {data?.data?.ETHER} ETH</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="10"
-                                height="10"
-                                viewBox="0 0 10 10"
-                                fill="none"
-                                className={`h-min mt-2`}
-                            >
-                                <path
-                                    d="M9.5 8V2.82843C9.5 1.04662 7.34572 0.154284 6.08579 1.41421L0.914215 6.58578C-0.345714 7.84571 0.546618 10 2.32843 10H7.5C8.60457 10 9.5 9.10457 9.5 8Z"
-                                    fill="#FFD55A"
-                                />
-                            </svg>
-                        </button>
+      <div>
+        <div className="inline-flex bg-white ">
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className="inline-flex relative"
+          >
+            <div>
+              <button
+                className={`deposit-btn relative rounded font-poppins text-[14px] font-bold uppercase text-white flex items-center justify-center gap-[4px] w-[92px] md:w-[247px] h-[34px] md:h-[44px]`}
+              >
+                <span className="h-min md:inline-block hidden text-[18px] ">
+                  {selectedCurrency === "ETH" &&
+                    `BALANCE: ${currencyBalance.ETHER || ""} ETH`}
+                  {selectedCurrency === "USDT" &&
+                    `BALANCE: ${currencyBalance.USDT || ""} USDT`}
+                  {selectedCurrency === "USDC" &&
+                    `BALANCE: ${currencyBalance.USDC || ""} USDC`}
+                </span>
+                <span className="h-min inline-block md:hidden text-[12px] ">
+                  {selectedCurrency === "ETH" &&
+                    `${currencyBalance.ETHER || ""} ETH`}
+                  {selectedCurrency === "USDT" &&
+                    `${currencyBalance.USDT || ""} USDT`}
+                  {selectedCurrency === "USDC" &&
+                    `${currencyBalance.USDC || ""} USDC`}
+                </span>
+                <svg
+                  width="10"
+                  height="7"
+                  viewBox="0 0 10 7"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.85528 6.38691L9.05583 3.18636C9.89436 2.34783 9.30048 0.914062 8.11461 0.914063L1.71351 0.914062C0.527648 0.914062 -0.0662381 2.34782 0.772296 3.18636L3.97285 6.38691C4.49267 6.90673 5.33546 6.90673 5.85528 6.38691Z"
+                    fill="#FFD55A"
+                  />
+                </svg>
+              </button>
+            </div>
 
-                    </div>
+            <div
+              className={`  ounded-full absolute left-[-8px]  z-10 w-[266px] md:w-[286px] mt-10 md:mt-16 origin-top-right bg-white  md:rounded-[20px] dropdown-shadow`}
+            >
+              {isOpen ? (
+                <div className="w-full relative ">
+                  <img
+                    src={Uparrow}
+                    alt="Icon"
+                    className="absolute h-[31px] w-[32px] left-1/2 -translate-x-1/2 -top-[15px]"
+                  />
+                </div>
+              ) : null}
 
-                    <div
-                        className={`-translate-x-1/2 left-1/2 md:left-auto md:translate-x-0  rounded-full absolute right-0 md:right-[153px] z-10 w-[375px] md:w-[309px] mt-10 md:mt-16 origin-top-right bg-white  md:rounded-[20px] shadow-lg`}
+              {isOpen ? (
+                <ul className="flex top-[100%] rounded-[20px] bg-white left-0 right-0  justify-between flex-col py-[12px] md:py-0 rounded-b-[30px]  ">
+                  <h2 className="text-xs font-bold uppercase text-primary-title font-poppins mt-[22px] mb-[12px] px-[24px]">
+                    Change Token
+                  </h2>
+                  {filteredCurrency.map((el) => (
+                    <li
+                      onClick={() => {
+                        setSelectedCurrency(el.name);
+                      }}
+                      key={el.id}
+                      id="listbox-item-0"
+                      role="option"
+                      className="relative h-[48px] my-auto text-gray-900 cursor-default select-none  px-[24px] items-center gap-[12px] flex hover:bg-[#11BB85]/10"
                     >
-                        {/* {isOpen && (
-                            <div className="relative">
-                                <div className="hidden md:block absolute arrow-up right-[30px] -top-2 "></div>
-                            </div>
-                        )} */}
-                        {isOpen ? (
-                            <ul className="flex top-[100%] rounded-[20px] bg-white left-0 right-0  justify-between flex-col py-[12px] md:py-0 rounded-b-[30px] px-[20px] ">
-                                <h2 className="text-xs uppercase text-primary-title font-poppins mt-[40px] mb-[12px]">
-                                Change Token
-                                </h2>
-                                <div className="border-b">
-                                    <div className='hover:bg-deposite-hover'>
-                                    <li id="listbox-item-0" role="option" className="relative py-2 text-gray-900 cursor-default select-none pr-9">
-                                        <span className="flex items-center">
-                                            <img src={Icon2} alt="Icon" />
-                                            <span className="block ml-2 truncate text-[#13BC87] font-poppins font-semibold uppercase">
-                                            USDC - {`<balance amount>`}
-                                            </span>
-                                        </span>
-                                    </li>
-                                    </div>
-                                    <li id="listbox-item-0" role="option" className="relative py-2 text-gray-900 cursor-default select-none hover:bg-deposite-hover pr-9">
-                                        <span className="flex items-center">
-                                            <img src={Icon} alt="Icon" />
-                                            <span className="block truncate ml-2 text-[#13BC87] font-poppins font-semibold uppercase">
-                                            USDT - {`<balance amount>`}
-                                            </span>
-                                        </span>
-                                    </li>
-                                    {/* {AvartarDropDownItem.map(({ id, label, href }) => (
+                      <img src={el.logo} alt="Icon" />
+                      <span className="block ml-2 truncate text-[#13BC87] font-poppins font-semibold uppercase">
+                        {el.name} - {el.balance}
+                      </span>
+                    </li>
+                  ))}
+
+                  {/* {AvartarDropDownItem.map(({ id, label, href }) => (
                                         <li
                                             key={id}
                                             className="mr-[24px] ml-[20px] py-[5px] md:py-0"
@@ -86,18 +132,21 @@ const UiDropdownBtn = () => {
                                             </Link>
                                         </li>
                                     ))} */}
-                                </div>
-                                <li className="my-[20px] cursor-pointer  ">
-                                    <div className=" block truncate text-[#13BC87] font-poppins font-semibold uppercase ">
-                                        Deposite
-                                    </div>
-                                </li>
-                            </ul>
-                        ) : null}
+                  <li className="px-[18px] mt-4">
+                    <span className="block border-b" />
+                  </li>
+                  <li className="my-[25px] cursor-pointer px-[24px] flex justify-between items-center ">
+                    <div className=" block truncate text-[#13BC87] font-poppins font-semibold uppercase ">
+                      Deposit
                     </div>
-                </div>
+                    <img src={RightIcon} alt="icon" />
+                  </li>
+                </ul>
+              ) : null}
             </div>
+          </div>
         </div>
+      </div>
     );
 };
 
