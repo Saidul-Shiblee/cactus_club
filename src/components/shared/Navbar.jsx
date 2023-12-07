@@ -20,7 +20,7 @@ const Navbar = () => {
   return (
     <nav
       className={`bg-white relative z-[3] ${
-        location.pathname.toLowerCase() === "/faq" || "/deposite"
+        location.pathname.toLowerCase() === "/faq" || "/transaction"
           ? "nav-shadow"
           : ""
       }`}
@@ -35,10 +35,13 @@ const Navbar = () => {
         {isLoggedIn ? (
           <div className="flex gap-4 md:hidden">
             <div>
-              {location.pathname.toLowerCase() === "/deposite" ? (
+              {location.pathname.toLowerCase() === "/transaction" ? (
                 <UiDropdownBtn />
               ) : (
-                <button className="hero-button font-poppins text-[12px] font-bold uppercase text-white flex items-center justify-center px-3 w-full h-[33px] ">
+                <button
+                  onClick={() => navigate("/transaction")}
+                  className="hero-button font-poppins text-[12px] font-bold uppercase text-white flex items-center justify-center px-3 w-full h-[33px] "
+                >
                   <span className="h-min inline-block">Deposit</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -89,10 +92,10 @@ const Navbar = () => {
             <div className="flex items-center">
               <div>
                 <UiButton
-                  onClick={() => navigate("/deposite")}
+                  onClick={() => navigate("/transaction")}
                   label="Deposit & Play "
                   classes={`!h-[43px] md:!w-[197px] !text-[14px] ${
-                    location.pathname.toLowerCase() === "/deposite"
+                    location.pathname.toLowerCase() === "/transaction"
                       ? "hidden"
                       : "block"
                   }`}
@@ -105,7 +108,7 @@ const Navbar = () => {
                 /> */}
                 <div
                   className={`${
-                    location.pathname.toLowerCase() === "/deposite"
+                    location.pathname.toLowerCase() === "/transaction"
                       ? "block"
                       : "hidden"
                   }`}

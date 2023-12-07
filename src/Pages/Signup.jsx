@@ -38,41 +38,6 @@ const Signup = () => {
     setCurrencyBalance,
   } = useGlobalContext();
 
-  //   componentDidMount();{
-  //     loadCaptchaEnginge(6); 
-  //  };
-
-
-
-  // const schema = Joi.object({
-  //   email: Joi.string()
-  //     .email({ tlds: { allow: false } })
-  //     .required()
-  //     .messages({
-  //       "string.empty": `Email cannot be empty`,
-  //       "string.email": "Please provide a valid email address",
-  //       "any.required": `Email is required`,
-  //     }),
-  //   password: Joi.string().min(8).max(25).required().messages({
-  //     "string.empty": `Min 8 chars and Max 25 chars.`,
-  //     "string.min": "Min 8 chars and Max 25 chars. ",
-  //     "string.max": "Min 8 chars and Max 25 chars. ",
-  //     "any.required": `Min 8 chars and Max 25 chars.`,
-  //     "string.pattern.base": `Min 8 chars and Max 25 chars.`,
-  //   }),
-  //   username: Joi.string()
-  //     .min(6)
-  //     .max(25)
-  //     .pattern(/^[a-zA-Z0-9]*$"/)
-  //     .required()
-  //     .messages({
-  //       "string.empty": `Use letters and numbers. Min 6 chars and Max 25 chars.`,
-  //       "string.min": "Use letters and numbers. Min 6 chars and Max 25 chars. ",
-  //       "string.max": "Use letters and numbers. Min 6 chars and Max 25 chars. ",
-  //       "any.required": `Use letters and numbers. Min 6 chars and Max 25 chars.`,
-  //       "string.pattern.base": `Use letters and numbers. Min 6 chars and Max 25 chars.`,
-  //     }),
-  // });
   useEffect(() => {
     if (errMsg) {
       setTimeout(() => setErrMsg(""), 6000);
@@ -131,7 +96,7 @@ ParentDiv.style.marginLeft = "50px"
   });
 
 
-  console.log(errors)
+
 
 
   const fieldValue = useWatch({
@@ -168,11 +133,12 @@ ParentDiv.style.marginLeft = "50px"
           IP: clientInfo.deviceIP,
           Country: clientInfo.country,
         })
-        console.log("signup", res.data)
+    
         setAuthToken(res?.data?.data?.Token);
   
         if (res?.data?.data?.Token && res?.data?.code === 1) {
           setIsLoggedIn(true);
+          // localStorage.setItem("cactus_club_isLoggedIn", true);
           localStorage.setItem("cactus_club_token", res?.data?.data?.Token);
   
           setCurrencyBalance({

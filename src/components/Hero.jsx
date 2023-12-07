@@ -40,7 +40,7 @@ function Hero() {
           quench your thirst on our growing lineup of crypto games!
         </p>
         <Link
-          to="/deposite"
+          to="/transaction"
           className="flex items-center mt-[40px] md:mt-[32px] w-full justify-center md:block md:w-min"
         >
           <UiButton label="Deposit & Play"  />

@@ -8,10 +8,16 @@ import Icon2 from "./../../assets/image/logos/SocialMediaLogo1.svg";
 import Icon3 from "./../../assets/image/logos/SocialMediaLogo2.svg";
 import UiButton from "../Ui/UiButton";
  import { useLocation } from "react-router-dom";
+ import ModalImg from "../../assets/image/modalImg.png";
+import { useState } from "react";
+import UiModal from "../Ui/UiModal";
 
 const Footer = () => {
-
+  const [isModalOpen, setModalOpen] = useState(false);
    const location = useLocation();
+     const closeModal = () => {
+       setModalOpen(false);
+     };
   return (
     <footer className="footer-bg">
       <div className="container px-[15px] md:px-[60px] lg:px-[120px] pt-[73px] pb-[24px]">
@@ -27,7 +33,7 @@ const Footer = () => {
               </p>
             </div>
 
-            <div className=" grow">
+            <div className=" grow" onClick={() => setModalOpen(true)}>
               <UiButton
                 label="subscribe"
                 classes="px-12 my-[48px] md:my-0 md:px-0"
@@ -92,7 +98,7 @@ const Footer = () => {
           </div>
 
           <div className="flex lg:justify-between md:jsutify-center flex-col md:flex-row">
-            {NavItem.map((item,index) => (
+            {NavItem.map((item, index) => (
               <div
                 key={item.label}
                 className=" border-lime-900 border-opacity-20 lg:border-0 md:border-b text-center py-3 md:ml-3  md:block flex flex-col justify-center items-center"
@@ -105,7 +111,9 @@ const Footer = () => {
                   {item.label}
                 </Link>
 
-               {index===NavItem?.length-1?null: <div className="block md:hidden border-separate border-b border-lime-900 border-opacity-20 lg:border-0 md:border-b text-center md:ml-3 mx-32 w-[38px]"></div>}
+                {index === NavItem?.length - 1 ? null : (
+                  <div className="block md:hidden border-separate border-b border-lime-900 border-opacity-20 lg:border-0 md:border-b text-center md:ml-3 mx-32 w-[38px]"></div>
+                )}
               </div>
             ))}
           </div>
@@ -119,7 +127,10 @@ const Footer = () => {
             >
               Privacy Policy
             </Link>
-            <Link className=" text-lime-950 mr-[20px] font-poppins" to={"/terms-conditions"}>
+            <Link
+              className=" text-lime-950 mr-[20px] font-poppins"
+              to={"/terms-conditions"}
+            >
               Terms Of Service
             </Link>
           </div>
@@ -134,6 +145,34 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      <UiModal isOpen={isModalOpen} onClose={closeModal} close={true}>
+        <div className="px-[12px] md:px-[127px] w-[345px] md:w-[690px] justify-center text-center">
+          <img src={ModalImg} className="mx-auto" alt="Modal image" />
+          <div className="w-[321px] md:w-[453px] text-center">
+            <h1 className="text-2xl font-rubik text-primary-title mt-[28px] uppercase">
+              Subscribe to our newsletter
+            </h1>
+            <p className="text-stone-950 text-opacity-50">
+              Receive new articles and resources directly on your inbox. Fill
+              your email below to join our email newsletter today.
+            </p>
+          </div>
+          <input
+            type="email"
+            required
+            className={`mt-[30px] h-[64px] w-[321px] md:w-[453px] py-[12px]  rounded-full bg-[#F5AA52] pl-[32px]
+             cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent `}
+            name="password"
+            placeholder="Enter Your Email"
+          />
+          <UiButton
+            label="SUBSCRIBE"
+            onClose={closeModal}
+            classes="w-[321px] md:!w-[453px] !h-[64px] mt-[12px] mb-[56px]"
+          />
+        </div>
+      </UiModal>
     </footer>
   );
 };

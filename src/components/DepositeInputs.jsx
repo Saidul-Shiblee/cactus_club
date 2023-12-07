@@ -1,58 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Icon from "./../assets/icons/ETH.svg";
 import Icon2 from "./../assets/icons/USDC.svg";
 import Icon3 from "./../assets/icons/USDT.svg";
-import { getPlayerBalance, getPlayerWallet } from "../ApiFetcher/fetcher";
-import useSWR from "swr";
 import { useGlobalContext } from "../context/context";
-import axios from "axios";
-import { URL } from "../ApiFetcher/fetcher";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
-const DepositeInputs = ({ balance, balanceLoading, wallet, walletLoading }) => {
+
+const DepositeInputs = ({ balance, wallet, }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  // const [playerWallet, setPlayerWallet] = useState();
-
   const { selectedCurrency, setSelectedCurrency } = useGlobalContext();
-
-
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
     <div className="mx-auto px-[15px] md:px-0 flex flex-col items-center">
-      <div className="flex items-center h-[34px] justify-center mt-[50px] md:mt-[93px] text-primary-title">
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "ignup-link font-poppins text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87]"
-              : "ignup-link font-poppins text-[24px] font-bold uppercase  "
-          }
-          to="/deposite"
-        >
-          Deposit
-        </NavLink>
-        <div className="font-poppins text-[24px] font-bold uppercase px-[16px]">
-          i
-        </div>
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "ignup-link font-poppins text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87]"
-              : "ignup-link font-poppins text-[24px] font-bold uppercase  "
-          }
-          to="/withdraw"
-        >
-          Withdraw
-        </NavLink>
-      </div>
-
-      <div className="relative flex flex-col mt-[24px] w-[345px] md:w-[585px]">
+      <div className="relative flex flex-col  w-[345px] md:w-[585px]">
         <label
           htmlFor="token"
           className=" text-primary-title text-[12px] pb-[12px] font-bold font-poppins uppercase"

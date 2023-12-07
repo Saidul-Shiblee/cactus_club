@@ -21,7 +21,7 @@ const CactusKeno = () => {
               revealed one at a time. Did you hit the hail Mary or get hung out
               to dry?!
             </p>
-            <Link to={"/sign-up"}>
+            <Link to={"/transaction"}>
               <button className="hidden md:flex hero-button px-[18px] py-[18px] pl-[51px] pr-[64.5px] mt-[30px] md:mt-[40px] font-poppins text-[20px] font-bold uppercase text-white items-center">
                 <span className="mr-[3.5px]">play now</span>
                 <svg

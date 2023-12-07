@@ -11,7 +11,7 @@ const Home = lazy(() => import("../Pages/Home"));
 const Login = lazy(() => import("../Pages/Login"));
 const Signup = lazy(() => import("../Pages/Signup"));
 const FAQ = lazy(() => import("../Pages/FAQ"));
-const Deposite = lazy(() => import("../Pages/Deposite"));
+const Transaction = lazy(() => import("../Pages/Transaction"));
 const PrivacyPolicy = lazy(() => import("../Pages/PrivacyPolicy"));
 const TermsCondition = lazy(() => import("../Pages/TermsCondition"));
 
@@ -19,7 +19,6 @@ const TermsCondition = lazy(() => import("../Pages/TermsCondition"));
 
 const MainRoutes = () => {
 
-   const { isLoggedIn } = useGlobalContext();
  
   return (
     <Suspense fallback={<Lodaer />}>
@@ -28,7 +27,7 @@ const MainRoutes = () => {
         <Route
           path="/login"
           element={
-            <PublicRoute isLoggedIn={isLoggedIn}>
+            <PublicRoute>
               <Login />
             </PublicRoute>
           }
@@ -37,7 +36,7 @@ const MainRoutes = () => {
         <Route
           path="/sign-up"
           element={
-            <PublicRoute isLoggedIn={isLoggedIn}>
+            <PublicRoute>
               <Signup />
             </PublicRoute>
           }
@@ -45,10 +44,10 @@ const MainRoutes = () => {
         <Route path="/faq" element={<FAQ />} />
 
         <Route
-          path="/deposite"
+          path="/transaction"
           element={
-            <PrivateRoute isLoggedIn={isLoggedIn}>
-              <Deposite />
+            <PrivateRoute>
+              <Transaction />
             </PrivateRoute>
           }
         />

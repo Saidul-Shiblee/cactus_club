@@ -20,56 +20,68 @@ export function ContextProvider({ children }) {
     const [clientInfo, SetClientInfo] = useState({});
     const [authToken,setAuthToken]=useState("")
     const [currencyBalance, setCurrencyBalance]=useState(null)
-    const [isLoggedIn,setIsLoggedIn]=useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(
+     false
+    );
     const [selectedCurrency,setSelectedCurrency]=useState("ETH")
+
+    //Boolean(localStorage.getItem("cactus_club_isLoggedIn"));
 
     
     useEffect(() => {
-      const token=localStorage.getItem("cactus_club_token")
-      const balance = JSON.parse(localStorage.getItem("cactus_club_currency_balance"))
-        if (balance) {
-            setCurrencyBalance(balance)
-        }
-      if(token){
-          setAuthToken(token)
-          setIsLoggedIn(true)
+      const token = localStorage.getItem("cactus_club_token")
+      const balance = JSON.parse(
+        localStorage.getItem("cactus_club_currency_balance")
+      );
+      if (balance) {
+        setCurrencyBalance(balance);
       }
-    }, [])
+      if (token) {
+        setAuthToken(token);
+        setIsLoggedIn(true);
+      }
+    }, [isLoggedIn]);
    
     
 
     useEffect(() => {
-        const fetchIP = async () => {
-            const ipDetailsFromLocalStorage = JSON.parse(localStorage.getItem("cactus_club_client_details")) ;
-            if(ipDetailsFromLocalStorage?.deviceIP && ipDetailsFromLocalStorage?.country){
-                SetClientInfo(ipDetailsFromLocalStorage);
-                return
-            }
-            const IpDetalis = await axios.get("https://api.db-ip.com/v2/free/self");
-            SetClientInfo((pv) => ({
-              ...pv,
-              deviceIP: IpDetalis.data.ipAddress,
-              country: IpDetalis.data.countryName,
-            }));
-            localStorage.setItem("cactus_club_client_details",JSON.stringify({
-                deviceIP: IpDetalis.data.ipAddress,
-                country: IpDetalis.data.countryName
-            }))
+      const fetchIP = async () => {
+        const ipDetailsFromLocalStorage = JSON.parse(
+          localStorage.getItem("cactus_club_client_details")
+        );
+        if (
+          ipDetailsFromLocalStorage?.deviceIP &&
+          ipDetailsFromLocalStorage?.country
+        ) {
+          SetClientInfo(ipDetailsFromLocalStorage);
+          return;
         }
-        fetchIP()
-    }, [])
+        const IpDetalis = await axios.get("https://api.db-ip.com/v2/free/self");
+        SetClientInfo((pv) => ({
+          ...pv,
+          deviceIP: IpDetalis.data.ipAddress,
+          country: IpDetalis.data.countryName,
+        }));
+        localStorage.setItem(
+          "cactus_club_client_details",
+          JSON.stringify({
+            deviceIP: IpDetalis.data.ipAddress,
+            country: IpDetalis.data.countryName,
+          })
+        );
+      };
+      fetchIP();
+    }, []);
 
 
     useEffect(() => {
-
-        if (isBrowser) {
-            SetDeviceInfo("Browser");
-        }
-        if (isMobile) {
-            SetDeviceInfo('Mobile')
-        }
-
-    }, [])
+      if (isBrowser) {
+        SetDeviceInfo("Browser");
+      }
+      if (isMobile) {
+        SetDeviceInfo("Mobile");
+      }
+    }, []);
 
 
   

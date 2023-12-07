@@ -25,12 +25,12 @@
     {
         id:1,
         label: "DEPOSIT",
-        href: "/deposite",
+         href: "/transaction",
     },
     {
         id:2,
         label: "WITHDRAW",
-        href: "/",
+        href: "/transaction",
     },
     {
         id:3,

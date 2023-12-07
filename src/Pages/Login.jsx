@@ -53,16 +53,11 @@ const Login = () => {
         Country: clientInfo.country,
       });
 
+
       if (res?.data?.data?.Token && res?.data?.code === 1) {
-        setAuthToken(res.data.data.Token);
         setIsLoggedIn(true);
+        // localStorage.setItem("cactus_club_isLoggedIn", true);
         localStorage.setItem("cactus_club_token", res?.data?.data?.Token);
-        setCurrencyBalance({
-          ETHER: res?.data?.data?.ETHER,
-          USDC: res?.data?.data?.USDC,
-          USDT: res?.data?.data?.USDT,
-        });
-       
         localStorage.setItem(
           "cactus_club_currency_balance",
           JSON.stringify({
@@ -71,7 +66,14 @@ const Login = () => {
             USDT: res?.data?.data?.USDT,
           })
         );
-        navigate(-1);
+        setCurrencyBalance({
+        ETHER: res?.data?.data?.ETHER,
+          USDC: res?.data?.data?.USDC,
+         USDT: res?.data?.data?.USDT,
+        });
+        setAuthToken(res.data.data.Token);
+        
+        // navigate('/deposite');
       }
        if (res?.data?.code === -3) {
          openModal()
