@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CactusTree from './../../assets/icons/cactusTree.svg';
 // import RightIcon from "../../../assets/icons/chevron-right.svg"
 import RightIcon from './../../assets/icons/chevron-right.svg';
@@ -10,6 +10,7 @@ import Uparrow from "./../../assets/icons/uparrow.svg";
 
 
 const AvartarDropdown = (classes = '') => {
+  const dropdownRef = useRef();
 
    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,20 @@ const AvartarDropdown = (classes = '') => {
       setAuthToken,
       setCurrencyBalance,
     } = useGlobalContext();
+
+    const handleCloseDropdown = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+  
+    useEffect(() => {
+      document.addEventListener("click", handleCloseDropdown);
+  
+      return () => {
+        document.removeEventListener("click", handleCloseDropdown);
+      };
+    }, []);
 
   const handleLogOut=()=>{
     setAuthToken("")
@@ -30,8 +45,10 @@ const AvartarDropdown = (classes = '') => {
     
    }
 
+  //  document.addEventListener("onclick", setIsOpen(false))
+
     return (
-      <div>
+      <div ref={dropdownRef}>
         <div className="inline-flex bg-white ">
           <div onClick={() => setIsOpen(!isOpen)} className="inline-flex">
             <div className=" text-sm text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-l-md">
@@ -89,7 +106,7 @@ const AvartarDropdown = (classes = '') => {
                         className="mr-[24px] ml-[20px] py-[5px] md:py-0"
                       >
                         <Link
-                          className="font-poppins text-[14px] font-semibold text-link uppercase tracking-[2px] flex justify-between pb-[16px]"
+                          className="font-poppins text-[14px] font-semibold hover:text-orange-primary text-link uppercase tracking-[2px] flex justify-between pb-[16px]"
                           to={href}
                         >
                           {label} <img src={RightIcon} alt="icon" />
@@ -101,7 +118,7 @@ const AvartarDropdown = (classes = '') => {
                     onClick={handleLogOut}
                     className=" mx-[10px] mb-[45px] cursor-pointer  "
                   >
-                    <div className=" text-link font-poppins text-[14px] font-semibold  uppercase py-[10px] px-[12px] flex justify-between">
+                    <div className=" text-link font-poppins text-[14px] font-semibold  uppercase py-[10px] px-[12px] flex justify-between hover:text-orange-primary">
                       Log Out <img src={LogOut} alt="icon" />
                     </div>
                   </li>

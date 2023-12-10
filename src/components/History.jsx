@@ -161,13 +161,13 @@ const History = () => {
                         <div className="td-broder"></div>
                       </div>
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color  h-[54px]">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px]">
                       <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center">
                         {el?.Token}
                         <div className="td-broder"></div>
                       </div>
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color  h-[54px] group relative">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] group relative">
                       <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center ">
                         {trimText(el?.Address, 10)}
 

@@ -4,11 +4,11 @@ import {Link} from "react-router-dom";
 
 const CactusKeno = () => {
   return (
-    <section className="relative xl:min-h-[614px] py-[95px] md:pt-[127px] md:pb-[159px]">
+    <section className="relative max-w-[1920px] mx-auto xl:min-h-[614px] py-[95px] md:pt-[127px] md:pb-[159px]">
       <div className="">
         <div className="w-full md:w-[80%] xl:w-[400px] z-[2] pl-[5px] md:pl-[50px] xl:pl-0">
           <div className="mt-[20px] xl:pt-[147px] mb-[30px] xl:mb-0 xl:pl-[150px]">
-            <div className="flex xl:block  md:items-center sm:text-center flex-row gap-x-5">
+            <div className="flex xl:block px-2 md:px-0 md:items-center sm:text-center flex-row gap-x-5">
               <h1 className="cactus-text-color font-rubik uppercase text-[32px] md:text-[60px] font-normal">
                 cactus
               </h1>
@@ -16,7 +16,7 @@ const CactusKeno = () => {
                 Keno
               </h1>
             </div>
-            <p className="text-[16px] font-normal font-IBM">
+            <p className="text-[16px] px-2 md:px-0 font-normal font-IBM">
               Pick your lucky numbers and hold your breath as the results get
               revealed one at a time. Did you hit the hail Mary or get hung out
               to dry?!

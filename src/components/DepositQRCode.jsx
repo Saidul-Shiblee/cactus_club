@@ -30,11 +30,11 @@ const DepositQRCode = ({wallet,walletLoading}) => {
           </div>
           <ul className="list-disc list-inside font-IBM font-[16px] mt-[58px] w-[345px] md:w-[561px] text-center ">
             <li className="mb-[20px]">
-              Send at least 0.01 ETH to this address. if you send less than 0.01
+              Send at least 0.01 ETH to this address. If you send less than 0.01
               ETH, your account won’t be credited
             </li>
             <li className="mb-[20px]">
-              Only send ETH to this address. if you send other crypto tokens to
+              Only send ETH to this address. If you send other crypto tokens to
               this address it can result in a loss of funds
             </li>
             <li className="mb-[20px]">

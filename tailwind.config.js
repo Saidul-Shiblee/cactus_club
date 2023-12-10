@@ -48,6 +48,7 @@ export default {
       "primary-hover": "#F5AA52",
       "deposite-hover": "rgba(94, 61, 28, 0.10)",
       "input-link": "#178BBD",
+      "danger": "#C21C00",
     }),
     
   },

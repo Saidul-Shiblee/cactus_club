@@ -135,7 +135,7 @@ const WithDrawForm = ({
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon} alt="Icon" />
                     <p className=" ml-3 ">
-                      ETH (BALANCE: {balance?.data?.ETHER || ""} )
+                      ETH (BALANCE: {balance?.data?.ETHER || 0} )
                     </p>
                   </div>
                 )}
@@ -143,7 +143,7 @@ const WithDrawForm = ({
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon2} alt="Icon" />
                     <p className=" ml-3 ">
-                      USDC (BALANCE:{balance?.data?.USDC || ""})
+                      USDC (BALANCE:{balance?.data?.USDC || 0})
                     </p>
                   </div>
                 )}
@@ -151,7 +151,7 @@ const WithDrawForm = ({
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon3} alt="Icon" />
                     <p className=" ml-3 ">
-                      USDT (BALANCE:{balance?.data?.USDT || ""})
+                      USDT (BALANCE:{balance?.data?.USDT || 0})
                     </p>
                   </div>
                 )}
@@ -193,6 +193,7 @@ const WithDrawForm = ({
                     className="relative text-gray-900  select-none hover:bg-deposite-hover pr-9 cursor-pointer"
                     onClick={() => {
                       setSelectedCurrency("USDC");
+                      localStorage.setItem("cactus_club_selected_currency", "USDC");
                       toggleDropdown();
                     }}
                   >
@@ -209,6 +210,7 @@ const WithDrawForm = ({
                     className="relative text-gray-900 cursor-pointer select-none hover:bg-deposite-hover pr-9"
                     onClick={() => {
                       setSelectedCurrency("USDT");
+                      localStorage.setItem("cactus_club_selected_currency", "USDT");
                       toggleDropdown();
                     }}
                   >
@@ -225,6 +227,7 @@ const WithDrawForm = ({
                     className="relative text-gray-900 cursor-pointer select-none hover:bg-deposite-hover pr-9"
                     onClick={() => {
                       setSelectedCurrency("ETH");
+                      localStorage.setItem("cactus_club_selected_currency", "ETH");
                       toggleDropdown();
                     }}
                   >

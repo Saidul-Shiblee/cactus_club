@@ -7,6 +7,7 @@ import axios from "axios";
 import { useGlobalContext } from "../context/context";
 import UiModal from "../components/Ui/UiModal";
 import ModalImg from "../assets/image/modalImg.png";
+import XIcon from "../assets/icons/x.png";
 
 const Login = () => {
   const [pending, setPending] = useState(false);
@@ -67,17 +68,17 @@ const Login = () => {
           })
         );
         setCurrencyBalance({
-        ETHER: res?.data?.data?.ETHER,
+          ETHER: res?.data?.data?.ETHER,
           USDC: res?.data?.data?.USDC,
-         USDT: res?.data?.data?.USDT,
+          USDT: res?.data?.data?.USDT,
         });
         setAuthToken(res.data.data.Token);
-        
-        // navigate('/deposite');
+        const previousPath = history.location.state?.from || '/';
+        navigate(previousPath);
       }
-       if (res?.data?.code === -3) {
-         openModal()
-       }
+      if (res?.data?.code === -3) {
+        openModal()
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -89,33 +90,40 @@ const Login = () => {
   return (
     <div className="w-full h-screen md:h-full font-sans md:bg-cover bg-login-mobile md:bg-login relative bg-no-repeat">
       <div className="flex justify-end md:flex-1 md:h-full mx-auto absolute left-0 right-0 top-[138px] md:static">
-        <div className="w-full gap-[52px] md:w-[845px] rounded-t-[34px] md:rounded-tr-none md:rounded-l-[50px] bg-white flex md:justify-center flex-col md:pl-[85px] px-[15px] py-[32px] md:px-0 md:pt-[114px] md:pb-[153px]">
-          <h4 className="text-center md:text-start signup-text font-luckiest text-[29.606px] font-normal ">
-            Cactus Club
-          </h4>
+        <div className="w-full gap-[52px] md:w-[845px] rounded-t-[34px] md:rounded-tr-none md:rounded-l-[50px] bg-white flex md:justify-center flex-col md:pl-[85px] px-[15px] py-[32px] md:px-[85px] md:pt-[114px] md:pb-[153px]">
+          <div className="flex justify-between">
+            <h4 className="text-center md:text-start signup-text font-luckiest text-[29.606px] font-normal ">
+              Cactus Club
+            </h4>
+            <Link to={"/"}>
+              <button className=" bg-gradient-bg rounded-md w-[44px] h-[44px] flex justify-center items-center">
+                <img src={XIcon} />
+              </button>
+            </Link>
+          </div>
           <div className="flex items-center h-[34px] justify-center md:justify-start  ">
             <NavLink
               className={({ isActive }) =>
                 isActive
-                  ? "ignup-link font-poppins text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87]"
-                  : "ignup-link font-poppins text-[24px] font-bold uppercase  "
+                  ? "font-poppins text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87] text-primary-title"
+                  : "font-poppins text-[24px] font-bold uppercase text-primary-title"
               }
               to="/login"
             >
-              login
+              log in
             </NavLink>
-            <div className="font-poppins text-[24px] font-bold uppercase px-[16px]">
+            <div className="font-poppins text-[24px] font-bold uppercase px-[16px] text-primary-title">
               i
             </div>
             <NavLink
               className={({ isActive }) =>
                 isActive
-                  ? "ignup-link font-poppins text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87]"
-                  : "ignup-link font-poppins text-[24px] font-bold uppercase  "
+                  ? "font-poppins text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87] text-primary-title"
+                  : "font-poppins text-[24px] font-bold uppercase text-primary-title"
               }
               to="/sign-up"
             >
-              signup
+              sign up
             </NavLink>
           </div>
           <h6 className="text-[32px] md:text-[60px] font-rubik uppercase font-normal cactus-text-color leading-[32px] md:leading-[66px]">
@@ -131,13 +139,10 @@ const Login = () => {
               </label>
               <input
                 type="text"
-                className={` w-full md:w-[585px] height-[62px] px-[23px] md:px-[40px] py-[12px] md:py-[14px] rounded-[20px] ${
-                  getValues("username") ? "bg-orange-secondary" : "bg-white"
-                } cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${
-                  errors?.username?.message
-                    ? "outline-none ring-1 ring-red-500 border-transparent"
-                    : "input-border"
-                }`}
+                className={` w-full md:w-[585px] height-[62px] px-[23px] md:px-[40px] py-[12px] md:py-[14px] rounded-[20px] font-poppins text-[16px] font-black placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${errors?.username?.message
+                  ? "outline-none ring-1 ring-red-500 border-transparent text-danger"
+                  : "input-border cactus-text-color"
+                  }`}
                 {...register("username")}
                 name="username"
                 required
@@ -153,13 +158,10 @@ const Login = () => {
               </label>
               <input
                 type="password"
-                className={`w-full md:w-[585px] height-[62px] px-[23px] md:px-[40px] py-[12px] md:py-[14px] rounded-[20px] ${
-                  getValues("password") ? "bg-orange-secondary" : "bg-white"
-                } cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${
-                  errors.password?.message
-                    ? "outline-none ring-1 ring-red-500 border-transparent"
-                    : "input-border"
-                }`}
+                className={`w-full md:w-[585px] height-[62px] px-[23px] md:px-[40px] py-[12px] md:py-[14px] rounded-[20px] bg-white cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${errors.password?.message
+                  ? "outline-none ring-1 ring-red-500 border-transparent"
+                  : "input-border"
+                  }`}
                 {...register("password")}
                 name="password"
                 required
@@ -177,11 +179,10 @@ const Login = () => {
             <button
               type="submit"
               disabled={errors?.username || errors?.password}
-              className={`hidden md:flex ${
-                formState?.isValid
-                  ? "hero-button text-white"
-                  : "bg-submit-button"
-              } rounded-full px-[81px] items-center h-[63px] text-s-button-text font-poppins font-bold text-center text-[20px] uppercase mt-[62px]`}
+              className={`hidden md:flex ${formState?.isValid
+                ? "hero-button text-white"
+                : "bg-submit-button"
+                } w-full justify-center rounded-full px-[100px] md:px-[81px]  md:w-[585px] items-center h-[63px] text-s-button-text font-poppins font-bold text-center text-[20px] uppercase mt-[60px]`}
             >
               {pending ? (
                 <Spinner />

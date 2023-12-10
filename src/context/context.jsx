@@ -19,13 +19,22 @@ export function ContextProvider({ children }) {
     const [deviceInfo,SetDeviceInfo]=useState(null)
     const [clientInfo, SetClientInfo] = useState({});
     const [authToken,setAuthToken]=useState("")
-    const [currencyBalance, setCurrencyBalance]=useState(null)
+    const [currencyBalance, setCurrencyBalance]=useState(0)
     const [isLoggedIn, setIsLoggedIn] = useState(
      false
     );
-    const [selectedCurrency,setSelectedCurrency]=useState("ETH")
+    const [selectedCurrency,setSelectedCurrency]=useState(" ")
 
     //Boolean(localStorage.getItem("cactus_club_isLoggedIn"));
+
+    useEffect(() => {
+      if(localStorage.getItem("cactus_club_selected_currency")) {
+        setSelectedCurrency(localStorage.getItem("cactus_club_selected_currency"))
+      } else {
+        localStorage.setItem("cactus_club_selected_currency", "ETH");
+        setSelectedCurrency("ETH");
+      }
+    },[])
 
     
     useEffect(() => {

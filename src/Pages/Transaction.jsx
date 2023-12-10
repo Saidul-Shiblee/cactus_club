@@ -58,7 +58,7 @@ const Transaction = () => {
           className={
             currentForm === "deposit"
               ? "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87] cursor-pointer"
-              : "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase  "
+              : "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase hover:text-orange-secondary"
           }
         >
           Deposit
@@ -71,7 +71,7 @@ const Transaction = () => {
           className={
             currentForm === "withdraw"
               ? "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87] cursor-pointer"
-              : "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase  "
+              : "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase hover:text-orange-secondary "
           }
         >
           Withdraw
@@ -84,7 +84,7 @@ const Transaction = () => {
           className={
             currentForm === "history"
               ? "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase underline underline-offset-[12px] decoration-4 decoration-[#13BC87] cursor-pointer"
-              : "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase  "
+              : "ignup-link font-poppins text-normal md:text-[24px] font-bold uppercase hover:text-orange-secondary "
           }
         >
           History

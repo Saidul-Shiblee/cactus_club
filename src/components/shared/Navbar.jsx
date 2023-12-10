@@ -19,7 +19,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-white relative z-[3] ${
+      className={`bg-white relative max-w-[1920px] mx-auto z-[3] ${
         location.pathname.toLowerCase() === "/faq" || "/transaction"
           ? "nav-shadow"
           : ""
@@ -66,10 +66,10 @@ const Navbar = () => {
         ) : (
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="block md:hidden button__custom w-[44px] h-[44px]"
+            className="block md:hidden bg-gradient-bg rounded-md w-[44px] h-[44px]"
           >
             <img
-              className="mx-auto hover:bg-primary-hover"
+              className="mx-auto"
               src={!menuOpen ? barIcon : xIcon}
               alt="My SVG"
             />
@@ -80,7 +80,7 @@ const Navbar = () => {
           {NavItem.map(({ id, label, href }) => (
             <li key={id} className="mr-[24px] py-[5px] md:py-0">
               <Link
-                className="font-poppins text-[14px] font-semibold text-link uppercase tracking-[2px]"
+                className="font-poppins text-[14px] font-semibold text-link hover:text-orange-primary uppercase tracking-[2px]"
                 to={href}
               >
                 {label}
@@ -90,8 +90,8 @@ const Navbar = () => {
 
           {isLoggedIn ? (
             <div className="flex items-center">
-              <div>
-                <UiButton
+              <div onClick={() => navigate("/transaction")}>
+                {/* <UiButton
                   onClick={() => navigate("/transaction")}
                   label="Deposit & Play "
                   classes={`!h-[43px] md:!w-[197px] !text-[14px] ${
@@ -100,13 +100,14 @@ const Navbar = () => {
                       : "block"
                   }`}
                   svgMargin={true}
-                />
+                /> */}
+                <UiDropdownBtn />
                 {/* <UiButton
                   label={`BALANCE: ${data?.data?.ETHER} ETH`}
                   classes={`!h-[43px] md:!w-[197px] !text-[14px] ${location.pathname.toLowerCase()==="/deposite"? "block": "hidden"}`}
                   svgMargin={true}
                 /> */}
-                <div
+                {/* <div
                   className={`${
                     location.pathname.toLowerCase() === "/transaction"
                       ? "block"
@@ -114,7 +115,7 @@ const Navbar = () => {
                   }`}
                 >
                   <UiDropdownBtn />
-                </div>
+                </div> */}
               </div>
               <div className="ml-8 flex items-center mt-2">
                 <AvartarDropdown />
@@ -125,7 +126,7 @@ const Navbar = () => {
               <li className="lg:ml-[24px] md:ml-[12px] py-[12px] md:py-0">
                 <Link
                   to="/login"
-                  className="button__custom text-white font-poppins text-[14px] font-semibold uppercase py-[10px] px-[12px]"
+                  className="bg-orange-primary rounded-md text-white font-poppins text-[14px] font-semibold uppercase py-[10px] px-[12px]"
                 >
                   log in
                 </Link>
@@ -161,7 +162,7 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <li className="lg:ml-[24px] mb-2 mx-[20px] button__custom md:ml-[12px] py-[12px] md:py-0">
+            <li className="lg:ml-[24px] mb-2 mx-[20px] bg-orange-primary rounded-md md:ml-[12px] py-[12px] md:py-0 text-center">
               <Link
                 to="/login"
                 className=" text-white font-poppins text-[14px] font-semibold uppercase py-[10px] px-[12px]"
@@ -169,7 +170,7 @@ const Navbar = () => {
                 log in
               </Link>
             </li>
-            <li className="md:pl-[8px] mx-[20px] mb-[45px] button__custom py-[12px] md:py-0">
+            <li className="md:pl-[8px] mx-[20px] mb-[45px] button__custom text-center py-[12px] md:py-0">
               <Link
                 to="/sign-up"
                 className=" text-white font-poppins text-[14px] font-semibold  uppercase py-[10px] px-[12px]"

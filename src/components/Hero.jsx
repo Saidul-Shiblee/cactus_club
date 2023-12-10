@@ -9,7 +9,7 @@ function Hero() {
 
 
   return (
-    <div className="relative">
+    <div className="relative max-w-[1920px] mx-auto">
       <div className="hidden md:block w-full bg-hero-lg h-[752px] relative bg-no-repeat  bg-cover">
         <div className="absolute z-[1] bottom-0 left-0">
           <img
