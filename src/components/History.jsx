@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ADI from "../assets/icons/arrow_down_icon.svg";
 import { useState } from 'react'
-import Uparrow from "../assets/icons/uparrow.svg";import { getPlayerTransactionHistory } from '../ApiFetcher/fetcher';
+import Uparrow from "../assets/icons/uparrow.svg"; import { getPlayerTransactionHistory } from '../ApiFetcher/fetcher';
 import useSWR from 'swr';
-import { filterArray, formatDate, formatDateTime, trimText } from '../utilities/utilitiesFunction';
+import { filterArray, formatDate, formatDateTime, formattedTime, trimText } from '../utilities/utilitiesFunction';
 import { useGlobalContext } from '../context/context';
 ;
 
@@ -11,14 +11,15 @@ const History = () => {
   const [isOpen, setIsOpen] = useState(false);
   const random = React.useRef(Date.now());
   const [transactions, setTransactions] = useState([]);
-  const [filter,setFilter]=useState('all')
-    const {  authToken } =
-      useGlobalContext();
+  const [filter, setFilter] = useState('all')
+  const { authToken } =
+    useGlobalContext();
+
 
 
   //get Player Balance
   const { data, isLoading } = useSWR(
-    ["history",random],
+    ["history", random],
     getPlayerTransactionHistory(authToken)
   );
 
@@ -27,12 +28,12 @@ const History = () => {
   // console.log(abc);
 
   useEffect(() => {
-    if(data?.data){
-     setTransactions(data?.data);
-    }else{
-        setTransactions([])
+    if (data?.data) {
+      setTransactions(data?.data);
+    } else {
+      setTransactions([])
     }
-    
+
   }, [data]);
 
   return (
@@ -131,15 +132,14 @@ const History = () => {
               filterArray(data?.data, filter)?.map((el, index) => (
                 <React.Fragment key={el?.TransactionID}>
                   <tr
-                    className={`${
-                      (index + 1) % 2 != 0
-                        ? "bg-orange-primary"
-                        : "bg-[#FFF5EB]"
-                    }`}
+                    className={`${(index + 1) % 2 != 0
+                      ? "bg-orange-primary"
+                      : "bg-[#FFF5EB]"
+                      }`}
                   >
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color  h-[54px] !rounded-tl-[50px]  !rounded-bl-[50px]  pl-[24px]">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px] !rounded-tl-[50px]  !rounded-bl-[50px] pl-[24px] w-full">
                       <div className="text-center flex justify-center  gap-[44px] ml-[44px] items-center">
-                        {formatDate(el?.Date)}
+                        {formattedTime(el?.Date)}
                         <div className="td-broder"></div>
                       </div>
                     </td>
@@ -167,17 +167,26 @@ const History = () => {
                         <div className="td-broder"></div>
                       </div>
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] group relative">
-                      <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center ">
-                        {trimText(el?.Address, 10)}
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] group flex relative">
+                      {/* <div className="group flex relative"> */}
+                        <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center ">
+                          {trimText(el?.Address, 10)}
 
-                        <div className="td-broder"></div>
-                      </div>
-                      
+                          <div className="td-broder"></div>
+                        </div>
+                        {/* <div className="group flex relative"> */}
+                          {/* <span className="bg-red-400 text-white px-2 py-1">Button</span> */}
+                          <span className="group-hover:opacity-100 transition-opacity bg-primary-hover px-2 py-3 text-sm text-primary-title rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 mx-auto">{el?.Address} </span>
+                        {/* </div> */}
+                      {/* </div> */}
+
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color  h-[54px] !rounded-tr-[50px]  !rounded-br-[50px] pr-[44px]">
-                      <div className="text-center flex justify-center gap-[44px]  items-center">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] !rounded-tr-[50px]  !rounded-br-[50px] pr-[44px]">
+                      <div className='group flex relative flex-wrap'>
+                      <a href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px]  items-center">
                         {trimText(el?.TransactionID, 10)}
+                      </a>
+                      <div className="group-hover:opacity-100 transition-opacity bg-primary-hover px-2 py-3 text-sm text-primary-title rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 mx-auto">{el?.TransactionID} </div>
                       </div>
                     </td>
                   </tr>

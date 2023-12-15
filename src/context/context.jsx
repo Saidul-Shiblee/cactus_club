@@ -24,6 +24,8 @@ export function ContextProvider({ children }) {
      false
     );
     const [selectedCurrency,setSelectedCurrency]=useState(" ")
+    const [isEmailVarified, setIsEmailVerified] = useState(false);
+    const [userEmail, setUserEmail] = useState("")
 
     //Boolean(localStorage.getItem("cactus_club_isLoggedIn"));
 
@@ -39,6 +41,7 @@ export function ContextProvider({ children }) {
     
     useEffect(() => {
       const token = localStorage.getItem("cactus_club_token")
+      const email = localStorage.getItem("cactus_club_email")
       const balance = JSON.parse(
         localStorage.getItem("cactus_club_currency_balance")
       );
@@ -49,8 +52,18 @@ export function ContextProvider({ children }) {
         setAuthToken(token);
         setIsLoggedIn(true);
       }
+      if(email) {
+        setUserEmail(email)
+      }
     }, [isLoggedIn]);
+
    
+    useEffect(() => {
+      const emailVerified = localStorage.getItem("cactus_club_email_verified")
+      if(emailVerified) {
+        setIsEmailVerified(emailVerified)
+      }
+    }, [isEmailVarified])
     
 
     useEffect(() => {
@@ -97,7 +110,7 @@ export function ContextProvider({ children }) {
 
 
     return (
-        <Context.Provider value={{ deviceInfo, authToken,clientInfo, currencyBalance, isLoggedIn,selectedCurrency,setSelectedCurrency, setIsLoggedIn, setAuthToken, setCurrencyBalance}}>
+        <Context.Provider value={{ deviceInfo, authToken,clientInfo, currencyBalance, isLoggedIn,selectedCurrency,setSelectedCurrency, setIsLoggedIn, setAuthToken, setCurrencyBalance, isEmailVarified, setIsEmailVerified, userEmail, setUserEmail}}>
             {children}
         </Context.Provider>
     );

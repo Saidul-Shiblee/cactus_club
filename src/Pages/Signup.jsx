@@ -30,17 +30,27 @@ const Signup = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [captcha, setCaptcha] = useState(false);
-  const [isModalOpen, setModalOpen] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
   const [congratsModalOpen, setCongratsModalOpen] = useState(false);
 
   const closeModal = () => {
     setModalOpen(false);
-    setCongratsModalOpen(false)
   };
+  console.log(isModalOpen);
+
 
 
   const openModal = () => {
+    setModalOpen(true)
+    // setCongratsModalOpen(true);
+  }
+
+  const openCongratsModal = () => {
     setCongratsModalOpen(true);
+  }
+
+  const closeCongratsModal = () => {
+    setCongratsModalOpen(false)
   }
 
   const {
@@ -52,6 +62,9 @@ const Signup = () => {
     setIsLoggedIn,
     setAuthToken,
     setCurrencyBalance,
+    isEmailVarified,
+    setIsEmailVerified,
+
   } = useGlobalContext();
 
   useEffect(() => {
@@ -67,7 +80,7 @@ const Signup = () => {
     const ReloadHref = document.getElementById("reload_href");
     const ParentDiv = ReloadHref.parentNode;
     const GrandDiv = ParentDiv.parentNode;
-    console.log(GrandDiv)
+    // console.log(GrandDiv)
     //  const ChildDiv = ParentDiv.children[1]
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", "24");
@@ -153,11 +166,12 @@ const Signup = () => {
         console.log(res)
 
         setAuthToken(res?.data?.data?.Token);
-
+        setIsEmailVerified(res?.data?.data?.EmailVerified);
         if (res?.data?.data?.Token && res?.data?.code === 1) {
           setIsLoggedIn(true);
           // localStorage.setItem("cactus_club_isLoggedIn", true);
           localStorage.setItem("cactus_club_token", res?.data?.data?.Token);
+          localStorage.setItem("cactus_club_email_verified", res?.data?.data?.EmailVerified);
 
           setCurrencyBalance({
             ETHER: res?.data?.data?.ETHER,
@@ -174,7 +188,8 @@ const Signup = () => {
             })
           );
           navigate(-1);
-          openModal()
+          // openModal()
+          openCongratsModal();
         }
 
 
@@ -183,6 +198,7 @@ const Signup = () => {
         }
         if (res?.data?.code === -3) {
           setModalErrMsg("Email/Name has already been registered.");
+          openModal();
         }
         // document.getElementById('user_captcha_input').value = "";
       }
@@ -403,17 +419,17 @@ const Signup = () => {
                     <img src={ModalImg} className="mx-auto" alt="Modal image" />
                     <div className="w-[321px] md:w-[453px] text-center">
                       <h1 className="text-2xl font-rubik text-primary-title mt-[28px] uppercase">
-                       sign up failed
+                        sign up failed
                       </h1>
                       <p className="text-stone-950 text-opacity-50">
-                      Username or Email is already in use. Please try again!
+                        Username or Email is already in use. Please try again!
                       </p>
                     </div>
                     <UiButton
                       label="OK"
                       onClose={closeModal}
                       classes="w-[321px] md:!w-[453px] !h-[64px] mt-[12px] mb-[56px]"
-                      // onClick={setShowModal(false)}
+                    // onClick={setShowModal(false)}
                     />
                   </div>
                 </UiModal>
@@ -486,14 +502,14 @@ const Signup = () => {
 
 
       <div>
-        <UiModal isOpen={congratsModalOpen} onClose={closeModal}>
+        <UiModal isOpen={congratsModalOpen} onClose={closeCongratsModal}>
           <div className=" px-2 md:px-[118px] justify-center text-center">
             <img src={ModalImg} className="mx-auto" alt="Modal image" />
             <h1 className="text-2xl font-rubik text-primary-title mt-[28px] uppercase">
-            congratulations!
+              congratulations!
             </h1>
             <p className="text-stone-950 text-opacity-50">
-            Welcome to the club! Get ready to have some fun!
+              Welcome to the club! Get ready to have some fun!
             </p>
             <UiButton
               label="OK"

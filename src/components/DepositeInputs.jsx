@@ -4,6 +4,7 @@ import Icon from "./../assets/icons/ETH.svg";
 import Icon2 from "./../assets/icons/USDC.svg";
 import Icon3 from "./../assets/icons/USDT.svg";
 import { useGlobalContext } from "../context/context";
+import EmailVerification from "./EmailVerification";
 
 
 const DepositeInputs = ({ balance, wallet, }) => {
@@ -40,7 +41,9 @@ const DepositeInputs = ({ balance, wallet, }) => {
 
 
   return (
-    <div className="mx-auto px-[15px] md:px-0 flex flex-col items-center">
+  <div>
+    <EmailVerification/>
+      <div className="mx-auto px-[15px] md:px-0 flex flex-col items-center">
       <div className="relative flex flex-col  w-[345px] md:w-[585px]">
         <label
           htmlFor="token"
@@ -204,6 +207,7 @@ const DepositeInputs = ({ balance, wallet, }) => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

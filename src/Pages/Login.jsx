@@ -15,6 +15,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
+  console.log(isModalOpen);
 
   const {
     deviceInfo,
@@ -54,11 +55,12 @@ const Login = () => {
         Country: clientInfo.country,
       });
 
-
+      console.log(res.data)
       if (res?.data?.data?.Token && res?.data?.code === 1) {
         setIsLoggedIn(true);
         // localStorage.setItem("cactus_club_isLoggedIn", true);
         localStorage.setItem("cactus_club_token", res?.data?.data?.Token);
+        localStorage.setItem("cactus_club_email_verified", res?.data?.data?.EmailVerified);
         localStorage.setItem(
           "cactus_club_currency_balance",
           JSON.stringify({
@@ -206,7 +208,7 @@ const Login = () => {
               )}
             </button>
             <div>
-              <UiModal isOpen={isModalOpen} onClose={closeModal}>
+              <UiModal isOpen={isModalOpen}>
                 <div className=" px-2 md:px-[118px] justify-center text-center">
                   <img src={ModalImg} className="mx-auto" alt="Modal image" />
                   <h1 className="text-2xl font-rubik text-primary-title mt-[28px] uppercase">
@@ -218,6 +220,7 @@ const Login = () => {
                   <UiButton
                     label="OK"
                     onClose={closeModal}
+                    // onClick={closeModal}
                     classes="!w-full h-16 mt-[30px] mb-[56px]"
                   />
                 </div>

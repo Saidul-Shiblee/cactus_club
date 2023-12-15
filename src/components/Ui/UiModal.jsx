@@ -18,7 +18,7 @@ const UiModal = ({ isOpen, onClose, children,close }) => {
                   X
                 </button>
               </div>
-              <div className="mt-4" onClick={close?null:onClose}>
+              <div className="mt-4" >
                 {children}
               </div>
             </div>
