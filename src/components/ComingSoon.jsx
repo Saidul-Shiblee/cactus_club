@@ -5,7 +5,7 @@ import Flip from './../assets/image/flip.svg';
 
 const ComingSoon = () => {
     return (
-      <div className="w-full mt-[57px] bg-orange-50 py-[80px] px-[15px] lg:px-[145px] lg:pt-[85px] lg:pb-[118px] flex flex-col  items-center">
+      <div className="w-full mt-[57px] max-w-[1920px] mx-auto bg-orange-50 py-[80px] px-[15px] lg:px-[145px] lg:pt-[85px] lg:pb-[118px] flex flex-col  items-center">
         <h3 className="lg:text-6xl font-rubik text-primary-title text-center  text-[32px] uppercase mb-[32px] lg:mb-0">
           coming soon
         </h3>

@@ -2,17 +2,17 @@
     {
         id:1,
         label: "GAME INFO",
-        href: "/",
+        href: "/gameinfo",
     },
     {
         id:2,
         label: "NEWS",
-        href: "/",
+        href: "/news",
     },
     {
         id:3,
         label: "SUPPORT",
-        href: "/",
+        href: "/support",
     },
     {
         id:4,

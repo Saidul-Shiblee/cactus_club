@@ -36,13 +36,11 @@ const Signup = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
-  console.log(isModalOpen);
 
 
 
   const openModal = () => {
     setModalOpen(true)
-    // setCongratsModalOpen(true);
   }
 
   const openCongratsModal = () => {
@@ -51,6 +49,7 @@ const Signup = () => {
 
   const closeCongratsModal = () => {
     setCongratsModalOpen(false)
+    setIsLoggedIn(true)
   }
 
   const {
@@ -80,8 +79,7 @@ const Signup = () => {
     const ReloadHref = document.getElementById("reload_href");
     const ParentDiv = ReloadHref.parentNode;
     const GrandDiv = ParentDiv.parentNode;
-    // console.log(GrandDiv)
-    //  const ChildDiv = ParentDiv.children[1]
+  
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", "24");
     svg.setAttribute("height", "24");
@@ -98,7 +96,6 @@ const Signup = () => {
 
     GrandDiv.style.display = "flex";
     GrandDiv.style.justifyContent = "center";
-    // ParentDiv.style.marginLeft = "15px"
     ReloadHref.style.marginLeft = 0;
 
 
@@ -150,7 +147,6 @@ const Signup = () => {
     try {
 
       let user_captcha = document.getElementById('user_captcha_input').value;
-      // console.log("userCaptha", user_captcha);
 
       if (validateCaptcha(user_captcha) === true) {
         loadCaptchaEnginge(6);
@@ -163,15 +159,13 @@ const Signup = () => {
           IP: clientInfo.deviceIP,
           Country: clientInfo.country,
         })
-        console.log(res)
 
         setAuthToken(res?.data?.data?.Token);
-        setIsEmailVerified(res?.data?.data?.EmailVerified);
         if (res?.data?.data?.Token && res?.data?.code === 1) {
-          setIsLoggedIn(true);
-          // localStorage.setItem("cactus_club_isLoggedIn", true);
+          setCongratsModalOpen(true);
           localStorage.setItem("cactus_club_token", res?.data?.data?.Token);
           localStorage.setItem("cactus_club_email_verified", res?.data?.data?.EmailVerified);
+          setIsEmailVerified(res?.data?.data?.EmailVerified);
 
           setCurrencyBalance({
             ETHER: res?.data?.data?.ETHER,
@@ -187,9 +181,6 @@ const Signup = () => {
               USDT: res?.data?.data?.USDT,
             })
           );
-          navigate(-1);
-          // openModal()
-          openCongratsModal();
         }
 
 
@@ -200,7 +191,6 @@ const Signup = () => {
           setModalErrMsg("Email/Name has already been registered.");
           openModal();
         }
-        // document.getElementById('user_captcha_input').value = "";
       }
 
       else {
@@ -266,7 +256,6 @@ const Signup = () => {
           </h6>
           <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-              {/* <InputField label="username" type="text" error={false} {...register("username") }/> */}
               <div className="relative flex flex-col mt-[24px]">
                 <label
                   htmlFor="username"
@@ -342,9 +331,6 @@ const Signup = () => {
                 >
                   email address
                 </label>
-                {/* ${
-                    getValues("email") ? "bg-orange-secondary" : "bg-white"
-                  } */}
                 <input
                   id="email"
                   type="email"
@@ -363,10 +349,6 @@ const Signup = () => {
                 />
                 <p className="px-[23px] md:px-[40px] italic text-danger">{errors.email?.message}</p>
               </div>
-
-              {/* Captcha  */}
-
-              {/* <CaptchaTest /> */}
               <div>
 
 
@@ -374,7 +356,6 @@ const Signup = () => {
                   <p className="font-poppins font-bold uppercase text-[12px] text-primary-title mb-3">Enter Captcha code</p>
                   <div className="flex justify-between w-full md:w-[585px] height-[62px] px-[23px] md:px-[40px] py-[12px] md:py-[14px] rounded-[20px] cactus-text-color font-poppins text-[16px] font-black focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent input-border">
                     <input
-                      // placeholder="Enter Captcha Value"
                       id="user_captcha_input"
                       className=" outline-none w-[120px] md:w-full placeholder:text-primary-title"
                       name="user_captcha_input"
@@ -473,21 +454,6 @@ const Signup = () => {
                   </div>
                 )}
               </button>
-              {/* <div className="block md:hidden" type="submit">
-                <UiButton
-                  label="sign up"
-                  classes="w-full justify-center mt-[58px]"
-                />
-              </div> */}
-              {/* {showModal ? (
-                <OtpInputForm
-                  email={fieldValue[0]}
-                  name={fieldValue[2]}
-                  password={fieldValue[1]}
-                  setShowModal={setShowModal}
-                  showModal={showModal}
-                />
-              ) : null} */}
             </form>
           </div>
           <p className="mt-[60px] text-[16px] font-poppins uppercase font-bold text-primary-title text-center md:text-start">
@@ -496,28 +462,32 @@ const Signup = () => {
               Log in
             </Link>
           </p>
-          {/* <OtpInputForm/> */}
         </div>
       </div>
 
 
       <div>
-        <UiModal isOpen={congratsModalOpen} onClose={closeCongratsModal}>
-          <div className=" px-2 md:px-[118px] justify-center text-center">
-            <img src={ModalImg} className="mx-auto" alt="Modal image" />
-            <h1 className="text-2xl font-rubik text-primary-title mt-[28px] uppercase">
-              congratulations!
-            </h1>
-            <p className="text-stone-950 text-opacity-50">
-              Welcome to the club! Get ready to have some fun!
-            </p>
-            <UiButton
-              label="OK"
-              onClose={closeModal}
-              classes="!w-full h-16 mt-[30px] mb-[56px]"
-            />
-          </div>
-        </UiModal>
+        {
+          congratsModalOpen && (
+            <UiModal isOpen={congratsModalOpen} onClose={closeCongratsModal}>
+              <div className=" px-2 md:px-[118px] justify-center text-center">
+                <img src={ModalImg} className="mx-auto" alt="Modal image" />
+                <h1 className="text-2xl font-rubik text-primary-title mt-[28px] uppercase">
+                  congratulations!
+                </h1>
+                <p className="text-stone-950 text-opacity-50">
+                  Welcome to the club! Get ready to have some fun!
+                </p>
+                <UiButton
+                  label="OK"
+                  onClose={closeCongratsModal}
+                  classes="!w-full h-16 mt-[30px] mb-[56px]"
+                />
+              </div>
+            </UiModal>
+          )
+        }
+
       </div>
     </div>
   );

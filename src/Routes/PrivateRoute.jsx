@@ -6,7 +6,6 @@ export const PrivateRoute = ({ children }) => {
      const { isLoggedIn } = useGlobalContext();
   const navigate = useNavigate();
 
-  console.log(isLoggedIn);
 
   useEffect(() => {
     if (!isLoggedIn) {

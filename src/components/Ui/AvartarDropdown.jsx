@@ -45,7 +45,6 @@ const AvartarDropdown = (classes = '') => {
     
    }
 
-  //  document.addEventListener("onclick", setIsOpen(false))
 
     return (
       <div ref={dropdownRef}>
@@ -134,6 +133,5 @@ const AvartarDropdown = (classes = '') => {
 export default AvartarDropdown;
 
 
-/* Polygon 1 */
 
 

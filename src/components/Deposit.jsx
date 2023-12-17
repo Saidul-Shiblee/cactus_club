@@ -17,7 +17,7 @@ const Deposit = ({data,isLoading, data1,isLoading1}) => {
   return (
     <>
     {
-      isEmailVarified === true?
+      isEmailVarified ?
       <>
       <DepositeInputs
         balance={data}

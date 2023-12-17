@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { NavItem } from "../../assets/data/local.db";
 import Logo from "/CactusClub.png";
 import barIcon from "../../assets/icons/ion_menu.svg";
@@ -79,43 +79,19 @@ const Navbar = () => {
         <ul className="hidden md:flex md:items-center justify-between flex-col md:flex-row py-[12px] md:py-0">
           {NavItem.map(({ id, label, href }) => (
             <li key={id} className="mr-[24px] py-[5px] md:py-0">
-              <Link
-                className="font-poppins text-[14px] font-semibold text-link hover:text-orange-primary uppercase tracking-[2px]"
+              <NavLink
+                className={({isActive}) => isActive? "text-orange-primary font-poppins text-[14px] font-semibold hover:text-orange-primary uppercase tracking-[2px]": "font-poppins text-[14px] font-semibold text-link hover:text-orange-primary uppercase tracking-[2px]"}
                 to={href}
               >
                 {label}
-              </Link>
+              </NavLink>
             </li>
           ))}
 
           {isLoggedIn ? (
             <div className="flex items-center">
               <div onClick={() => navigate("/transaction")}>
-                {/* <UiButton
-                  onClick={() => navigate("/transaction")}
-                  label="Deposit & Play "
-                  classes={`!h-[43px] md:!w-[197px] !text-[14px] ${
-                    location.pathname.toLowerCase() === "/transaction"
-                      ? "hidden"
-                      : "block"
-                  }`}
-                  svgMargin={true}
-                /> */}
                 <UiDropdownBtn />
-                {/* <UiButton
-                  label={`BALANCE: ${data?.data?.ETHER} ETH`}
-                  classes={`!h-[43px] md:!w-[197px] !text-[14px] ${location.pathname.toLowerCase()==="/deposite"? "block": "hidden"}`}
-                  svgMargin={true}
-                /> */}
-                {/* <div
-                  className={`${
-                    location.pathname.toLowerCase() === "/transaction"
-                      ? "block"
-                      : "hidden"
-                  }`}
-                >
-                  <UiDropdownBtn />
-                </div> */}
               </div>
               <div className="ml-8 flex items-center mt-2">
                 <AvartarDropdown />

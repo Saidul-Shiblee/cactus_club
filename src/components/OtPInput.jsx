@@ -40,7 +40,6 @@ export default function OtpInputForm({
         Country: clientInfo.country,
       });
 
-      console.log("token", res.data);
       setAuthToken(res?.data?.data?.Token);
 
       if (res?.data?.data?.Token && res?.data?.code===1) {

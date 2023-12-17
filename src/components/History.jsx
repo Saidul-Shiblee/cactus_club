@@ -24,8 +24,7 @@ const History = () => {
   );
 
 
-  // const abc=filterArray(data?.data,'Deposit')
-  // console.log(abc);
+
 
   useEffect(() => {
     if (data?.data) {
@@ -139,7 +138,9 @@ const History = () => {
                   >
                     <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px] !rounded-tl-[50px]  !rounded-bl-[50px] pl-[24px] w-full">
                       <div className="text-center flex justify-center  gap-[44px] ml-[44px] items-center">
-                        {formattedTime(el?.Date)}
+                       <div className='flex gap-2' 
+                       dangerouslySetInnerHTML= {{__html: formattedTime(el?.Date)}}
+                       ></div>
                         <div className="td-broder"></div>
                       </div>
                     </td>
@@ -168,22 +169,17 @@ const History = () => {
                       </div>
                     </td>
                     <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] group flex relative">
-                      {/* <div className="group flex relative"> */}
                         <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center ">
                           {trimText(el?.Address, 10)}
 
                           <div className="td-broder"></div>
                         </div>
-                        {/* <div className="group flex relative"> */}
-                          {/* <span className="bg-red-400 text-white px-2 py-1">Button</span> */}
                           <span className="group-hover:opacity-100 transition-opacity bg-primary-hover px-2 py-3 text-sm text-primary-title rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 mx-auto">{el?.Address} </span>
-                        {/* </div> */}
-                      {/* </div> */}
 
                     </td>
                     <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] !rounded-tr-[50px]  !rounded-br-[50px] pr-[44px]">
                       <div className='group flex relative flex-wrap'>
-                      <a href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px]  items-center">
+                      <a href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px] text-primary items-center text-link2 underline">
                         {trimText(el?.TransactionID, 10)}
                       </a>
                       <div className="group-hover:opacity-100 transition-opacity bg-primary-hover px-2 py-3 text-sm text-primary-title rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 mx-auto">{el?.TransactionID} </div>

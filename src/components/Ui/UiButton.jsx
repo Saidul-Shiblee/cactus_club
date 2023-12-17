@@ -1,7 +1,6 @@
 import React from "react";
 
 const UiButton = ({ label, classes = "", svgMargin,onClick=undefined, onClose=undefined }) => {
-console.log("onclick", onClick);
   return (
     <button
       onClick={onClick || onClose}

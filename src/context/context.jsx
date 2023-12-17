@@ -42,6 +42,8 @@ export function ContextProvider({ children }) {
     useEffect(() => {
       const token = localStorage.getItem("cactus_club_token")
       const email = localStorage.getItem("cactus_club_email")
+      const emailVerified = localStorage.getItem("cactus_club_email_verified")
+
       const balance = JSON.parse(
         localStorage.getItem("cactus_club_currency_balance")
       );
@@ -55,15 +57,14 @@ export function ContextProvider({ children }) {
       if(email) {
         setUserEmail(email)
       }
-    }, [isLoggedIn]);
-
-   
-    useEffect(() => {
-      const emailVerified = localStorage.getItem("cactus_club_email_verified")
       if(emailVerified) {
         setIsEmailVerified(emailVerified)
+        if(emailVerified === "true") setIsEmailVerified(true);
+        if(emailVerified === "false") setIsEmailVerified(false);
+
       }
-    }, [isEmailVarified])
+      
+    }, [isLoggedIn]);
     
 
     useEffect(() => {

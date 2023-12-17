@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-// import QRCode from './../assets/image/qr-code.png';
 import axios from 'axios';
 import useSWR from 'swr';
-// import { getPlayerWallet } from '../ApiFetcher/fetcher';
 import QRCode from 'qrcode.react';
 import Skeleton from 'react-loading-skeleton';
 

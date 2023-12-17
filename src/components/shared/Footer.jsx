@@ -19,7 +19,7 @@ const Footer = () => {
        setModalOpen(false);
      };
   return (
-    <footer className="footer-bg">
+    <footer className="footer-bg max-w-[1920px] mx-auto">
       <div className="container px-[15px] md:px-[60px] lg:px-[120px] pt-[73px] pb-[24px]">
         <div className="flex items-center lg:justify-between flex-col md:flex-row md:justify-center gap-[50px]">
           <img src={footerImage} alt="footer image" />

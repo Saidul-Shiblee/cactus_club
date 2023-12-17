@@ -26,7 +26,6 @@ const Transaction = () => {
   );
 
   
-  console.log(data?.code,data1?.code)
 
   useEffect(() => {
    if (data?.code === -2 || data1?.code === -2) {

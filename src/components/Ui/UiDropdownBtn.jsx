@@ -57,7 +57,6 @@ const UiDropdownBtn = () => {
     (el) => el.name !== selectedCurrency
   );
 
-  // console.log(data.data.ETHER)
   return (
     <div ref={dropdownRef}>
       <div className="inline-flex bg-white ">
@@ -135,20 +134,6 @@ const UiDropdownBtn = () => {
                     </span>
                   </li>
                 ))}
-
-                {/* {AvartarDropDownItem.map(({ id, label, href }) => (
-                                        <li
-                                            key={id}
-                                            className="mr-[24px] ml-[20px] py-[5px] md:py-0"
-                                        >
-                                            <Link
-                                                className="font-poppins text-[14px] font-semibold text-link uppercase tracking-[2px] flex justify-between pb-[16px]"
-                                                to={href}
-                                            >
-                                                {label} <img src={RightIcon} alt="icon" />
-                                            </Link>
-                                        </li>
-                                    ))} */}
                 <li className="px-[18px] mt-4">
                   <span className="block border-b" />
                 </li>

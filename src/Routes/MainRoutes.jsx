@@ -14,6 +14,9 @@ const FAQ = lazy(() => import("../Pages/FAQ"));
 const Transaction = lazy(() => import("../Pages/Transaction"));
 const PrivacyPolicy = lazy(() => import("../Pages/PrivacyPolicy"));
 const TermsCondition = lazy(() => import("../Pages/TermsCondition"));
+const News = lazy(() => import("../Pages/News"));
+const Support = lazy(() => import("../Pages/Support"));
+const GameInfo = lazy(() => import("../Pages/GameInfo"));
 
 
 
@@ -54,6 +57,9 @@ const MainRoutes = () => {
 
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsCondition />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/gameinfo" element={<GameInfo />} />
       </Routes>
     </Suspense>
   );

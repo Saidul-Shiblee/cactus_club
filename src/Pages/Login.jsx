@@ -15,7 +15,6 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
-  console.log(isModalOpen);
 
   const {
     deviceInfo,
@@ -43,7 +42,6 @@ const Login = () => {
     formState: { errors },
     formState,
   } = useForm();
-  // console.log(formState.isValid) // false
   const onSubmit = async (data) => {
     setPending(true);
     try {
@@ -55,7 +53,6 @@ const Login = () => {
         Country: clientInfo.country,
       });
 
-      console.log(res.data)
       if (res?.data?.data?.Token && res?.data?.code === 1) {
         setIsLoggedIn(true);
         // localStorage.setItem("cactus_club_isLoggedIn", true);

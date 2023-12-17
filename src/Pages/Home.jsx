@@ -14,7 +14,6 @@ const Home = () => {
       <RecentWinner/>
       <Offer/>
       <ComingSoon/>
-      {/* <MobileLogSignIn/> */}
     </MainLayout>
   );
 };

@@ -5,7 +5,7 @@ import ExlclusiveStar from './../assets/image/exclusiveStar.png';
 
 const Offer = () => {
     return (
-      <div className="px-[15px] py-[90px] sm:p-[145px] bg-white w-full grid  lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-1 grid-cols-1  gap-20 lg:gap-14">
+      <div className="px-[15px] max-w-[1920px] mx-auto py-[90px] sm:p-[145px] bg-white w-full grid  lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-1 grid-cols-1  gap-20 lg:gap-14">
         <div className="h-[311px] lg:h-[388px]  card-shadow rounded-lg relative">
           <div className="pt-[34px] px-[20px]  justify-start items-center flex flex-col gap-4">
             <img
