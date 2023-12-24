@@ -21,7 +21,7 @@ const RecentWinner = () => {
         <table className="w-full ">
           <thead>
             <tr>
-              <th className="text-center p-[5px] font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color md:py-[20px] md:px-[56px]">
+              <th className="text-center flex justify-center items-center p-[5px] font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color md:py-[20px] md:px-[56px]">
                 Time
               </th>
               <th className="text-start p-[5px] font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color md:py-[20px] md:px-[56px]">
@@ -46,7 +46,7 @@ const RecentWinner = () => {
                     (index + 1) % 2 != 0 ? "bg-orange-primary" : "bg-[#FFF5EB]"
                   } rounded-l-full`}
                 >
-                  <div className="flex justify-between">
+                  <div className="flex justify-between ml-[18px]">
                     {formatDateTime(el?.Time)} <div className="td-broder"></div>
                   </div>
                 </td>
@@ -55,7 +55,7 @@ const RecentWinner = () => {
                     (index + 1) % 2 != 0 ? "bg-orange-primary" : "bg-[#FFF5EB]"
                   } border-primary-title`}
                 >
-                  <div className="flex justify-between">
+                  <div className="flex justify-between ml-[5px]">
                     {el?.Game}
                     <div className="td-broder"></div>
                   </div>
@@ -65,7 +65,7 @@ const RecentWinner = () => {
                     (index + 1) % 2 != 0 ? "bg-orange-primary" : "bg-[#FFF5EB]"
                   } border-primary-title`}
                 >
-                  <div className="flex justify-between">
+                  <div className="flex justify-between ml-[5px]">
                     {el?.SomeBody}
                     <div className="td-broder"></div>
                   </div>
@@ -75,7 +75,7 @@ const RecentWinner = () => {
                     (index + 1) % 2 != 0 ? "bg-orange-primary" : "bg-[#FFF5EB]"
                   } border-primary-title`}
                 >
-                  <div className="flex justify-between">
+                  <div className="flex justify-between  ml-[10px]">
                     {el?.Bet}
                     <div className="td-broder"></div>
                   </div>

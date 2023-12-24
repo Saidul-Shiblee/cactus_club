@@ -63,27 +63,24 @@ const DepositeInputs = ({ balance, wallet, }) => {
                 {selectedCurrency === "ETH" && (
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon} alt="Icon" />
-                    <p className=" ml-3 ">
-                      ETH (Ethereum Mainnet):
-                      {balance?.data?.ETHER || 0}
+                    <p className=" ml-3 text-[12px] md:text-base  ">
+                      ETH (Ethereum Mainnet) - {balance?.data?.ETHER || 0}
                     </p>
                   </div>
                 )}
                 {selectedCurrency === "USDC" && (
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon2} alt="Icon" />
-                    <p className=" ml-3 ">
-                      USDC (Ethereum Mainnet):
-                      {balance?.data?.USDC || 0}
+                    <p className=" ml-3 text-[12px] md:text-base">
+                      USDC (Ethereum Mainnet) - {balance?.data?.USDC || 0}
                     </p>
                   </div>
                 )}
                 {selectedCurrency === "USDT" && (
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon3} alt="Icon" />
-                    <p className=" ml-3 ">
-                      USDT (Ethereum Mainnet):
-                      {balance?.data?.USDT || 0}
+                    <p className=" ml-3 text-[12px] md:text-base">
+                      USDT (Ethereum Mainnet) - {balance?.data?.USDT || 0}
                     </p>
                   </div>
                 )}
@@ -132,8 +129,8 @@ const DepositeInputs = ({ balance, wallet, }) => {
                   >
                     <span className="flex items-center h-[40px] mx-[40px]">
                       <img src={Icon2} alt="Icon" />
-                      <span className="block ml-3 truncate text-primary-title font-bold uppercase mb-[4px]">
-                        USDC (Ethereum Mainnet): {balance?.data?.USDC}
+                      <span className="block ml-3 text-[12px] md:text-base truncate text-primary-title font-bold uppercase mb-[4px]">
+                        USDC (Ethereum Mainnet) - {balance?.data?.USDC}
                       </span>
                     </span>
                   </li>
@@ -149,8 +146,8 @@ const DepositeInputs = ({ balance, wallet, }) => {
                   >
                     <span className="flex items-center h-[40px] mx-[40px] mb-[4px] ">
                       <img src={Icon3} alt="Icon" />
-                      <span className="block ml-3 truncate text-primary-title font-bold uppercase">
-                        USDT (Ethereum Mainnet): {balance?.data?.USDT}
+                      <span className="block ml-3 text-[12px] md:text-base truncate text-primary-title font-bold uppercase">
+                        USDT (Ethereum Mainnet) - {balance?.data?.USDT}
                       </span>
                     </span>
                   </li>
@@ -166,8 +163,8 @@ const DepositeInputs = ({ balance, wallet, }) => {
                   >
                     <span className="flex items-center h-[40px] mx-[40px] mb-[4px]">
                       <img src={Icon} alt="Icon" />
-                      <span className="block ml-3 truncate text-primary-title font-bold uppercase">
-                        eth (Ethereum Mainnet): {balance?.data?.ETHER}
+                      <span className="block ml-3 text-[12px] md:text-base truncate text-primary-title font-bold uppercase">
+                        eth (Ethereum Mainnet) - {balance?.data?.ETHER}
                       </span>
                     </span>
                   </li>
@@ -190,7 +187,7 @@ const DepositeInputs = ({ balance, wallet, }) => {
             type="text"
             id="deposite"
             ref={inputRef}
-            className="w-full bg-orange-primary outline-none"
+            className="w-full bg-orange-primary outline-none text-[12px] md:text-base"
             name="deposite"
             readOnly
             value={wallet?.data?.wallet}

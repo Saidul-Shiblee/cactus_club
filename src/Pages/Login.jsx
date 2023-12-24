@@ -7,7 +7,7 @@ import axios from "axios";
 import { useGlobalContext } from "../context/context";
 import UiModal from "../components/Ui/UiModal";
 import ModalImg from "../assets/image/modalImg.png";
-import XIcon from "../assets/icons/x.png";
+import XIcon from "../assets/icons/x.svg";
 
 const Login = () => {
   const [pending, setPending] = useState(false);
@@ -95,7 +95,7 @@ const Login = () => {
               Cactus Club
             </h4>
             <Link to={"/"}>
-              <button className=" bg-gradient-bg rounded-md w-[44px] h-[44px] flex justify-center items-center">
+              <button className=" rounded-md w-[44px] h-[44px] flex justify-center items-center">
                 <img src={XIcon} />
               </button>
             </Link>
@@ -230,7 +230,7 @@ const Login = () => {
           <p className="mt-[24px] md:mt-[14px] text-[16px] font-poppins uppercase font-bold text-primary-title text-center md:text-start">
             {`don't`} have an account?{" "}
             <Link className="text-link2" to="/sign-up">
-              signup
+              sign up
             </Link>
           </p>
         </div>

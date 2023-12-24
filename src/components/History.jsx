@@ -36,7 +36,7 @@ const History = () => {
   }, [data]);
 
   return (
-    <div className='"w-full  relative'>
+    <div className='"w-full  relative  max-w-[1920px] mx-auto'>
       <div className="w-full px-[12px] md:px-[142px] overflow-x-auto ">
         <table className="w-full mb-[168px]  md:mb-[383px]">
           <thead>
@@ -117,9 +117,9 @@ const History = () => {
               <th className="text-center font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color ">
                 <div className="text-center  ">Token</div>
               </th>
-              <th className="text-center font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color ">
+              {/* <th className="text-center font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color ">
                 <div className="text-center ">Address</div>
-              </th>
+              </th> */}
               <th className="text-center font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color pr-[44px]">
                 <div className="text-center ">Transaction ID</div>
               </th>
@@ -168,7 +168,7 @@ const History = () => {
                         <div className="td-broder"></div>
                       </div>
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] group flex relative">
+                    {/* <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] group flex relative">
                         <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center ">
                           {trimText(el?.Address, 10)}
 
@@ -176,13 +176,12 @@ const History = () => {
                         </div>
                           <span className="group-hover:opacity-100 transition-opacity bg-primary-hover px-2 py-3 text-sm text-primary-title rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 mx-auto">{el?.Address} </span>
 
-                    </td>
+                    </td> */}
                     <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] !rounded-tr-[50px]  !rounded-br-[50px] pr-[44px]">
                       <div className='group flex relative flex-wrap'>
-                      <a href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px] text-primary items-center text-link2 underline">
+                      <a href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px] text-primary items-center text-link2 underline ml-[44px]">
                         {trimText(el?.TransactionID, 10)}
                       </a>
-                      <div className="group-hover:opacity-100 transition-opacity bg-primary-hover px-2 py-3 text-sm text-primary-title rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 mx-auto">{el?.TransactionID} </div>
                       </div>
                     </td>
                   </tr>
@@ -192,7 +191,7 @@ const History = () => {
           </tbody>
         </table>
       </div>
-      <div className="w-full bg-history-lg hidden md:block h-[241px] bg-cover bg-no-repeat absolute left-0 bottom-0 -z-[1]"></div>
+      <div className="w-full bg-history-lg hidden md:block h-[241px] bg-cover bg-no-repeat absolute left-0 bottom-0 -z-[1] max-w-[1920px] mx-auto"></div>
       <div className="w-full bg-history-sm md:hidden block h-[139px] bg-cover bg-no-repeat absolute left-0 bottom-0 -z-[1]"></div>
     </div>
   );

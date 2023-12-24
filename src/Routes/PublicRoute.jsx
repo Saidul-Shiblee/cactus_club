@@ -9,8 +9,13 @@ export const PublicRoute = ({ children}) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate(-1);
+        if(location.pathname.toLowerCase() === "/login" || location.pathname.toLowerCase() === "/sign-up") {
+          navigate("/");
+        } else {
+          navigate(-1)
+        }
     }
+
   }, [isLoggedIn]);
 
   return children;

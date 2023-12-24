@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Icon from "./../assets/icons/ETH.svg";
 import Icon2 from "./../assets/icons/USDC.svg";
 import Icon3 from "./../assets/icons/USDT.svg";
@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import UiModal from "./Ui/UiModal";
 import UiButton from "./Ui/UiButton";
- import ModalImg from "../assets/image/modalImg.png";
+import ModalImg from "../assets/image/modalImg.png";
 import Spinner from "../utilities/spinner";
 import { X } from "lucide-react";
 
@@ -19,7 +19,7 @@ const WithDrawForm = ({
   balanceLoading,
   wallet,
   walletLoading,
-  setCurrentForm ,
+  setCurrentForm,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [errMsg, setErrMsg] = useState("");
@@ -28,6 +28,7 @@ const WithDrawForm = ({
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+  const dropdownRef = useRef()
   const [isModalOpen, setModalOpen] = useState(false);
 
   const closeModal = () => {
@@ -40,12 +41,34 @@ const WithDrawForm = ({
     }
   }, [errMsg]);
 
+
+
+
+  const handleCloseDropdown = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleCloseDropdown);
+
+    return () => {
+      document.removeEventListener("click", handleCloseDropdown);
+    };
+  }, []);
+
+
+
+
+
+
   useEffect(() => {
     // Load the wallet-address-validator script dynamically
     const script = document.createElement("script");
     script.src = "/src/assets/js/wallet-address-validator.min.js";
     script.async = true;
-    script.onload = () => {};
+    script.onload = () => { };
     document.head.appendChild(script);
 
     return () => {
@@ -70,14 +93,13 @@ const WithDrawForm = ({
     );
     return (
       isValidAddress ||
-      `Not a valid ${
-        selectedCurrency === "ETH"
-          ? "Ethereum"
-          : selectedCurrency === "USDT"
+      `Not a valid ${selectedCurrency === "ETH"
+        ? "Ethereum"
+        : selectedCurrency === "USDT"
           ? "Tether"
           : selectedCurrency === "USDC"
-          ? "USD Coin"
-          : ""
+            ? "USD Coin"
+            : ""
       } wallet address`
     );
   };
@@ -108,7 +130,7 @@ const WithDrawForm = ({
 
     } catch (error) {
       setErrMsg("Something went wrong");
-    }finally{
+    } finally {
       setLoading(false)
     }
   };
@@ -124,7 +146,7 @@ const WithDrawForm = ({
         </label>
 
         <div className=" ">
-          <div className="relative h-[54px] md:h-[62px]">
+          <div ref={dropdownRef} className="relative h-[54px] md:h-[62px]">
             <button
               type="button"
               onClick={toggleDropdown}
@@ -134,24 +156,24 @@ const WithDrawForm = ({
                 {selectedCurrency === "ETH" && (
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon} alt="Icon" />
-                    <p className=" ml-3 ">
-                      ETH (BALANCE: {balance?.data?.ETHER || 0} )
+                    <p className=" ml-3 text-[12px] md:text-base">
+                      ETH (ETHEREUM MAINNET) - {balance?.data?.ETHER || 0}
                     </p>
                   </div>
                 )}
                 {selectedCurrency === "USDC" && (
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon2} alt="Icon" />
-                    <p className=" ml-3 ">
-                      USDC (BALANCE:{balance?.data?.USDC || 0})
+                    <p className=" ml-3 text-[12px] md:text-base">
+                      USDC (ETHEREUM MAINNET) - {balance?.data?.USDC || 0}
                     </p>
                   </div>
                 )}
                 {selectedCurrency === "USDT" && (
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon3} alt="Icon" />
-                    <p className=" ml-3 ">
-                      USDT (BALANCE:{balance?.data?.USDT || 0})
+                    <p className=" ml-3 text-[12px] md:text-base">
+                      USDT (ETHEREUM MAINNET) - {balance?.data?.USDT || 0}
                     </p>
                   </div>
                 )}
@@ -199,8 +221,8 @@ const WithDrawForm = ({
                   >
                     <span className="flex items-center h-[40px] mx-[40px]">
                       <img src={Icon2} alt="Icon" />
-                      <span className="block ml-3 truncate text-primary-title font-bold uppercase mb-[4px]">
-                        USDC (BALANCE: {balance?.data?.USDC})
+                      <span className="block ml-3 truncate text-primary-title font-bold uppercase mb-[4px] text-[12px] md:text-base">
+                        USDC (ETHEREUM MAINNET) - {balance?.data?.USDC}
                       </span>
                     </span>
                   </li>
@@ -216,8 +238,8 @@ const WithDrawForm = ({
                   >
                     <span className="flex items-center h-[40px] mx-[40px] mb-[4px] ">
                       <img src={Icon3} alt="Icon" />
-                      <span className="block ml-3 truncate text-primary-title font-bold uppercase">
-                        USDT (BALANCE: {balance?.data?.USDT})
+                      <span className="block ml-3 truncate text-primary-title font-bold uppercase text-[12px] md:text-base">
+                        USDT (ETHEREUM MAINNET) - {balance?.data?.USDT}
                       </span>
                     </span>
                   </li>
@@ -233,8 +255,8 @@ const WithDrawForm = ({
                   >
                     <span className="flex items-center h-[40px] mx-[40px] mb-[4px]">
                       <img src={Icon} alt="Icon" />
-                      <span className="block ml-3 truncate text-primary-title font-bold uppercase">
-                        eth (BALANCE: {balance?.data?.ETHER})
+                      <span className="block ml-3 truncate text-primary-title font-bold uppercase text-[12px] md:text-base">
+                        ETH (ETHEREUM MAINNET) - {balance?.data?.ETHER}
                       </span>
                     </span>
                   </li>
@@ -259,13 +281,10 @@ const WithDrawForm = ({
           <input
             id="wallet_address"
             type="text"
-            className={`w-[345px] md:w-[585px] h-[54px] md:h-[62px] pl-[40px]  py-[12px] md:py-[14px] rounded-[20px] ${
-              getValues("wallet_address") ? "bg-orange-secondary" : "bg-white"
-            } cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${
-              errors?.wallet_address?.message
-                ? "outline-none ring-1 ring-red-500 border-transparent"
-                : "input-border"
-            }`}
+            className={`w-[345px] md:w-[585px] h-[54px] md:h-[62px] pl-[40px]  py-[12px] md:py-[14px] rounded-[20px] bg-white cactus-text-color font-poppins text-[12px] md:text-base font-black placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${errors?.wallet_address?.message
+              ? "outline-none ring-1 ring-red-500 border-transparent"
+              : "input-border"
+              }`}
             {...register("wallet_address", {
               required: "Wallet address is required",
               validate: validateWalletAddress,
@@ -273,7 +292,7 @@ const WithDrawForm = ({
             name="wallet_address"
             required
           />
-          <p className=" text-primary-title">
+          <p className=" text-danger italic pl-[40px] pt-3">
             {errors.wallet_address?.message}
           </p>
         </div>
@@ -287,19 +306,14 @@ const WithDrawForm = ({
           <div className="relative">
             <input
               type="withdraw_amount"
-              className={`w-[345px] md:w-[585px] h-[54px] md:h-[62px] pl-[40px]  py-[12px] md:py-[14px] rounded-[20px] ${
-                getValues("withdraw_amount")
-                  ? "bg-orange-secondary"
-                  : "bg-white"
-              } cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${
-                errors.withdraw_amount?.message
-                  ? "outline-none ring-1 ring-red-500 border-transparent"
-                  : "input-border"
-              }`}
+              className={`w-[345px] md:w-[585px] h-[54px] md:h-[62px] pl-[40px]  py-[12px] md:py-[14px] rounded-[20px] bg-white cactus-text-color font-poppins text-[16px] font-black uppercase placeholder:text-primary-title focus:outline-none focus:ring-1 focus:ring-[#F5AA52] focus:border-transparent ${errors.withdraw_amount?.message
+                ? "outline-none ring-1 ring-red-500 border-transparent"
+                : "input-border"
+                }`}
               {...register("withdraw_amount", {
                 min: {
                   value: 0.015,
-                  message: "The minimum amount you can withdraw is 0.015",
+                  message: "You don’t have enough balance to withdraw the amount entered",
                 },
                 pattern: {
                   value: /^\d+(\.\d+)?$/,
@@ -311,26 +325,55 @@ const WithDrawForm = ({
               required
             />
             <span
-              className={`block absolute ${selectedCurrency==="ETH"?'right-14':'right-20'}  top-0 bg-[#5E3D1C] w-[1px] h-full`}
+              className={`block absolute ${selectedCurrency === "ETH" ? 'right-14' : 'right-20'}  top-0 bg-[#5E3D1C] w-[1px] h-full`}
             ></span>
             <span className="block absolute right-4 top-1/2 -translate-y-1/2 font-poppins font-semibold text-[#5E3D1C]">
               {selectedCurrency}
             </span>
           </div>
-          <p className=" text-primary-title">
+          <p className="text-danger italic pl-[40px] pt-3">
             {errors.withdraw_amount?.message}
           </p>
         </div>
 
         <div className="pl-[20px] md:pl-[40px] mt-[40px] md:mt-[52px] font-IBM text-base font-normal w-[345px] md:w-[585px]">
-          <ul className="list-disc space-y-[20px]">
-            <li>Minimum withdrawal amount is 0.015 ETH</li>
-            <li>ETH withdrawals are processed after 3 network confirmations</li>
-            <li>
-              network fee of ~0.001 ETH will be deducted from the Withdrawal
-              amount
-            </li>
-          </ul>
+
+          {
+            selectedCurrency === "ETH" && (
+              <ul className="list-disc space-y-[20px]">
+                <li>Minimum withdrawal amount is 0.015 ETH</li>
+                <li>ETH withdrawals are processed after 3 network confirmations</li>
+                <li>
+                  ETH will be deducted from the Withdrawal Amount to cover the network fee
+                </li>
+              </ul>
+            )
+          }
+
+          {
+            selectedCurrency === "USDC" && (
+              <ul className="list-disc space-y-[20px]">
+                <li>Minimum withdrawal amount is 10 USDC</li>
+                <li>USDC withdrawals are processed after 3 network confirmations</li>
+                <li>
+                  USDC will be deducted from the Withdrawal Amount to cover the network fee
+                </li>
+              </ul>
+            )
+          }
+
+          {
+            selectedCurrency === "USDT" && (
+              <ul className="list-disc space-y-[20px]">
+                <li>Minimum withdrawal amount is 10 USDT</li>
+                <li>USDT withdrawals are processed after 3 network confirmations</li>
+                <li>
+                  USDT will be deducted from the Withdrawal Amount to cover the network fee
+                </li>
+              </ul>
+            )
+          }
+
         </div>
 
         {errMsg && (
@@ -346,9 +389,8 @@ const WithDrawForm = ({
         <button
           type="submit"
           disabled={errors?.wallet_address || errors?.withdraw_amount}
-          className={` ${
-            formState?.isValid ? "hero-button text-white" : "bg-submit-button"
-          } rounded-full w-[345px] md:w-[388px] h-[63px] text-s-button-text font-poppins font-bold  text-[20px] uppercase mt-[40px] md:mt-[52px] flex justify-center items-center self-center`}
+          className={` ${formState?.isValid ? "hero-button text-white" : "bg-submit-button"
+            } rounded-full w-[345px] md:w-[388px] h-[63px] text-s-button-text font-poppins font-bold  text-[20px] uppercase mt-[40px] md:mt-[52px] flex justify-center items-center self-center`}
         >
           {loading ? (
             <Spinner />

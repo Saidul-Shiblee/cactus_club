@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { NavItem } from "../../assets/data/local.db";
 import Logo from "/CactusClub.png";
 import barIcon from "../../assets/icons/ion_menu.svg";
-import xIcon from "../../assets/icons/x.png";
+import xIcon from "../../assets/icons/x.svg";
 import RightIcon from "../../assets/icons/chevron-right.svg"
 import UiButton from "../Ui/UiButton";
 import AvartarDropdown from "../Ui/AvartarDropdown";
@@ -19,7 +19,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-white relative max-w-[1920px] mx-auto z-[3] ${
+      className={`bg-white max-w-[1920px] sticky top-0 mx-auto z-[3] ${
         location.pathname.toLowerCase() === "/faq" || "/transaction"
           ? "nav-shadow"
           : ""
@@ -66,7 +66,7 @@ const Navbar = () => {
         ) : (
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="block md:hidden bg-gradient-bg rounded-md w-[44px] h-[44px]"
+            className={`block md:hidden ${!menuOpen ? "bg-gradient-bg": "bg-white"} rounded-md w-[44px] h-[44px]`}
           >
             <img
               className="mx-auto"
@@ -99,22 +99,27 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="flex">
-              <li className="lg:ml-[24px] md:ml-[12px] py-[12px] md:py-0">
-                <Link
+              <Link
                   to="/login"
-                  className="bg-orange-primary rounded-md text-white font-poppins text-[14px] font-semibold uppercase py-[10px] px-[12px]"
+                  className="lg:ml-[24px] md:ml-[12px] py-[12px] md:py-0"
+                 
                 >
+              <li className="bg-orange-primary rounded-md text-white font-poppins text-[14px] font-semibold uppercase py-[10px] px-[12px]">
+                
                   log in
-                </Link>
               </li>
-              <li className="md:pl-[8px] py-[12px] md:py-0">
-                <Link
+              </Link>
+              <Link
                   to="/sign-up"
-                  className="button__custom text-white font-poppins text-[14px] font-semibold  uppercase py-[10px] px-[12px]"
+                  className="md:pl-[8px] py-[12px] md:py-0"
+                 
                 >
+              <li  className="button__custom text-white font-poppins text-[14px] font-semibold  uppercase py-[10px] px-[12px]">
+               
                   sign up
-                </Link>
               </li>
+              </Link>
+
             </div>
           )}
         </ul>
@@ -138,22 +143,26 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <li className="lg:ml-[24px] mb-2 mx-[20px] bg-orange-primary rounded-md md:ml-[12px] py-[12px] md:py-0 text-center">
-              <Link
+            <Link
                 to="/login"
-                className=" text-white font-poppins text-[14px] font-semibold uppercase py-[10px] px-[12px]"
+                className="lg:ml-[24px] mb-2 mx-[20px] bg-orange-primary rounded-md md:ml-[12px] py-[12px] md:py-0 text-center"
+                
               >
+            <li className=" text-white font-poppins text-[14px] font-semibold uppercase px-[12px]">
+              
                 log in
-              </Link>
             </li>
-            <li className="md:pl-[8px] mx-[20px] mb-[45px] button__custom text-center py-[12px] md:py-0">
-              <Link
+            </Link>
+            <Link
                 to="/sign-up"
-                className=" text-white font-poppins text-[14px] font-semibold  uppercase py-[10px] px-[12px]"
+                
+                className="md:pl-[8px] mx-[20px] mb-[45px] button__custom text-center py-[12px] md:py-0"
               >
+            <li className=" text-white font-poppins text-[14px] font-semibold  uppercase px-[12px]">
+              
                 sign up
-              </Link>
             </li>
+            </Link>
           </ul>
         ) : null}
       </div>

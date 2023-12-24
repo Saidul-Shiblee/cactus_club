@@ -26,9 +26,16 @@ export const formattedTime = (e) => {
   const year = value.getFullYear()
   const day = value.getDate();
   const month = value.getMonth();
-  const hours = value.getHours();
-  const minutes = value.getMinutes();
-  return `<span className="inline-block">${year}/${month}/${day}</span> <span className="inline-block">${hours}:${minutes}</span>`
+  let hours = value.getHours().toString();
+  let minutes = value.getMinutes().toString();
+  // console.log( minutes);
+  if(hours.length === 1 ){
+    hours = "0" + hours
+  }
+  if(minutes.length ===1) {
+    minutes = "0" + minutes
+  }
+  return `<span className="inline-block">${year}/${month}/${day}</span> <span className="inline-block">${hours}: ${minutes} </span>`
 };
 
 export function trimText(text, maxLength) {

@@ -11,6 +11,7 @@ export const PrivateRoute = ({ children }) => {
     if (!isLoggedIn) {
       navigate("/login");
     }
+    
   }, [isLoggedIn]);
 
   return children;

@@ -12,7 +12,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { useGlobalContext } from "../context/context";
 import { useNavigate } from "react-router-dom";
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
-import Xicon from './../assets/icons/x.png';
+import Xicon from './../assets/icons/x.svg';
 import UiModal from "../components/Ui/UiModal";
 import ModalImg from "./../assets/image/modalImg.png"
 
@@ -221,7 +221,7 @@ const Signup = () => {
               Cactus Club
             </h4>
             <Link to={"/"}>
-              <button className=" bg-gradient-bg rounded-md w-[44px] h-[44px] flex justify-center items-center">
+              <button className="rounded-md w-[44px] h-[44px] flex justify-center items-center">
                 <img src={Xicon} />
               </button>
             </Link>
@@ -273,23 +273,23 @@ const Signup = () => {
                   {...register("username", {
                     minLength: {
                       value: 6,
-                      message: "Min 6 chars.",
+                      message: "Minimum 6 characters required.",
                     },
                     maxLength: {
                       value: 25,
-                      message: "Max 25 chars.",
+                      message: "Maximum 25 characters are allowed.",
                     },
                     pattern: {
                       value: /^[a-zA-Z0-9]{6,25}$/,
                       message:
-                        "Use letters and numbers. Min 6 chars and Max 25 chars.",
+                        "Only use letters and numbers. Special characters are not supported.",
                     },
                     required:
-                      "Use letters and numbers. Min 6 chars and Max 25 chars.",
+                      "Only use letters and numbers. Special characters are not supported.",
                   })}
                   name="username"
                 />
-                <p className=" text-danger px-[23px] md:px-[40px] italic">
+                <p className=" text-danger px-[23px] pt-3 md:px-[40px] italic">
                   {errors.username?.message}
                 </p>
               </div>
@@ -310,17 +310,17 @@ const Signup = () => {
                   {...register("password", {
                     minLength: {
                       value: 6,
-                      message: "Min 8 chars.",
+                      message: "Minimum 8 characters are required.",
                     },
                     maxLength: {
                       value: 25,
-                      message: "Max 25 chars.",
+                      message: "Maximum 25 characters are allowed.",
                     },
                     required: "Min 8 chars and Max 25 chars.",
                   })}
                   name="password"
                 />
-                <p className=" text-danger px-[23px] md:px-[40px] italic">
+                <p className=" text-danger px-[23px] pt-3 md:px-[40px] italic">
                   {errors.password?.message}
                 </p>
               </div>
@@ -341,13 +341,13 @@ const Signup = () => {
                   {...register("email", {
                     pattern: {
                       value: /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/,
-                      message: "Enter a Valid Email",
+                      message: "Please enter a valid email address.",
                     },
                     required: "Enter Your Email",
                   })}
                   name="email"
                 />
-                <p className="px-[23px] md:px-[40px] italic text-danger">{errors.email?.message}</p>
+                <p className="px-[23px] md:px-[40px] pt-3 italic text-danger">{errors.email?.message}</p>
               </div>
               <div>
 
