@@ -19,7 +19,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-white max-w-[1920px] sticky top-0 mx-auto z-[3] ${
+      className={`bg-white max-w-[1920px] sticky top-0 mx-auto z-[100] ${
         location.pathname.toLowerCase() === "/faq" || "/transaction"
           ? "nav-shadow"
           : ""

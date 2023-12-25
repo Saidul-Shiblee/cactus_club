@@ -41,7 +41,7 @@ const History = () => {
         <table className="w-full mb-[168px]  md:mb-[383px]">
           <thead>
             <tr>
-              <th className="text-left font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color pl-[24px] ">
+              <th className="text-left font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color pl-0 md:pl-[12px] lg:pl-[24px] ">
                 <div className="text-center  ">Date</div>
               </th>
               <th className="text-center font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color  relative">
@@ -120,7 +120,7 @@ const History = () => {
               {/* <th className="text-center font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color ">
                 <div className="text-center ">Address</div>
               </th> */}
-              <th className="text-center font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color pr-[44px]">
+              <th className="text-center font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color">
                 <div className="text-center ">Transaction ID</div>
               </th>
             </tr>
@@ -136,8 +136,8 @@ const History = () => {
                       : "bg-[#FFF5EB]"
                       }`}
                   >
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px] !rounded-tl-[50px]  !rounded-bl-[50px] pl-[24px] w-full">
-                      <div className="text-center flex justify-center  gap-[44px] ml-[44px] items-center">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px] !rounded-tl-[50px]  !rounded-bl-[50px] pl-8 md:pl-[12px] lg:pl-[24px]">
+                      <div className="text-center flex justify-center  gap-[44px] items-center">
                        <div className='flex gap-2' 
                        dangerouslySetInnerHTML= {{__html: formattedTime(el?.Date)}}
                        ></div>

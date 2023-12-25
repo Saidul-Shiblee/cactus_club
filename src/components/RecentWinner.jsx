@@ -51,7 +51,7 @@ const RecentWinner = () => {
                   </div>
                 </td>
                 <td
-                  className={`text-center font-poppins font-semibold text-[10px] lg:text-[16px]    uppercase table-font-color py-[20px] pl-[5px] md:py-[20px] lg:pl-[56px] ${
+                  className={`text-center font-poppins font-semibold text-[10px] lg:text-[16px]    uppercase table-font-color py-[20px] pl-[5px] md:py-[20px] md:pl-[40px] lg:pl-[56px] ${
                     (index + 1) % 2 != 0 ? "bg-orange-primary" : "bg-[#FFF5EB]"
                   } border-primary-title`}
                 >
@@ -61,7 +61,7 @@ const RecentWinner = () => {
                   </div>
                 </td>
                 <td
-                  className={`text-center font-poppins font-semibold text-[10px] lg:text-[16px]    uppercase table-font-color py-[20px] pl-[5px] md:py-[20px] lg:pl-[56px] ${
+                  className={`text-center font-poppins font-semibold text-[10px] lg:text-[16px]    uppercase table-font-color py-[20px] pl-[5px] md:py-[20px] md:pl-[40px] lg:pl-[56px] ${
                     (index + 1) % 2 != 0 ? "bg-orange-primary" : "bg-[#FFF5EB]"
                   } border-primary-title`}
                 >
@@ -71,7 +71,7 @@ const RecentWinner = () => {
                   </div>
                 </td>
                 <td
-                  className={`text-center font-poppins font-semibold text-[10px] lg:text-[16px]    uppercase table-font-color py-[20px] pl-[5px] md:py-[20px] lg:pl-[56px] ${
+                  className={`text-center font-poppins font-semibold text-[10px] lg:text-[16px]    uppercase table-font-color py-[20px] pl-[5px] md:py-[20px] md:pl-[50px] lg:pl-[56px] ${
                     (index + 1) % 2 != 0 ? "bg-orange-primary" : "bg-[#FFF5EB]"
                   } border-primary-title`}
                 >

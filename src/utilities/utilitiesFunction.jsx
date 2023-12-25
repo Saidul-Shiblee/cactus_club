@@ -35,7 +35,7 @@ export const formattedTime = (e) => {
   if(minutes.length ===1) {
     minutes = "0" + minutes
   }
-  return `<span className="inline-block">${year}/${month}/${day}</span> <span className="inline-block">${hours}: ${minutes} </span>`
+  return `<span className="inline-block">${year}/${month}/${day}</span> <span className="inline-block">${hours}:${minutes} </span>`
 };
 
 export function trimText(text, maxLength) {
