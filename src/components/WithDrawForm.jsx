@@ -120,6 +120,8 @@ const WithDrawForm = ({
         },
       });
 
+     console.log("respone", res)
+
       if (res?.data?.code === 1) {
         setModalOpen(true);
       } else if (res?.data?.code === -6) {
@@ -157,7 +159,7 @@ const WithDrawForm = ({
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon} alt="Icon" />
                     <p className=" ml-3 text-[12px] md:text-base">
-                      ETH (ETHEREUM MAINNET) - {balance?.data?.ETHER || 0}
+                      ETH - {balance?.data?.ETHER || 0}
                     </p>
                   </div>
                 )}
@@ -165,7 +167,7 @@ const WithDrawForm = ({
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon2} alt="Icon" />
                     <p className=" ml-3 text-[12px] md:text-base">
-                      USDC (ETHEREUM MAINNET) - {balance?.data?.USDC || 0}
+                      USDC - {balance?.data?.USDC || 0}
                     </p>
                   </div>
                 )}
@@ -173,7 +175,7 @@ const WithDrawForm = ({
                   <div className="flex items-center truncate uppercase">
                     <img src={Icon3} alt="Icon" />
                     <p className=" ml-3 text-[12px] md:text-base">
-                      USDT (ETHEREUM MAINNET) - {balance?.data?.USDT || 0}
+                      USDT - {balance?.data?.USDT || 0}
                     </p>
                   </div>
                 )}
@@ -222,7 +224,7 @@ const WithDrawForm = ({
                     <span className="flex items-center h-[40px] mx-[40px]">
                       <img src={Icon2} alt="Icon" />
                       <span className="block ml-3 truncate text-primary-title font-bold uppercase mb-[4px] text-[12px] md:text-base">
-                        USDC (ETHEREUM MAINNET) - {balance?.data?.USDC}
+                        USDC - {balance?.data?.USDC}
                       </span>
                     </span>
                   </li>
@@ -239,7 +241,7 @@ const WithDrawForm = ({
                     <span className="flex items-center h-[40px] mx-[40px] mb-[4px] ">
                       <img src={Icon3} alt="Icon" />
                       <span className="block ml-3 truncate text-primary-title font-bold uppercase text-[12px] md:text-base">
-                        USDT (ETHEREUM MAINNET) - {balance?.data?.USDT}
+                        USDT - {balance?.data?.USDT}
                       </span>
                     </span>
                   </li>
@@ -256,7 +258,7 @@ const WithDrawForm = ({
                     <span className="flex items-center h-[40px] mx-[40px] mb-[4px]">
                       <img src={Icon} alt="Icon" />
                       <span className="block ml-3 truncate text-primary-title font-bold uppercase text-[12px] md:text-base">
-                        ETH (ETHEREUM MAINNET) - {balance?.data?.ETHER}
+                        ETH - {balance?.data?.ETHER}
                       </span>
                     </span>
                   </li>
@@ -276,7 +278,7 @@ const WithDrawForm = ({
             htmlFor="wallet_address"
             className="cactus-text-color text-[12px] pb-[12px] font-bold font-poppins uppercase"
           >
-            Receiving Wallet Address
+            RECEIVING WALLET ADDRESS (ETH MAINNET)
           </label>
           <input
             id="wallet_address"
@@ -312,8 +314,10 @@ const WithDrawForm = ({
                 }`}
               {...register("withdraw_amount", {
                 min: {
-                  value: 0.015,
-                  message: "You don’t have enough balance to withdraw the amount entered",
+                  value:  0.015,
+                  message: ["i. Minimum amount {eth = 0.015, USDC/USDT = 10}", " ii. The minimum amount you can withdraw is 0.015"],
+                  // ["i. Minimum amount {eth = 0.015, USDC/USDT = 10}", " ii. The minimum amount you can withdraw is 0.015"],
+                  
                 },
                 pattern: {
                   value: /^\d+(\.\d+)?$/,
@@ -331,9 +335,13 @@ const WithDrawForm = ({
               {selectedCurrency}
             </span>
           </div>
-          <p className="text-danger italic pl-[40px] pt-3">
-            {errors.withdraw_amount?.message}
-          </p>
+          {errors?.withdraw_amount?.message && (
+        <p className="text-danger italic pl-[40px] pt-3">
+          {errors?.withdraw_amount?.message.map((line, index) => (
+            <span key={index}>{line}<br /></span>
+          ))}
+        </p>
+      )}
         </div>
 
         <div className="pl-[20px] md:pl-[40px] mt-[40px] md:mt-[52px] font-IBM text-base font-normal w-[345px] md:w-[585px]">

@@ -23,6 +23,7 @@ const History = () => {
     getPlayerTransactionHistory(authToken)
   );
 
+  console.log("History", data);
 
 
 
@@ -144,25 +145,25 @@ const History = () => {
                         <div className="td-broder"></div>
                       </div>
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color  h-[54px]">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px]">
                       <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center">
                         {el?.Type}
                         <div className="td-broder"></div>
                       </div>
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color  h-[54px]">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px]">
                       <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center">
                         {el?.Status}
                         <div className="td-broder"></div>
                       </div>
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] uppercase table-font-color  h-[54px]">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px]">
                       <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center">
                         {el?.Amount}
                         <div className="td-broder"></div>
                       </div>
                     </td>
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px]">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] table-font-color  h-[54px]">
                       <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center">
                         {el?.Token}
                         <div className="td-broder"></div>
@@ -177,9 +178,9 @@ const History = () => {
                           <span className="group-hover:opacity-100 transition-opacity bg-primary-hover px-2 py-3 text-sm text-primary-title rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 mx-auto">{el?.Address} </span>
 
                     </td> */}
-                    <td className=" font-poppins font-semibold text-[10px] lg:text-[16px] table-font-color  h-[54px] !rounded-tr-[50px]  !rounded-br-[50px] pr-[44px]">
+                    <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] table-font-color  h-[54px] !rounded-tr-[50px]  !rounded-br-[50px] pr-[44px]">
                       <div className='group flex relative flex-wrap'>
-                      <a href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px] text-primary items-center text-link2 underline ml-[44px]">
+                      <a target='_blank' href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px] text-primary items-center text-link2 underline ml-[44px]">
                         {trimText(el?.TransactionID, 10)}
                       </a>
                       </div>
