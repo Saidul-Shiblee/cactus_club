@@ -59,7 +59,6 @@ const DepositeInputs = ({ balance, wallet, }) => {
 
 
   const textTwoLines = (text) => {
-    console.log(text)
     if (!text) {
       return ['', ''];
     }
