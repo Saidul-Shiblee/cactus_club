@@ -337,9 +337,12 @@ const WithDrawForm = ({
           </div>
           {errors?.withdraw_amount?.message && (
         <p className="text-danger italic pl-[40px] pt-3">
-          {errors?.withdraw_amount?.message.map((line, index) => (
-            <span key={index}>{line}<br /></span>
-          ))}
+          {Array.isArray(errors.withdraw_amount.message)
+            ? errors.withdraw_amount.message.map((line, index) => (
+                <span key={index}>{line}<br /></span>
+              ))
+            : errors.withdraw_amount.message
+          }
         </p>
       )}
         </div>

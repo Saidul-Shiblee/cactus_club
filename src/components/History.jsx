@@ -131,6 +131,7 @@ const History = () => {
             {data?.data && data?.data.length > 0 &&
               filterArray(data?.data, filter)?.map((el, index) => (
                 <React.Fragment key={el?.TransactionID}>
+                  {console.log(el?.Type)}
                   <tr
                     className={`${(index + 1) % 2 != 0
                       ? "bg-orange-primary"
@@ -139,15 +140,17 @@ const History = () => {
                   >
                     <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px] !rounded-tl-[50px]  !rounded-bl-[50px] pl-8 md:pl-[12px] lg:pl-[24px]">
                       <div className="text-center flex justify-center  gap-[44px] items-center">
-                       <div className='flex gap-2' 
-                       dangerouslySetInnerHTML= {{__html: formattedTime(el?.Date)}}
-                       ></div>
+                        <div className='flex gap-2'
+                          dangerouslySetInnerHTML={{ __html: formattedTime(el?.Date) }}
+                        ></div>
                         <div className="td-broder"></div>
                       </div>
                     </td>
                     <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px]">
-                      <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center">
-                        {el?.Type}
+                      <div className={`text-center flex justify-center gap-[44px] items-center`}>
+                        <div className={`${el?.Type === "Deposit" ? "ml-[44px] pr-[35px]" : "ml-[44px]"}`}>
+                          {el?.Type}
+                        </div>
                         <div className="td-broder"></div>
                       </div>
                     </td>
@@ -158,8 +161,10 @@ const History = () => {
                       </div>
                     </td>
                     <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] uppercase table-font-color  h-[54px]">
-                      <div className="text-center flex justify-center gap-[44px] ml-[44px] items-center">
-                        {el?.Amount}
+                      <div className="text-center flex justify-between gap-[44px]  items-center">
+                        <div className='mx-auto ml-[30px]'>
+                          {el?.Amount}
+                        </div>
                         <div className="td-broder"></div>
                       </div>
                     </td>
@@ -180,9 +185,9 @@ const History = () => {
                     </td> */}
                     <td className=" font-poppins font-semibold text-[10px] lg:text-[13px] table-font-color  h-[54px] !rounded-tr-[50px]  !rounded-br-[50px] pr-[44px]">
                       <div className='group flex relative flex-wrap'>
-                      <a target='_blank' href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px] text-primary items-center text-link2 underline ml-[44px]">
-                        {trimText(el?.TransactionID, 10)}
-                      </a>
+                        <a target='_blank' href={`https://etherscan.io/tx/${el?.TransactionID}`} className="text-center flex justify-center gap-[44px] text-primary items-center text-link2 underline ml-[44px]">
+                          {trimText(el?.TransactionID, 10)}
+                        </a>
                       </div>
                     </td>
                   </tr>

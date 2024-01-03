@@ -66,7 +66,7 @@ const DepositeInputs = ({ balance, wallet, }) => {
 
     if(isSmallScreen) {
       if (text.indexOf(' ') === -1) {
-        const halfIndex = Math.ceil(text.length / 2);
+        const halfIndex = Math.ceil(text.length / 1.5);
         const firstLine = text.slice(0, halfIndex);
         const secondLine = text.slice(halfIndex);
         return [firstLine, secondLine];
@@ -229,7 +229,7 @@ const DepositeInputs = ({ balance, wallet, }) => {
           >
             unique Ethereum mainnet deposit address
           </label>
-          <div className="rounded-[20px] pr-2 md:pr-[40px] h-[54px] md:h-[72px] bg-orange-primary cactus-text-color font-poppins text-[16px] font-black placeholder:text-primary-title focus:outline-none border-r-2 flex justify-between">
+          <div className="rounded-[20px] pr-[20px] md:pr-[40px] h-[54px] md:h-[72px] bg-orange-primary cactus-text-color font-poppins text-[16px] font-black placeholder:text-primary-title focus:outline-none border-r-2 flex justify-between">
             <div className="flex items-center">
               <p
                 id="deposite"
