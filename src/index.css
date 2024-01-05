@@ -1,0 +1,165 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Luckiest+Guy&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --luckiest: "Luckiest Guy", cursive;
+  --poppins: "Poppins, sans-serif";
+  --rubik: "Rubik One-Regular, Helvetica";
+  --hero-p-color: #08504d;
+  --cactus-text-color: #5e3d1c;
+  --table-font-clor: #5e3d1c;
+  --footer-color: #f5aa52;
+  --login-bg-color: #fcfeff;
+  --singup-text-color: #6dd47e;
+}
+
+@font-face {
+  font-family: "Rubik One-Regular";
+  src: url("/RubikOne-Regular.ttf");
+}
+
+.shadow-text {
+  text-shadow: 5px 4px #12b5a9;
+}
+
+.cs-shadow{
+
+  box-shadow: 0px 4px 21px rgba(210, 139, 121, 0.3);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+table {
+  margin: 0;
+  padding: 0;
+}
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+a {
+  text-decoration: none;
+}
+
+/* navbar style */
+
+.hero-text-color {
+  color: var(--hero-p-color);
+}
+.cactus-text-color {
+  color: var(--cactus-text-color);
+}
+.table-font-color {
+  color: var(--table-font-clor);
+}
+
+.table-row tbody tr:nth-child(even) {
+  background: #f5aa52;
+}
+
+.table-row tbody tr:hover {
+  background: #f5aa52;
+}
+.login-bg {
+  background-color: var(--login-bg-color);
+}
+.hero-button {
+  border-radius: 100px;
+  background: linear-gradient(94deg, #45caa0 13.79%, #10bb85 92.08%);
+  box-shadow: 0px 4px 0px 0px #017f58;
+}
+.hero-button:hover {
+  background: #F5AA52;
+  box-shadow: 0px 4px 0px 0px #ee952f;
+
+}
+
+.deposit-btn {
+  border-radius: 10px;
+  background: linear-gradient(94deg, #45caa0 13.79%, #10bb85 92.08%);
+  box-shadow: 0px 4px 0px 0px #017f58;
+}
+
+/* button style */
+
+.button__custom {
+  border-radius: 6px;
+  background: linear-gradient(94deg, #45caa0 13.79%, #10bb85 92.08%);
+  box-shadow: 0px 4px 21px 0px rgba(0, 0, 0, 0.08);
+}
+
+.button__custom:hover {
+  background: #F5AA52;
+}
+
+.td-broder {
+  height: 14px;
+  width: 1px;
+  align-items: "center";
+  background: var(--table-font-clor);
+}
+.footer-bg {
+  background-color: var(--footer-color);
+}
+
+.footer-bg {
+  background-color: var(--footer-color);
+}
+
+.signup-text {
+  color: var(--singup-text-color);
+}
+
+.signup-link {
+  color: var(--cactus-text-color);
+}
+.input-border{
+  border: 1px solid #866E55;
+}
+
+
+.card-shadow {
+  box-shadow: 0px 4px 21px rgba(210, 139, 121, 0.30);
+}
+
+.otp input {
+  @apply h-10 w-10 md:h-[63px] md:w-[63px] hover:bg-[#f1f5f9] focus:bg-[#f1f5f9] focus:border-[#f5aa52] focus:border-[1px] border-[1px] focus:outline-none !important;
+}
+
+.otp-input {
+  /* padding: 10px; */
+  outline: none;
+  width: 100%;
+  /* height: 100px; */
+}
+
+
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid white;
+}
+
+.nav-shadow{
+box-shadow: 0px 4px 33px rgba(229, 162, 47, 0.2);
+  
+}
+
+
+.dropdown-shadow{
+  box-shadow: 0px 0px 32px rgba(15, 28, 22, 0.12);
+}
+
+
+
+
+
+      
