@@ -23,9 +23,7 @@ const History = () => {
     getPlayerTransactionHistory(authToken)
   );
 
-  console.log("History", data);
-
-
+console.log(data)
 
   useEffect(() => {
     if (data?.data) {

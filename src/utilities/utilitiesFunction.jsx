@@ -24,15 +24,21 @@ export const formatDate = (e) => {
 export const formattedTime = (e) => {
   const value = new Date(e);
   const year = value.getFullYear()
-  const day = value.getDate();
-  const month = value.getMonth();
+  let day = value.getDate();
+  let month = value.getMonth() + 1;
   let hours = value.getHours().toString();
   let minutes = value.getMinutes().toString();
-  // console.log( minutes);
-  if(hours.length === 1 ){
+  console.log(day);
+  if(day.toString().length ===1){
+    day = "0" + day
+  }
+  if(month.toString().length ===1){
+    month = "0" + month
+  }
+  if(hours.toString().length === 1 ){
     hours = "0" + hours
   }
-  if(minutes.length ===1) {
+  if(minutes.toString().length ===1) {
     minutes = "0" + minutes
   }
   return `<span className="inline-block">${year}/${month}/${day}</span> <span className="inline-block">${hours}:${minutes} </span>`
