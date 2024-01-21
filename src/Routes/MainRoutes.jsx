@@ -5,6 +5,7 @@ import { PrivateRoute } from "./PrivateRoute";
 
 import { useGlobalContext } from "../context/context";
 import { PublicRoute } from "./PublicRoute";
+import KenoGame from "../Pages/KenoGame";
 
 
 const Home = lazy(() => import("../Pages/Home"));
@@ -60,6 +61,7 @@ const MainRoutes = () => {
         <Route path="/news" element={<News />} />
         <Route path="/support" element={<Support />} />
         <Route path="/gameinfo" element={<GameInfo />} />
+        <Route path="/keno" element={<KenoGame/>}/>
       </Routes>
     </Suspense>
   );
