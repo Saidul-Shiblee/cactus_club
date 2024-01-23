@@ -11,9 +11,9 @@ const KenoGame = () => {
     // w-[830px]
     return (
         <MainLayout>
-            <div className='bg-keno-bg-lg bg-cover bg-no-repeat h-full '>
+            <div className='bg-keno-bg-lg bg-cover bg-no-repeat h-full max-w-[1920px] mx-auto'>
                 <CactusKenoTitle/>
-                <div className='flex flex-wrap md:flex-wrap lg:flex-nowrap pl-0 md:pl-[34px] gap-7 mt-2 mx-4 lg:mx-0'>
+                <div className='flex flex-wrap md:flex-wrap lg:flex-nowrap pl-0 lg:pl-[34px] gap-7 mt-2 mx-4 lg:mx-0'>
                     <div className='bg-white rounded-lg w-[345px] md:w-[830px] mb-8'>
                         <CatusGame/>
                         <GameCredit/>

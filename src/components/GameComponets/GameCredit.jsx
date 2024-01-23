@@ -5,7 +5,7 @@ import plusIcon from "./../../assets/icons/plus.svg";
 
 const GameCredit = () => {
     const [count, setCount] = useState(0);
-    const [betsNumber, setBetsNumber] = useState(0);
+    const [betsNumber, setBetsNumber] = useState(10);
 
     const handleMinus = () => {
         setCount(count - 1);
@@ -15,6 +15,17 @@ const GameCredit = () => {
     }
     const handlePlus = () => {
         setCount(count + 1);
+    }
+
+    const decreaseBet = () => {
+        setBetsNumber(betsNumber - 1);
+        if(betsNumber <= 10){
+            setBetsNumber(10);
+        }
+    }
+
+    const increaseBet = () => {
+        setBetsNumber(betsNumber + 1);
     }
     return (
         <div className='px-2 md:px-6'>
@@ -34,10 +45,10 @@ const GameCredit = () => {
                 </div>
                 <div className='grid gap-[10px]'>
                     <div className='flex gap-[3px]'>
-                        <div className='w-[248px] md:w-[199px] h-[70px] bg-dark-green flex justify-center items-center rounded-tl-md rounded-bl-md shadow'>
+                        <div className='w-[248px] md:w-[610px] lg:w-[199px] h-[70px] bg-dark-green flex justify-center items-center rounded-tl-md rounded-bl-md shadow'>
                             <div>
                                 <p className='text-white text-sm font-poppins text-center font-bold uppercase mb-2'>Randomly Pick</p>
-                                <div className='flex gap-6 bg-white bg-opacity-10 rounded-lg'>
+                                <div className='flex mx-4 gap-6 bg-white bg-opacity-10 rounded-lg'>
                                     <div onClick={handleMinus} className='bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer select-none'>
                                         <img src={minusIcon} alt='icon' />
                                     </div>
@@ -56,17 +67,17 @@ const GameCredit = () => {
                         </div>
                     </div>
                     <div className='flex gap-[3px]'>
-                        <div className='w-[248px] md:w-[199px] h-[70px] bg-dark-green flex justify-center items-center rounded-tl-md rounded-bl-md shadow'>
+                        <div className='w-[248px] md:w-[610px] lg:w-[199px] h-[70px] bg-dark-green flex justify-center items-center rounded-tl-md rounded-bl-md shadow'>
                             <div>
                                 <p className='text-white text-sm font-poppins text-center font-bold uppercase mb-2'>number of bets</p>
-                                <div className='flex gap-6 bg-white bg-opacity-10 rounded-lg'>
-                                    <div className='bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer'>
+                                <div className='flex mx-4 gap-6 bg-white bg-opacity-10 rounded-lg'>
+                                    <div onClick={decreaseBet} className='bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer'>
                                         <img src={minusIcon} alt='icon' />
                                     </div>
                                     <div className=' text-white text-base font-normal font-rubik'>
-                                    1,000
+                                    {betsNumber}
                                     </div>
-                                    <div className='bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer'>
+                                    <div onClick={increaseBet} className='bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer'>
                                         <img src={plusIcon} alt='icon' />
                                     </div>
                                 </div>
