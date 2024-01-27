@@ -126,7 +126,9 @@ const WithDrawForm = ({
       if (res?.data?.code === 1) {
         setModalOpen(true);
       } else if (res?.data?.code === -6) {
-        setErrMsg("You do not have sufficient balance");
+        setErrMsg(
+          "You don’t have enough balance to withdraw the amount entered"
+        );
       } else {
         setErrMsg("Something went wrong");
       }
@@ -367,9 +369,10 @@ const WithDrawForm = ({
                 : errors.withdraw_amount.message}
             </p>
           )}
+
           {errMsg && (
             <div className="text-danger italic pl-[40px] pt-3 self-start w-[345px] md:w-[585px] h-[54px]">
-              <p className="">{errMsg}</p>
+              <p className=" ">{errMsg}</p>
             </div>
           )}
         </div>

@@ -14,12 +14,8 @@ const AvartarDropdown = (classes = '') => {
 
    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
-    const {
-      
-      setIsLoggedIn,
-      setAuthToken,
-      setCurrencyBalance,
-    } = useGlobalContext();
+    const { setCurrentForm, setIsLoggedIn, setAuthToken, setCurrencyBalance } =
+      useGlobalContext();
 
     const handleCloseDropdown = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -105,6 +101,19 @@ const AvartarDropdown = (classes = '') => {
                         className="mr-[24px] ml-[20px] py-[5px] md:py-0"
                       >
                         <Link
+                        onClick={
+                          ()=>{
+                            if(label==="DEPOSIT"){
+                              setCurrentForm("deposit");
+                              return
+                            }
+                            if (label === "WITHDRAW") {
+                              setCurrentForm("withdraw");
+                              return;
+                            }
+                            return
+                          }
+                        }
                           className="font-poppins text-[14px] font-semibold hover:text-orange-primary text-link uppercase tracking-[2px] flex justify-between pb-[16px]"
                           to={href}
                         >

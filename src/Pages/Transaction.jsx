@@ -13,10 +13,16 @@ import History from "../components/History";
 
 const Transaction = () => {
   const random = React.useRef(Date.now());
-  const [currentForm,setCurrentForm]=useState('deposit')
+ 
   const navigate = useNavigate();
-  const { setIsLoggedIn, setAuthToken, setCurrencyBalance, authToken } =
-    useGlobalContext();
+  const {
+    setIsLoggedIn,
+    setAuthToken,
+    setCurrencyBalance,
+    authToken,
+    currentForm,
+    setCurrentForm,
+  } = useGlobalContext();
 
   //get Player Balance
   const { data, isLoading } = useSWR(["balance",random], getPlayerBalance(authToken));

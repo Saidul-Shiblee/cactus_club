@@ -30,7 +30,13 @@ export default {
       "login-mobile": "url('./assets/image/login_mobile.png')",
       "signup": "url('./assets/image/signup_bg.png')",
       "signup-mobile": "url('./assets/image/mobile_signup.png')",
+      "keno-bg-lg": "url('./assets/image/kenobg.png')",
+      "keno-coin-pot-lg": "url('./assets/image/Frame.png')",
       "gradient-bg": "linear-gradient(94deg, #45CAA0 13.79%, #10BB85 92.08%)",
+    
+    
+    
+    
     },
     colors: ({ colors }) => ({
       ...colors,
@@ -41,14 +47,17 @@ export default {
       "secondary-title": "#2D471A",
       "orange-secondary": "#E09F75",
       "green-secondary": "#284E19",
-      "submit-button":"#E7E8E9",
-      "s-button-text":"#9FA3A9",
-      "link2":"#18BD89",
-      "under_line":"#178BBD",
+      "submit-button": "#E7E8E9",
+      "s-button-text": "#9FA3A9",
+      "link2": "#18BD89",
+      "under_line": "#178BBD",
       "primary-hover": "#F5AA52",
       "deposite-hover": "rgba(94, 61, 28, 0.10)",
       "input-link": "#178BBD",
       "danger": "#C21C00",
+      "primary-game": "#FA9842",
+      "primary-dark-gray": "#955B38",
+      "dark-green": "#169C9C"
     }),
     
   },

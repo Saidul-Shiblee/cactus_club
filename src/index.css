@@ -158,6 +158,22 @@ box-shadow: 0px 4px 33px rgba(229, 162, 47, 0.2);
   box-shadow: 0px 0px 32px rgba(15, 28, 22, 0.12);
 }
 
+.tile-style{
+background: #FA9842;
+border: 3px solid #F9A048;
+box-shadow: 2px 3px 0px rgba(221, 102, 9, 0.67);
+border-radius: 8px;
+}
+.tile-style-selected{
+background: #955B38;
+border: 3px solid #B56D42;
+box-shadow: 2px 3px 0px #945631;
+border-radius: 8px;
+}
+.button-transition{
+  @apply transition-all duration-200 ease-in-out
+}
+
 
 
 

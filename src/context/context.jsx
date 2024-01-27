@@ -26,6 +26,7 @@ export function ContextProvider({ children }) {
     const [selectedCurrency,setSelectedCurrency]=useState(" ")
     const [isEmailVarified, setIsEmailVerified] = useState(false);
     const [userEmail, setUserEmail] = useState("")
+     const [currentForm, setCurrentForm] = useState("deposit");
 
     //Boolean(localStorage.getItem("cactus_club_isLoggedIn"));
 
@@ -111,8 +112,27 @@ export function ContextProvider({ children }) {
 
 
     return (
-        <Context.Provider value={{ deviceInfo, authToken,clientInfo, currencyBalance, isLoggedIn,selectedCurrency,setSelectedCurrency, setIsLoggedIn, setAuthToken, setCurrencyBalance, isEmailVarified, setIsEmailVerified, userEmail, setUserEmail}}>
-            {children}
-        </Context.Provider>
+      <Context.Provider
+        value={{
+          deviceInfo,
+          authToken,
+          clientInfo,
+          currencyBalance,
+          isLoggedIn,
+          selectedCurrency,
+          setSelectedCurrency,
+          setIsLoggedIn,
+          setAuthToken,
+          setCurrencyBalance,
+          isEmailVarified,
+          setIsEmailVerified,
+          userEmail,
+          setUserEmail,
+          currentForm,
+          setCurrentForm,
+        }}
+      >
+        {children}
+      </Context.Provider>
     );
 }
