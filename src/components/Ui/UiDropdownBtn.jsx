@@ -36,19 +36,19 @@ const UiDropdownBtn = () => {
     {
       id: 1,
       name: 'ETH',
-      balance: currencyBalance.ETHER,
+      balance: currencyBalance?.ETHER,
       logo: Icon,
     },
     {
       id: 2,
       name: 'USDT',
-      balance: currencyBalance.USDT,
+      balance: currencyBalance?.USDT,
       logo: Icon1,
     },
     {
       id: 3,
       name: 'USDC',
-      balance: currencyBalance.USDC,
+      balance: currencyBalance?.USDC,
       logo: Icon2,
     },
   ];
@@ -70,19 +70,19 @@ const UiDropdownBtn = () => {
             >
               <span className="h-min md:inline-block hidden text-[18px] ">
                 {selectedCurrency === "ETH" &&
-                  `BALANCE: ${currencyBalance.ETHER || 0} ETH`}
+                  `BALANCE: ${currencyBalance?.ETHER || 0} ETH`}
                 {selectedCurrency === "USDT" &&
-                  `BALANCE: ${currencyBalance.USDT || 0} USDT`}
+                  `BALANCE: ${currencyBalance?.USDT || 0} USDT`}
                 {selectedCurrency === "USDC" &&
-                  `BALANCE: ${currencyBalance.USDC || 0} USDC`}
+                  `BALANCE: ${currencyBalance?.USDC || 0} USDC`}
               </span>
               <span className="h-min inline-block md:hidden text-[12px] ">
                 {selectedCurrency === "ETH" &&
-                  `${currencyBalance.ETHER || 0} ETH`}
+                  `${currencyBalance?.ETHER || 0} ETH`}
                 {selectedCurrency === "USDT" &&
-                  `${currencyBalance.USDT || 0} USDT`}
+                  `${currencyBalance?.USDT || 0} USDT`}
                 {selectedCurrency === "USDC" &&
-                  `${currencyBalance.USDC || 0} USDC`}
+                  `${currencyBalance?.USDC || 0} USDC`}
               </span>
               <svg
                 width="10"
