@@ -1,8 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BetHistoryData } from '../../assets/data/local.db';
+import axios from 'axios';
+import { useGlobalContext } from '../../context/context';
+import { formattedTimeOnly } from '../../utilities/utilitiesFunction';
 
 
 const MyBets = () => {
+  const {authToken} = useGlobalContext();
+const [playerbet, setPlayerBet] = useState();
+const [loading, setLoading] = useState(false);
+
+const playerBetHistory = async() => {
+  setLoading(true)
+try {
+  const res = await axios.get("https://apis.yummylabs.io/getPlayerBetHistory", {
+    headers: {
+      Authorization: authToken
+    }
+  })
+
+  // console.log(res?.data?.data?.records);
+  setPlayerBet(res?.data?.data?.records)
+  
+} catch (error) {
+  console.log(error);
+} finally {
+  setLoading(false);
+}
+}
+
+useEffect(() => {
+playerBetHistory();
+},[])
+
+
     return (
       <div>
         <div>
@@ -57,9 +88,12 @@ const MyBets = () => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {BetHistoryData.map((data, index) => (
-                        <tr key={data.id} className="">
+                    {
+                      !loading ? 
+                      <tbody>
+                      {playerbet?.slice(0, 19).map((data, index) => (
+                        <tr key={data.BetID} className="">
+                          {/* {console.log(data)} */}
                           <td
                             className={`text-[11px] ${
                               (index + 1) % 2 != 0
@@ -67,7 +101,7 @@ const MyBets = () => {
                                 : "bg-none"
                             } text-[#128880] font-semibold font-poppins py-2 text-center pl-[6px] md:pl-0`}
                           >
-                            {data.betId}
+                            {data.BetID}
                           </td>
                           <td
                             className={`text-[11px] ${
@@ -76,7 +110,8 @@ const MyBets = () => {
                                 : "bg-none"
                             } text-[#128880] font-semibold font-poppins py-2 text-center pl-2 `}
                           >
-                            {data.time}
+                            {formattedTimeOnly(data.Time)}
+                            
                           </td>
                           <td
                             className={`text-[11px] ${
@@ -85,7 +120,7 @@ const MyBets = () => {
                                 : "bg-none"
                             } text-[#128880] font-semibold font-poppins py-2 text-center pl-2 `}
                           >
-                            {data.user}
+                            {data.User}
                           </td>
                           <td
                             className={`text-[11px] ${
@@ -94,7 +129,7 @@ const MyBets = () => {
                                 : "bg-none"
                             } text-[#128880] font-semibold font-poppins py-2 text-center pl-2 `}
                           >
-                            {data.coin}
+                            {data.Coin}
                           </td>
                           <td
                             className={`text-[11px] ${
@@ -103,7 +138,7 @@ const MyBets = () => {
                                 : "bg-none"
                             } text-[#128880] font-semibold font-poppins py-2 text-center pl-2 `}
                           >
-                            {data.bet}
+                            {data.Bet}
                           </td>
                           <td
                             className={`text-[11px] ${
@@ -112,7 +147,7 @@ const MyBets = () => {
                                 : "bg-none"
                             } text-[#128880] font-semibold font-poppins py-2 text-center pl-2 `}
                           >
-                            {data.payout}
+                            {data.Payout}
                           </td>
                           <td
                             className={`text-[11px] ${
@@ -121,11 +156,13 @@ const MyBets = () => {
                                 : "bg-none"
                             } text-[#128880] font-semibold font-poppins py-2 text-center pl-2 pr-[6px] md:pr-0`}
                           >
-                            {data.profit}
+                            {data.Profit}
                           </td>
                         </tr>
                       ))}
-                    </tbody>
+                    </tbody> : <p className=' text-primary-title font-semibold flex justify-center items-center mx-auto'>Loading.....</p>
+                    }
+                    
                   </table>
                 </div>
               </div>

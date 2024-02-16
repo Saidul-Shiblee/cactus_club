@@ -57,7 +57,8 @@ export default {
       "danger": "#C21C00",
       "primary-game": "#FA9842",
       "primary-dark-gray": "#955B38",
-      "dark-green": "#169C9C"
+      "dark-green": "#169C9C",
+      "gray-primary": "#0E0E0E80",
     }),
     
   },

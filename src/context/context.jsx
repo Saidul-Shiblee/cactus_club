@@ -29,6 +29,7 @@ export function ContextProvider({ children }) {
   const [selectedNumbers, setSelectedNumbers] = useState([]);
   const [selectedLength, setSelectedLength] = useState([]);
   const [betsNumber, setBetsNumber] = useState(0);
+  const [betSize, setBetSize] = useState(1);
   //Compare Array
   const [matchingNumbers, setMatchingNumbers] = useState([]);
   const [unMatchNumbers, setUnMatchNumbers] = useState([]);
@@ -159,7 +160,9 @@ export function ContextProvider({ children }) {
         unMatchNumbers, 
         setUnMatchNumbers,
         betWinFields, 
-        setBetWinFields
+        setBetWinFields,
+        betSize, 
+        setBetSize
       }}
     >
       {children}

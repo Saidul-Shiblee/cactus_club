@@ -32,6 +32,11 @@ export const formatDate = (e) => {
 };
 
 
+export const formattedTimeOnly = (e) => {
+  const date = new Date(e);
+ return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+}
+
 
 
 export const formattedTime = (e) => {

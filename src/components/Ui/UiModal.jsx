@@ -6,7 +6,7 @@ const UiModal = ({ isOpen, onClose, children,close }) => {
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 overflow-y-auto z-50">
+        <div className="fixed inset-0 overflow-y-auto  z-[1000]">
           <div className="flex items-center justify-center min-h-screen">
             <div className="fixed inset-0 bg-[#15523F8F] opacity-[56%]"></div>
             <div className="z-50 bg-white p-3 mx-2 md:mx-0 rounded-[30px] shadow">

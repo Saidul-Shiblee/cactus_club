@@ -65,7 +65,12 @@ const KenoGame = () => {
               gameNumbers={gameNumbers}
               setGameNumbers={setGameNumbers}
             />
-            <GameCredit setAuto={setAuto} auto={auto} />
+            <GameCredit
+              setAuto={setAuto}
+              auto={auto}
+              gameNumbers={gameNumbers}
+              setGameNumbers={setGameNumbers}
+            />
             <PlayKeno
               auto={auto}
               gameNumbers={gameNumbers}

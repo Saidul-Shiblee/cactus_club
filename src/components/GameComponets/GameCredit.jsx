@@ -4,11 +4,12 @@ import minusIcon from "./../../assets/icons/minus.svg";
 import plusIcon from "./../../assets/icons/plus.svg";
 import { useGlobalContext } from '../../context/context';
 
-const GameCredit = ({setAuto, auto}) => {
-  const {betsNumber, setBetsNumber} = useGlobalContext();
+const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers}) => {
+  const {betsNumber, setBetsNumber, betSize, selectedNumbers} = useGlobalContext();
     const [count, setCount] = useState(0);
     // const [betsNumber, setBetsNumber] = useState(0);
 
+    console.log("credit sec", gameNumbers)
     const handleMinus = () => {
         setCount(count - 1);
         if(count<=0){
@@ -17,6 +18,9 @@ const GameCredit = ({setAuto, auto}) => {
     }
     const handlePlus = () => {
         setCount(count + 1);
+        if(count>=10){
+          setCount(10);
+        }
     }
 
     const increaseBetNumbers = () => {
@@ -29,6 +33,39 @@ const GameCredit = ({setAuto, auto}) => {
         setBetsNumber(0);
       }
     }
+
+    const selectRandomElements = () => {
+      console.log("credit sec", gameNumbers)
+      if(selectedNumbers.length > 0) {
+        setGameNumbers(gameNumbers);
+      } else {
+        const randomSelect = new Set();
+        while (randomSelect.size < count) {
+          randomSelect.add(Math.floor(Math.random() * gameNumbers.length));
+        }
+    
+        const newData = gameNumbers.map((el, index) => {
+          if (randomSelect.has(index)) {
+            return { ...el, selected: true };
+          } else {
+            return el;
+          }
+        });
+        setGameNumbers(newData);
+      }
+    };
+
+
+    const handleAutoBet = () => {
+      if(betsNumber == 0) {
+        setAuto(false)
+      } else {
+        setAuto(!auto)
+      }
+    }
+
+
+    
     return (
       <div className="px-2 md:px-6 w-full">
         <div className="flex flex-wrap lg:flex-nowrap gap-3 w-full">
@@ -39,7 +76,7 @@ const GameCredit = ({setAuto, auto}) => {
                   <h3 className="text-sm font-bold font-poppins uppercase">
                     bet size (credits)
                   </h3>
-                  <h3 className=" font-rubik text-[40px] text-shadow">{betsNumber}</h3>
+                  <h3 className=" font-rubik text-[40px] text-shadow">{betSize}</h3>
                 </div>
               </div>
               <div className=" absolute right-0 bottom-0">
@@ -73,8 +110,8 @@ const GameCredit = ({setAuto, auto}) => {
                   </div>
                 </div>
               </div>
-              <div className="w-[23%] md:w-[78px] h-[70px] bg-dark-green flex justify-center items-center rounded-tr-md rounded-br-md shadow">
-                <div className="w-[73px] h-[46px] text-center text-white text-[15px] font-normal font-rubik  uppercase leading-none select-none cursor-pointer">
+              <div onClick={selectRandomElements} className={`${count!=0? "hover:bg-[#955B38] cursor-pointer	": "cursor-not-allowed	"}w-[23%] bg-dark-green md:w-[78px] h-[70px] flex justify-center items-center rounded-tr-md rounded-br-md shadow`}>
+                <div className="w-[73px] h-[46px] text-center text-white text-[15px] font-normal font-rubik  uppercase leading-none select-none">
                   pick
                   <br />
                   {count}
@@ -108,7 +145,7 @@ const GameCredit = ({setAuto, auto}) => {
                 }  flex justify-center items-center rounded-tr-md rounded-br-md shadow button-transition`}
               >
                 <button
-                  onClick={() => setAuto(!auto)}
+                  onClick={handleAutoBet}
                   className="text-center text-white text-[15px] font-normal font-rubik  uppercase leading-none"
                 >
                   Auto <br /> {auto ? "On" : "Off"}
