@@ -4,7 +4,7 @@ import { useGlobalContext } from "../../context/context";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const CatusGame = ({ gameNumbers, setGameNumbers }) => {
+const CatusGame = ({ gameNumbers, setGameNumbers, progress, setProgress }) => {
   // const [selectedNumbers, setSelectedNumbers] = useState([]);
   // const [selectedLength, setSelectedLength] = useState([]);
   const [machedTiles, setMatchedTiles] = useState([]);
@@ -19,6 +19,8 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
     unMatchNumbers,
     betWinFields,
     setBetWinFields,
+    selectedBetData, 
+    setSelectedBetData
   } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
 
 
   // console.log(gameNumbers.filter((el) => el.selected).length)
- 
+
 
   ///Game numbers
 
@@ -61,25 +63,6 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
     return () => clearInterval(interval);
   }, [currentIndex]);
 
-  //Fahim
-  // const handleClick = (id) => {
-  //   if (!isLoggedIn) {
-  //     navigate("/login");
-  //   } else {
-  //     if (selectedNumbers.includes(id)) {
-  //       setSelectedNumbers(selectedNumbers.filter(num => num !== id));
-  //       setSelectedLength([...selectedLength.slice(0, -1)])
-  //     } else {
-  //       if (selectedNumbers.length < 10) {
-  //         const newSelectedNumbers = [...selectedNumbers, id];
-  //         setSelectedNumbers(newSelectedNumbers);
-  //         setSelectedLength([...selectedLength, newSelectedNumbers.length]);
-  //       } else {
-  //         toast.error("Max 10 numbers selected!")
-  //       }
-  //     }
-  //   }
-  // };
 
   //Saidul
   const handleClick = (id) => {
@@ -92,7 +75,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
         !gameNumbers.find((el) => el.id === id && el.selected)
       ) {
         toast.error("Max 10 numbers selected!");
-        return; // Exit early to prevent further execution
+        return;
       }
 
       if (selectedNumbers.includes(id)) {
@@ -105,7 +88,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
           setSelectedLength([...selectedLength, newSelectedNumbers.length]);
         }
       }
-     
+
 
       setGameNumbers((pv) =>
         pv.map((el) => {
@@ -124,36 +107,45 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
     }
   };
 
-  const selectedData = betXData.find(
-    (item) => item.id === selectedNumbers.length
-  );
+ 
+
+  useEffect(() => {
+    const selectedData = betXData.find(
+      (item) => item.id === selectedNumbers.length
+    );
+    setSelectedBetData(selectedData)
+  }, [selectedNumbers])
+  
 
 
 
-    useEffect(() => {
-    const targetProgress = ((machedTiles.length / selectedNumbers.length) * 100) + 5;
+
+  useEffect(() => {
+    const targetProgress = ((machedTiles.length / selectedNumbers.length) * 100);
 
     if (machedTiles.length > 0 && selectedNumbers.length > 0) {
-        let currentProgress = betProgress;
-        const intervalId = setInterval(() => {
-            const chunkProgress = ((targetProgress) / machedTiles.length) ;
-            currentProgress += chunkProgress;
-            console.log(currentProgress);
-            setBetProgress(currentProgress);
-            if (currentProgress >= targetProgress) {
-                clearInterval(intervalId); 
-            }
-        }, 500);
-
-        return () => {
+      let currentProgress = betProgress;
+      const intervalId = setInterval(() => {
+        const chunkProgress = ((targetProgress) / machedTiles.length);
+        currentProgress += chunkProgress;
+        console.log(currentProgress);
+        setBetProgress(currentProgress);
+        if (currentProgress >= targetProgress) {
           clearInterval(intervalId);
-          setBetProgress(0);
-          // setSelectedNumbers([])
-          setMatchedTiles([]);
-        };
-    }
-}, [machedTiles, selectedNumbers]);
+        }
+      }, 500);
 
+      return () => {
+        clearInterval(intervalId);
+        setBetProgress(0);
+        // setSelectedNumbers([])
+        setMatchedTiles([]);
+      };
+    }
+  }, [machedTiles, selectedNumbers]);
+
+
+  console.log("selectend numbers>>\n", selectedNumbers);
 
 
 
@@ -177,7 +169,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
     if (gameTiles.includes(num) || machedTiles.includes(num)) {
       return "tile-style px-[15.12px] py-[5.73px] lg:px-[29px] lg:py-[11px] rounded-lg shadow  text-white text-opacity-50 text-lg md:text-[34px] font font-extrabold font-poppins flex justify-center cursor-pointer select-none";
     }
-  }; 
+  };
 
 
 
@@ -226,24 +218,24 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
             )}
           </div>
         ) : ( */}
-          <div className="grid grid-cols-8 lg:grid-cols-10 gap-2 p-3 lg:p-6">
-            {console.log("Game_numbers:", gameNumbers)}
-            {gameNumbers.map(
-              ({ id, matched, existInResult, selected, order }, index) => (
-                <AnimatedDiv
-                  handleClick={handleClick}
-                  key={id}
-                  id={id}
-                  selected={selected}
-                  order={order}
-                  delay={400}
-                  matched={matched}
-                  existInResult={existInResult}
-                />
-              )
-            )}
-            
-          </div>
+        <div className="grid grid-cols-8 lg:grid-cols-10 gap-2 p-3 lg:p-6">
+          {console.log("Game_numbers:", gameNumbers)}
+          {gameNumbers.map(
+            ({ id, matched, existInResult, selected, order }, index) => (
+              <AnimatedDiv
+                handleClick={handleClick}
+                key={id}
+                id={id}
+                selected={selected}
+                order={order}
+                delay={400}
+                matched={matched}
+                existInResult={existInResult}
+              />
+            )
+          )}
+
+        </div>
         {/* )} */}
         {/* {GameNumber.map(({ id }) => (
           <div
@@ -261,17 +253,15 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
       <div>
         <div className="relative h-16">
           <div
-            className={`absolute rounded-r-3xl ${
-              betProgress > 0 ? "bg-primary-game" : "bg-white"
-            } h-10 `}
+            className={`absolute rounded-r-3xl ${progress > 0 ? "bg-primary-game" : "bg-white"
+              } h-10 `}
             // className={`absolute rounded-r-3xl bg-primary-game h-10 w-full`}
-            style={{ width: `${betProgress}%` }}
+            style={{ width: `${progress}%` }}
           ></div>
           <div
-            className={`absolute w-full ${
-              betProgress > 0 ? "text-[#955B38]" : "text-primary-game"
-            } text-xs md:text-sm font-normal font-rubik uppercase text-center`}
-            // className={`absolute text-primary-game w-full text-xs md:text-sm font-normal font-rubik uppercase text-center`}
+            className={`absolute w-full ${progress > 0 ? "text-[#955B38]" : "text-primary-game"
+              } text-xs md:text-sm font-normal font-rubik uppercase text-center`}
+          // className={`absolute text-primary-game w-full text-xs md:text-sm font-normal font-rubik uppercase text-center`}
           >
             {/* <div className='flex justify-around'> */}
 
@@ -283,24 +273,17 @@ const CatusGame = ({ gameNumbers, setGameNumbers }) => {
               } */}
 
                   <div className="flex justify-around w-full">
-                    {selectedData?.bet.map((value, index) => (
-                      <li className={`list-none ${selectedData.bet.length === 7 || selectedData.bet.length === 11? "mr-[-20px]": "mr-[-10px]"}`} key={index}>
-                        {value}
-                      </li>
+                    {selectedBetData?.bet.map((value, index) => (
+                      <div className="flex">
+                        <li className={`list-none flex-1 ${selectedBetData.bet.length === 7 && "mr-[-10px]"} ${selectedBetData.bet.length === 11 && "ml-[10px]"}`}
+                          key={index}>
+                          <h6>{value}</h6>
+                          <h6>{index}</h6>
+                        </li>
+                      </div>
                     ))}
                   </div>
                   {/* {betXData.map(bet => <li>{(bet.bet.map(el => el))}</li>)} */}
-                </div>
-                <div className="flex justify-around w-full">
-                  <p className="flex justify-center items-center">0</p>
-                  {selectedLength?.map((el) => (
-                    <li
-                      className="list-none flex justify-center items-center"
-                      key={el}
-                    >
-                      {el}
-                    </li>
-                  ))}
                 </div>
               </div>
             ) : (
@@ -327,23 +310,44 @@ const AnimatedDiv = ({
 }) => {
 
 
+  const [displayContent, setDisplayContent] = useState(id);
+  useEffect(() => {
+    if (!matched && existInResult && !selected) {
+      const timeout = setTimeout(() => {
+        setDisplayContent("X");
+      }, delay * order);
+
+      // Clear the timeout when component unmounts or when delay or order changes
+      return () => clearTimeout(timeout);
+    } else {
+      // Reset display content to id if conditions are not met
+      setDisplayContent(id);
+    }
+  }, [matched, existInResult, selected, delay, order, id]);
+
   return (
     <div
       onClick={() => handleClick(id)}
       style={order ? { animationDelay: `${delay * order}ms` } : {}}
-      className={`${
-        selected && !matched && !existInResult
-          ? `tile-style-selected`
-          : selected && matched
+      className={`${selected && !matched && !existInResult
+        ? `tile-style-selected`
+        : selected && matched
           ? " matchedAnimation"
           : !selected && !matched && existInResult
-          ? " unMatchedAnimation"
-          : "tile-style"
-      }
+            ? " unMatchedAnimation"
+            : "tile-style"
+        }
             transition-all ease-in-out duration-75       px-[15.12px] py-[5.73px] lg:px-[29px] lg:py-[11px] rounded-lg shadow  text-white text-opacity-50 text-lg md:text-[34px] font font-extrabold font-poppins flex justify-center cursor-pointer select-none`}
     >
-      {!matched && existInResult && !selected ? <p style={order ? { animationDelay: `${delay * order}ms` } : {}}>X</p> : id}
+      {/* {!matched && existInResult && !selected ? <p style={order ? { animationDelay: `${delay * order}ms` } : {}}>X</p> : id} */}
       {/* <p  style={order ? { animationDelay: `${delay * order}ms` } : {}}>{!matched && existInResult && !selected ?"X" : id}</p> */}
+
+      {/* Display the dynamic content */}
+      {!matched && existInResult && !selected ? (
+        <p>{displayContent}</p>
+      ) : (
+        <p>{id}</p>
+      )}
     </div>
   );
 };

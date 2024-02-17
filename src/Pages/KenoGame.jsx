@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 
 const KenoGame = () => {
   const [auto, setAuto] = useState(false)
+  const [progress,setProgress]=useState(0)
   const [gameNumbers, setGameNumbers] = useState([
     { id: 1, },
     { id: 2 },
@@ -61,9 +62,11 @@ const KenoGame = () => {
         <CactusKenoTitle />
         <div className="flex flex-wrap md:flex-wrap lg:flex-nowrap px-[15px] md:pr-0 md:pl-[34px] gap-7 mt-2 ">
           <div className="bg-white rounded-lg w-full md:w-[830px] mb-8">
-            <CatusGame
+          <CatusGame
               gameNumbers={gameNumbers}
               setGameNumbers={setGameNumbers}
+              progress={progress}
+              setProgress={setProgress}
             />
             <GameCredit
               setAuto={setAuto}
@@ -73,8 +76,11 @@ const KenoGame = () => {
             />
             <PlayKeno
               auto={auto}
+              setAuto={setAuto}
               gameNumbers={gameNumbers}
               setGameNumbers={setGameNumbers}
+              progress={progress}
+              setProgress={setProgress}
             />
             <BalanceRequirment />
           </div>
