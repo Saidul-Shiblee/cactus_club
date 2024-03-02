@@ -66,7 +66,7 @@ const UiDropdownBtn = () => {
         >
           <div>
             <button
-              className={`deposit-btn relative rounded font-poppins text-[14px] font-bold uppercase text-white flex items-center justify-center gap-[4px] w-[92px] md:w-[247px] h-[34px] md:h-[44px]`}
+              className={`deposit-btn relative rounded font-poppins text-[14px] font-bold uppercase text-white flex items-center justify-center gap-[4px] w-[130px] md:w-fit px-3 h-[34px] md:h-[44px]`}
             >
               <span className="h-min md:inline-block hidden text-[18px] ">
                 {selectedCurrency === "ETH" &&

@@ -6,9 +6,11 @@ import UiButton from '../Ui/UiButton';
 import UiModal from '../Ui/UiModal';
 import cactusLogo from "./../../assets/image/cactus.png";
 import ProbablyFairPolicy from './ProbablyFairPolicy';
+import HowToPlayKenoGames from './HowToPlayKenoGames';
 const CactusKenoTitle = () => {
   const { isLoggedIn, authToken } = useGlobalContext();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isHowToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
   const [provablyData, setProvablyData] = useState();
   const [nextClientSeed, setNextClientSeed] = useState('');
   const [customeSeedField, setCustomSeedField] = useState(false);
@@ -20,6 +22,7 @@ const CactusKenoTitle = () => {
   const [nextServerSeedSHA256, setNextServerSeedSHA256] = useState('');
   const closeModal = () => {
     setModalOpen(false);
+    setHowToPlayModalOpen(false);
   };
   useEffect(() => {
     const handleResize = () => {
@@ -35,7 +38,7 @@ const CactusKenoTitle = () => {
     if (!text) {
       return ['', ''];
     }
-    if(isSmallScreen) {
+    if (isSmallScreen) {
       if (text.indexOf(' ') === -1) {
         const halfIndex = Math.ceil(text.length / 1.5);
         const firstLine = text.slice(0, halfIndex);
@@ -85,7 +88,7 @@ const CactusKenoTitle = () => {
         }
       }
       );
-      if(!lastClientSeed){
+      if (!lastClientSeed) {
         setLastClientSeed(res?.data?.data?.LastClientSeed)
       }
       localStorage.setItem("cactus_last_client_seed", res?.data?.data?.LastClientSeed)
@@ -93,7 +96,7 @@ const CactusKenoTitle = () => {
       setLastServerSeedSHA256(res.data?.data?.LastServerSeedSHA256);
       setNextServerSeedSHA256(res.data?.data?.NextServerSeedSHA256)
     } catch (error) {
-console.log(error)
+      console.log(error)
     }
   }
   useEffect(() => {
@@ -109,7 +112,7 @@ console.log(error)
     setCustomSeedField(!customeSeedField);
   };
   const handleCustomeSeedUpdate = () => {
-    if(!error) {
+    if (!error) {
       localStorage.setItem("cactus_next_client_seed", customeSeedInputValue);
       setCustomSeedField(false)
       closeModal()
@@ -130,31 +133,26 @@ console.log(error)
         </h1>
       </div>
       <div className="flex justify-center items-center mx-auto md:mx-0 gap-4">
-        {isLoggedIn ? (
-          <h3 onClick={() => setModalOpen(true)} className="text-white  cursor-pointer uppercase font-bold text-[18px] font-poppins">
-            Balance: <span className="underline">1,000,000 credits</span>
-          </h3>
-        ) : (
-          <>
-            <h3
-              onClick={() => setModalOpen(true)}
-              className="text-white underline cursor-pointer"
-            >
-              How To Play
-            </h3>
-            <div className="text-white">I</div>
-            <h3
-              onClick={() => setModalOpen(true)}
-              className="text-white underline cursor-pointer"
-            >
-              Provably Fair
-            </h3>
-          </>
-        )}
+        
+        <h3
+          onClick={() => setHowToPlayModalOpen(true)}
+          className="text-white underline cursor-pointer font-bold"
+        >
+          How To Play
+        </h3>
+        <div className="text-white">I</div>
+        <h3
+          onClick={() => setModalOpen(true)}
+          className="text-white underline cursor-pointer font-bold"
+        >
+          Provably Fair
+        </h3>
       </div>
+
+      {/* Provably fair modal  */}
       <div>
         <UiModal isOpen={isModalOpen} onClose={closeModal} close={true}>
-          <div className="  px-[12px] md:px-[50px] w-[345px] md:w-[900px]">
+          <div className="px-[12px] md:px-[50px] w-[345px] md:w-[900px]">
             <h2 className=' text-primary-title font-rubik text-[24px] font-normal uppercase pb-3 text-center'>Understanding our Provably Fair system</h2>
             <p className=' font-IBM text-base text-[#0E0E0E80]'>
               At Cactus Club, we're proud to offer a cutting-edge Provably Fair system in our crypto gambling games. This advanced technology is a testament to our commitment to fairness and transparency, ensuring that every game you play is beyond reproach.
@@ -166,7 +164,6 @@ console.log(error)
                   <div className="flex items-center">
                     <p
                       id="deposite"
-                      // ref={inputRef}
                       className="md:w-full rounded-[20px] bg-orange-primary px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden "
                     > {lastServerSeedLine1}{lastServerSeedLine2 && <br className="sm:hidden" />} {lastServerSeedLine2}</p>
                   </div>
@@ -178,7 +175,6 @@ console.log(error)
                   <div className="flex items-center">
                     <p
                       id="deposite"
-                      // ref={inputRef}
                       className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden "
                     > {provablyData?.data?.LastServerSeed}</p>
                   </div>
@@ -190,7 +186,6 @@ console.log(error)
                   <div className="flex items-center">
                     <p
                       id="deposite"
-                      // ref={inputRef}
                       className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden "
                     > {lastClientSeed}</p>
                   </div>
@@ -202,7 +197,6 @@ console.log(error)
                   <div className="flex items-center">
                     <p
                       id="deposite"
-                      // ref={inputRef}
                       className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden "
                     > {nextServerSeedLine1}{nextServerSeedLine2 && <br className="sm:hidden" />} {nextServerSeedLine2}</p>
                   </div>
@@ -229,7 +223,6 @@ console.log(error)
                       <div className="flex items-center flex-wrap justify-end md:flex-nowrap md:justify-between">
                         <p
                           id="deposite"
-                          // ref={inputRef}
                           className=" rounded-[20px] bg-orange-primary px-[20px] md:px-[40px] text-[10px] md:text-base "
                         > {nextClientSeed} </p>
                         <p onClick={generateNextClientSeed} className="md:absolute text-primary-title font-bold text-[10px] md:text-base font-poppins underline capitalize right-4 cursor-pointer px-4 md:px-0">randomize Client Seed</p>
@@ -246,6 +239,31 @@ console.log(error)
               </div>
             </div>
             <ProbablyFairPolicy />
+            {
+              customeSeedField ?
+                <div onClick={handleCustomeSeedUpdate} className='flex justify-center items-center my-6'>
+                  <UiButton label={"OK"} />
+                </div>
+                :
+                <div onClick={closeModal} className='flex justify-center items-center my-6'>
+                  <UiButton label={"OK"} />
+                </div>
+            }
+          </div>
+        </UiModal>
+      </div>
+      {/* How To Play modal  */}
+      <div>
+        <UiModal isOpen={isHowToPlayModalOpen} onClose={closeModal} close={true}>
+          <div className="px-[12px] md:px-[50px] w-[345px] md:w-[900px]">
+            <h2 className=' text-primary-title font-rubik text-[24px] font-normal uppercase pb-3 text-center'>how to play cactus keno</h2>
+            <p className=' font-IBM text-base text-[#0E0E0E80]'>
+            Join the excitement of Cactus Club Keno, where your intuition could lead to fantastic rewards! Here's a simple guide on how to play:
+            </p>
+            <div>
+             
+            </div>
+            <HowToPlayKenoGames />
             {
               customeSeedField ?
                 <div onClick={handleCustomeSeedUpdate} className='flex justify-center items-center my-6'>

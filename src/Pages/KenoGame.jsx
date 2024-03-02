@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MainLayout from '../Layouts/MainLayout';
 import CactusKenoTitle from '../components/GameComponets/cactusKenoTitle';
 import CatusGame from '../components/GameComponets/CatusGame';
@@ -12,6 +12,12 @@ import { Toaster } from 'react-hot-toast';
 const KenoGame = () => {
   const [auto, setAuto] = useState(false)
   const [progress,setProgress]=useState(0)
+  const [resultModal, setResultModal] = useState(false);
+  const [betAmount, setBetAmount] = useState(0)
+  const [winnerCredit, setWinnerCredit] = useState(0);
+  const [gameSelectedNumbers, setGameSelectedNumbers] = useState();
+
+
   const [gameNumbers, setGameNumbers] = useState([
     { id: 1, },
     { id: 2 },
@@ -54,7 +60,12 @@ const KenoGame = () => {
     { id: 39 },
     { id: 40 },
   ])
-  console.log(gameNumbers);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, []);
+  
   return (
     <MainLayout>
       <Toaster />
@@ -67,12 +78,21 @@ const KenoGame = () => {
               setGameNumbers={setGameNumbers}
               progress={progress}
               setProgress={setProgress}
+              resultModal={resultModal}
+              setResultModal={setResultModal}
+              winnerCredit={winnerCredit}
+              setWinnerCredit={setWinnerCredit}
+              gameSelectedNumbers={gameSelectedNumbers}
+              setGameSelectedNumbers={setGameSelectedNumbers}
             />
             <GameCredit
               setAuto={setAuto}
               auto={auto}
+              count = {count}
+              setCount={setCount}
               gameNumbers={gameNumbers}
               setGameNumbers={setGameNumbers}
+
             />
             <PlayKeno
               auto={auto}
@@ -80,7 +100,17 @@ const KenoGame = () => {
               gameNumbers={gameNumbers}
               setGameNumbers={setGameNumbers}
               progress={progress}
+              count = {count}
+              setCount={setCount}
               setProgress={setProgress}
+              resultModal={resultModal}
+              setResultModal={setResultModal}
+              betAmount={betAmount}
+              setBetAmount={setBetAmount}
+              winnerCredit={winnerCredit}
+              setWinnerCredit={setWinnerCredit}
+              gameSelectedNumbers={gameSelectedNumbers}
+              setGameSelectedNumbers={setGameSelectedNumbers}
             />
             <BalanceRequirment />
           </div>

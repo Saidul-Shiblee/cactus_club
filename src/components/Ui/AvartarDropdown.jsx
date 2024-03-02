@@ -44,7 +44,7 @@ const AvartarDropdown = (classes = '') => {
 
     return (
       <div ref={dropdownRef}>
-        <div className="inline-flex bg-white ">
+        <div className="inline-flex bg-white w-20">
           <div onClick={() => setIsOpen(!isOpen)} className="inline-flex">
             <div className=" text-sm text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-l-md">
               <img

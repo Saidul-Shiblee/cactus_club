@@ -3,7 +3,8 @@ import coinPot from "./../../assets/image/coinpot.png";
 import minusIcon from "./../../assets/icons/minus.svg";
 import plusIcon from "./../../assets/icons/plus.svg";
 import { useGlobalContext } from '../../context/context';
-const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers}) => {
+import { GameNumber } from '../../assets/data/local.db';
+const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers, count, setCount}) => {
   const {
     betsNumber,
     setBetsNumber,
@@ -11,7 +12,6 @@ const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers}) => {
     selectedNumbers,
     setSelectedNumbers,
   } = useGlobalContext();
-    const [count, setCount] = useState(0);
     const handleMinus = () => {
         setCount(pv=>pv-1);
         if(count<=0){
@@ -34,9 +34,12 @@ const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers}) => {
       }
     }
     const selectRandomElements = () => {
+      console.log("click..")
       if(selectedNumbers.length > 0) {
-        setGameNumbers(gameNumbers);
-      } else {
+        setGameNumbers(GameNumber);
+        setSelectedNumbers([]);
+      } 
+      if(selectedNumbers.length <= 0) {
         const randomSelect = new Set();
         while (randomSelect.size < count) {
           randomSelect.add(Math.floor(Math.random() * gameNumbers.length));
@@ -87,7 +90,7 @@ const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers}) => {
                   <div className="flex gap-6 bg-white bg-opacity-10 rounded-lg">
                     <div
                       onClick={handleMinus}
-                      className="bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer select-none "
+                      className="bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer select-none transition-all ease-in-out duration-300 transform hover:scale-105 "
                     >
                       <img src={minusIcon} alt="icon" />
                     </div>
@@ -96,18 +99,18 @@ const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers}) => {
                     </div>
                     <div
                       onClick={handlePlus}
-                      className="bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer select-none ml-3"
+                      className="bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer select-none ml-3 transition-all ease-in-out duration-300 transform hover:scale-105"
                     >
                       <img src={plusIcon} alt="icon" />
                     </div>
                   </div>
                 </div>
               </div>
-              <div onClick={selectRandomElements} className={`${count!=0? "hover:bg-[#955B38] cursor-pointer	": "cursor-not-allowed	"}w-[23%] bg-dark-green md:w-[78px] h-[70px] flex justify-center items-center rounded-tr-md rounded-br-md shadow`}>
+              <div onClick={selectRandomElements} className={`${count!=0? "hover:bg-green-hover cursor-pointer	": "cursor-not-allowed	"}w-[23%] bg-dark-green md:w-[78px] h-[70px] flex justify-center items-center rounded-tr-md rounded-br-md shadow transition-all ease-in-out duration-300 transform hover:scale-105`}>
                 <div className="w-[73px] h-[46px] text-center text-white text-[15px] font-normal font-rubik  uppercase leading-none select-none">
                   pick
                   <br />
-                  {count}
+                  For
                   <br />
                   me
                 </div>
@@ -135,7 +138,7 @@ const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers}) => {
               <div
                 className={`w-[23%] md:w-[78px] h-[70px] ${
                   auto ? "bg-[#955B38]" : "bg-dark-green"
-                }  flex justify-center items-center rounded-tr-md rounded-br-md shadow button-transition`}
+                }  flex justify-center items-center rounded-tr-md rounded-br-md shadow button-transition hover:bg-green-hover transition-all ease-in-out duration-300 transform hover:scale-105`}
               >
                 <button
                   onClick={handleAutoBet}

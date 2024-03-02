@@ -1,6 +1,12 @@
-import React from "react";
 
-const UiButton = ({ label, classes = "", svgMargin,onClick=undefined, onClose=undefined }) => {
+
+const UiButton = ({
+  label,
+  classes = "",
+  svgMargin,
+  onClick = undefined,
+  onClose = undefined,
+}) => {
   return (
     <button
       onClick={onClick || onClose}

@@ -3,7 +3,12 @@ import { GameNumber, betXData } from "../../assets/data/local.db";
 import { useGlobalContext } from "../../context/context";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-const CatusGame = ({ gameNumbers, setGameNumbers, progress }) => {
+import useSound from 'use-sound';
+import deSelectedKenoSound from './../../assets/game_sounds/Deselect_Keno_Number.mp3';
+import selectedKenoSound from './../../assets/game_sounds/Select_Keno_Number.mp3';
+
+// import audio from "./../../assets/game_sounds/Select_Keno_Number.mp3"
+const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResultModal, setProgress, winnerCredit, gameSelectedNumbers, setGameSelectedNumbers }) => {
   const {
     isLoggedIn,
     selectedNumbers,
@@ -13,33 +18,100 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress }) => {
     selectedBetData,
     setSelectedBetData
   } = useGlobalContext();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [deselectedPlay] = useSound(deSelectedKenoSound);
+  const [selectedPlay] = useSound(selectedKenoSound);
+
+
+
   const navigate = useNavigate();
+
+  const onClose = () => {
+    console.log(gameSelectedNumbers, "\n>>")
+    setGameNumbers(gameSelectedNumbers)
+    // setGameNumbers([
+    //   { id: 1, },
+    //   { id: 2 },
+    //   { id: 3 },
+    //   { id: 4 },
+    //   { id: 5 },
+    //   { id: 6 },
+    //   { id: 7 },
+    //   { id: 8 },
+    //   { id: 9 },
+    //   { id: 10 },
+    //   { id: 11 },
+    //   { id: 12 },
+    //   { id: 13 },
+    //   { id: 14 },
+    //   { id: 15 },
+    //   { id: 16 },
+    //   { id: 17 },
+    //   { id: 18 },
+    //   { id: 19 },
+    //   { id: 20 },
+    //   { id: 21 },
+    //   { id: 22 },
+    //   { id: 23 },
+    //   { id: 24 },
+    //   { id: 25 },
+    //   { id: 26 },
+    //   { id: 27 },
+    //   { id: 28 },
+    //   { id: 29 },
+    //   { id: 30 },
+    //   { id: 31 },
+    //   { id: 32 },
+    //   { id: 33 },
+    //   { id: 34 },
+    //   { id: 35 },
+    //   { id: 36 },
+    //   { id: 37 },
+    //   { id: 38 },
+    //   { id: 39 },
+    //   { id: 40 },
+    // ]);
+    // setSelectedLength([]);
+    // setSelectedNumbers([]);
+    setProgress(0)
+    // setSelectedBetData({});
+    setResultModal(false);
+  }
+
+
+
+
   //Saidul
   const handleClick = (id) => {
     if (!isLoggedIn) {
       navigate("/login");
     } else {
       const selectedCount = gameNumbers.filter((el) => el.selected).length;
+      
       if (
         selectedCount >= 10 &&
         !gameNumbers.find((el) => el.id === id && el.selected)
+        
+
       ) {
         toast.error("Max 10 numbers selected!");
         return;
       }
       if (selectedNumbers.includes(id)) {
         setSelectedNumbers(selectedNumbers.filter(num => num !== id));
+        deselectedPlay()
         setSelectedLength([...selectedLength.slice(0, -1)])
       } else {
         if (selectedNumbers.length < 10) {
           const newSelectedNumbers = [...selectedNumbers, id];
           setSelectedNumbers(newSelectedNumbers);
+          selectedPlay();
           setSelectedLength([...selectedLength, newSelectedNumbers.length]);
         }
       }
       setGameNumbers((pv) =>
         pv.map((el) => {
-          if (el.id === id && !el.selected) {
+          if (el.id === id && !el.selected) {            
             return { ...el, selected: true };
           } else if (el.id === id && el.selected) {
             return { id: id };
@@ -48,18 +120,23 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress }) => {
           }
         })
       );
+      setGameSelectedNumbers(gameNumbers);
     }
   };
+
+
+
   useEffect(() => {
     const selectedData = betXData.find(
       (item) => item.id === selectedNumbers.length
     );
     setSelectedBetData(selectedData)
   }, [selectedNumbers])
+
   return (
     <div>
       <div>
-        <div className="grid grid-cols-8 lg:grid-cols-10 gap-2 p-3 lg:p-6">
+        <div className="relative grid grid-cols-8 lg:grid-cols-10 gap-2 p-3 lg:p-6">
           {gameNumbers.map(
             ({ id, matched, existInResult, selected, order }, index) => (
               <AnimatedDiv
@@ -74,7 +151,35 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress }) => {
               />
             )
           )}
+           <div>
+        {/* Modal  */}
+        {resultModal && winnerCredit > 0 && (
+          <div className="absolute inset-0  z-[10]">
+            <div className="flex items-center justify-center mt-36">
+              <div className="absolute z-50 bg-[#46CBA1E5] p-3 mx-2 md:mx-0 rounded-md shadow">
+                <div className="flex justify-end">
+                  <button
+                    onClick={onClose}
+                    className="absolute top-[-10px] right-[-10px] text-white bg-emerald-400 w-7 h-7 rounded-full"
+                  >
+                    X
+                  </button>
+                </div>
+                <div className="mt-4 w-[282px]" >
+                  <p className=" font-poppins font-bold text-white text-xl uppercase text-center">
+                    {/* {winnerCredit > 0 ? "You won" : "You Lose"} */}
+                    You Won
+                  </p>
+                  <p className="mt-2 font-poppins font-bold text-white text-[12px] uppercase text-center">0.00002 ETH</p>
+                  <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">{winnerCredit}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
         </div>
+       
       </div>
       <div>
         <div className="relative h-16 px-[24px]">
@@ -106,12 +211,16 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress }) => {
                 })}
               </div>
             ) : (
-              "Select between 1 and 10 numbers to play!"
+              <p className="bg-[#FFE2C9] py-2 rounded-md">Select between 1 and 10 numbers to play!</p>
             )}
             {/* </div> */}
           </div>
         </div>
       </div>
+
+     
+
+
     </div>
   );
 };
@@ -148,7 +257,7 @@ const AnimatedDiv = ({
             ? " unMatchedAnimation"
             : "tile-style"
         }
-            transition-all ease-in-out duration-75       px-[15.12px] py-[5.73px] lg:px-[29px] lg:py-[11px] rounded-lg shadow  text-white text-opacity-50 text-lg md:text-[34px] font font-extrabold font-poppins flex justify-center cursor-pointer select-none`}
+            transition-all ease-in-out duration-300 px-[15.12px] py-[5.73px] lg:px-[29px] lg:py-[11px] rounded-lg shadow  text-white text-opacity-50 text-lg md:text-[34px] font font-extrabold font-poppins flex justify-center cursor-pointer transform hover:scale-110 select-none`}
     >
       {!matched && existInResult && !selected ? (
         <p>{displayContent}</p>

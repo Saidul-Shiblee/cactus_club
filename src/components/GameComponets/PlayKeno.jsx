@@ -6,7 +6,12 @@ import { useGlobalContext } from "../../context/context";
 import UiButton from "../Ui/UiButton";
 import UiModal from "../Ui/UiModal";
 import ModalImg from "./../../assets/image/modalImg.png";
-const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) => {
+import { GameNumber } from "../../assets/data/local.db";
+import reveledKenoSound from './../../assets/game_sounds/Reveal_Number.mp3';
+import winKenoSound from './../../assets/game_sounds/win.mp3';
+import useSound from "use-sound";
+
+const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress, count, setCount, resultModal, setResultModal, betAmount, setBetAmount, setWinnerCredit, winnerCredit, gameSelectedNumbers, setGameSelectedNumbers }) => {
   const navigate = useNavigate();
   const {
     authToken,
@@ -24,99 +29,52 @@ const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) =
     setSelectedBetData,
     selectedBetData,
   } = useGlobalContext();
-  const [resultModal, setResultModal] = useState(false);
-  const [winnerCredit, setWinnerCredit] = useState(0);
-   function generateRandomNumbersArray() {
+  const [reveledPlay] = useSound(reveledKenoSound);
+  const [winPlay] = useSound(winKenoSound);
+  const [betLoading, setBetLoading] = useState(false);
+  const [stopLoop, setStopLoop] = useState(false);
+  const [singleBetLoading, setSingleBetLoading] = useState(false)
+
+
+
+  function generateRandomNumbersArray() {
     const numbersArray = [];
     while (numbersArray.length < 10) {
-        const randomNumber = Math.floor(Math.random() * 40) + 1;
-        if (!numbersArray.includes(randomNumber)) {
-            numbersArray.push(randomNumber);
-        }
+      const randomNumber = Math.floor(Math.random() * 40) + 1;
+      if (!numbersArray.includes(randomNumber)) {
+        numbersArray.push(randomNumber);
+      }
     }
     return numbersArray;
-}
+  }
+
+
+
+
   const handlePlay = async () => {
+
+    const EthBetAmount = (betSize / 10) * 0.00002;
+    const usdt_usdc_betAmount = (betSize / 10) * 0.1;
+    if (selectedCurrency === "ETH") {
+      setBetAmount(EthBetAmount)
+    } else {
+      setBetAmount(usdt_usdc_betAmount)
+    }
+
+    // console.log("Selected Currencty", selectedCurrency,"+", betAmount);
     if (auto) {
       for (let i = 0; i < betsNumber; i++) {
-        const randomArray = generateRandomNumbersArray()
-        const autoSelectedGameNumber = [
-          { id: 1 },
-          { id: 2 },
-          { id: 3 },
-          { id: 4 },
-          { id: 5 },
-          { id: 6 },
-          { id: 7 },
-          { id: 8 },
-          { id: 9 },
-          { id: 10 },
-          { id: 11 },
-          { id: 12 },
-          { id: 13 },
-          { id: 14 },
-          { id: 15 },
-          { id: 16 },
-          { id: 17 },
-          { id: 18 },
-          { id: 19 },
-          { id: 20 },
-          { id: 21 },
-          { id: 22 },
-          { id: 23 },
-          { id: 24 },
-          { id: 25 },
-          { id: 26 },
-          { id: 27 },
-          { id: 28 },
-          { id: 29 },
-          { id: 30 },
-          { id: 31 },
-          { id: 32 },
-          { id: 33 },
-          { id: 34 },
-          { id: 35 },
-          { id: 36 },
-          { id: 37 },
-          { id: 38 },
-          { id: 39 },
-          { id: 40 },
-        ].map((el) => {
-          if (randomArray.includes(el.id)) {
-            return {
-              ...el,
-              selected: true,
-            };
-          } else {
-            return el;
-          }
-        });
-        setSelectedNumbers(randomArray);
-          setSelectedBetData({
-            id: 10,
-            bet: [
-              "0x",
-              "0x",
-              "0x",
-              "1.4x",
-              "2.25x",
-              "4.5x",
-              "8x",
-              "17x",
-              "50x",
-              "80x",
-              "100x",
-            ],
-          });
-        setGameNumbers(autoSelectedGameNumber);
+        setBetLoading(true);
+        if (stopLoop) {console.log("breking...."); break};
+ 
         try {
           const res = await axios.post(
             "https://apis.yummylabs.io/placeKenoBet",
             {
-              SelectedField: autoSelectedGameNumber
+              SelectedField: gameNumbers
                 .filter((item) => item.selected)
                 .map((item) => item.id),
-              BetAmount: betSize,
+              BetAmount: betAmount,
               CoinType: selectedCurrency,
               ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
             },
@@ -129,8 +87,9 @@ const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) =
           );
           setCurrencyBalance(res?.data?.data?.Balance);
           const winFields = res?.data?.data?.WinFields;
+          let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
           let order = 0;
-          const numbersToRenderNext = autoSelectedGameNumber.map((el) => {
+          const numbersToRenderNext = copiedGameNumbers?.map((el) => {
             if (winFields.includes(el.id) && el.hasOwnProperty("selected")) {
               order += 1;
               return { ...el, matched: true, order };
@@ -144,6 +103,14 @@ const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) =
               return el;
             }
           });
+          if (res.data.code == -1) {
+            setAuthToken("")
+            setIsLoggedIn(false)
+            setCurrencyBalance(null)
+            localStorage.removeItem("cactus_club_token");
+            localStorage.removeItem("cactus_club_currency_balance");
+            navigate('/')
+          }
           setGameNumbers(numbersToRenderNext);
           numbersToRenderNext
             .filter((el) => el.selected && el.matched)
@@ -153,66 +120,31 @@ const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) =
                 el.order * 400
               );
             });
+          numbersToRenderNext
+            .filter((el) => el.matched || el.existInResult)
+            .map((el) => {
+              console.log("going...")
+              setTimeout(() => {
+                reveledPlay();
+              }, el.order * 400)
+            });
           await new Promise((resolve) => setTimeout(resolve, 5000));
+          if (res?.data?.data?.Profit > 0) {
+            winPlay();
+          }
+          setBetLoading(false);
+          setBetsNumber((pre) => pre - 1);
         } catch (error) {
           console.log(error);
-          setAuthToken("")
-          setIsLoggedIn(false)
-          setCurrencyBalance(null)
-          localStorage.removeItem("cactus_club_token");
-          localStorage.removeItem("cactus_club_currency_balance");
-          navigate('/')
+          toast.error("Something went wrong!");
         } finally {
-          setGameNumbers([
-            { id: 1 },
-            { id: 2 },
-            { id: 3 },
-            { id: 4 },
-            { id: 5 },
-            { id: 6 },
-            { id: 7 },
-            { id: 8 },
-            { id: 9 },
-            { id: 10 },
-            { id: 11 },
-            { id: 12 },
-            { id: 13 },
-            { id: 14 },
-            { id: 15 },
-            { id: 16 },
-            { id: 17 },
-            { id: 18 },
-            { id: 19 },
-            { id: 20 },
-            { id: 21 },
-            { id: 22 },
-            { id: 23 },
-            { id: 24 },
-            { id: 25 },
-            { id: 26 },
-            { id: 27 },
-            { id: 28 },
-            { id: 29 },
-            { id: 30 },
-            { id: 31 },
-            { id: 32 },
-            { id: 33 },
-            { id: 34 },
-            { id: 35 },
-            { id: 36 },
-            { id: 37 },
-            { id: 38 },
-            { id: 39 },
-            { id: 40 },
-          ]);
-          setProgress(0);
-          setBetsNumber(0);
-          setAuto(false);
-          setSelectedNumbers([]);
-          setSelectedBetData({})
+          if (betsNumber === 0 || stopLoop) {
+            setAuto(false);
+          }
         }
       }
     } else {
+      setSingleBetLoading(true)
       try {
         const res = await axios.post(
           "https://apis.yummylabs.io/placeKenoBet",
@@ -220,7 +152,7 @@ const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) =
             SelectedField: gameNumbers
               .filter((item) => item.selected)
               .map((item) => item.id),
-            BetAmount: betSize,
+            BetAmount: selectedCurrency === "ETH"?(betSize / 10) * 0.00002:(betSize / 10) * 0.1,
             CoinType: selectedCurrency,
             ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
           },
@@ -231,12 +163,21 @@ const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) =
             },
           }
         );
-        setCurrencyBalance(res?.data?.data?.Balance);
+        if (res?.data?.data?.Balance) {
+          setCurrencyBalance(res?.data?.data?.Balance);
+        }
+        console.log(res);
+        console.log(betAmount);
+        if (res?.data?.code == -2) {
+          setIsLoggedIn(false);
+          navigate("/");
+          localStorage.clear();
+        }
         setWinnerCredit(res?.data?.data?.Profit)
         const winFields = res?.data?.data?.WinFields;
         let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
         let order = 0;
-        const numbersToRenderNext = copiedGameNumbers.map((el) => {
+        const numbersToRenderNext = copiedGameNumbers?.map((el) => {
           if (winFields.includes(el.id) && el.hasOwnProperty("selected")) {
             order += 1;
             return { ...el, matched: true, order };
@@ -250,47 +191,126 @@ const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) =
             return el;
           }
         });
-          numbersToRenderNext
-            .filter((el) => el.selected && el.matched )
-            .map((el, i) => {
-                setTimeout(
-                  () => setProgress((100 / 10) * (i + 1)),
-                  el.order * 400
-                )
-            });
+        numbersToRenderNext
+          .filter((el) => el.selected && el.matched)
+          .map((el, i) => {
+            setTimeout(
+              () => {
+                setProgress((100 / 10) * (i + 1))
+              },
+              el.order * 400
+            )
+          });
+
+
+        numbersToRenderNext
+          .filter((el) => el.matched || el.existInResult)
+          .map((el) => {
+            setTimeout(() => {
+              reveledPlay();
+            }, el.order * 400)
+          });
+
         setGameNumbers(numbersToRenderNext);
         const intervalId = setInterval(() => {
-          setResultModal(true);
+          setSingleBetLoading(false);
+          if (res?.data?.data?.Profit > 0) {
+            winPlay();
+            setResultModal(true);
+
+          }
           clearInterval(intervalId);
+
         }, 5000);
-        // clearInterval(modalInterval)
       } catch (error) {
         console.log(error);
-        setAuthToken("")
-        setIsLoggedIn(false)
-        setCurrencyBalance(null)
-        localStorage.removeItem("cactus_club_token");
-        localStorage.removeItem("cactus_club_currency_balance");
-        navigate('/')
+        toast.error("Something Went Wrong!")
       } finally {
-        // setMatchingNumbers([]);
-        // setUnMatchNumbers([]);
-        // clearInterval(modalTimeInterval());
       }
     }
   };
-  const handlePlus = () => {
-    setBetSize(betSize + 1);
+
+  const handleStopBets = () => {
+    setStopLoop(true);
+
   }
+
+
+
+  const handlePlus = () => {
+    setBetSize(betSize + 10);
+  }
+
+
+
   const handleMinus = () => {
-    setBetSize(betSize - 1);
+    setBetSize(betSize - 10);
     if (betSize <= 10) {
       setBetSize(10);
     }
   }
+
+
+
+
   const handleClear = () => {
+    setGameNumbers([
+      { id: 1, },
+      { id: 2 },
+      { id: 3 },
+      { id: 4 },
+      { id: 5 },
+      { id: 6 },
+      { id: 7 },
+      { id: 8 },
+      { id: 9 },
+      { id: 10 },
+      { id: 11 },
+      { id: 12 },
+      { id: 13 },
+      { id: 14 },
+      { id: 15 },
+      { id: 16 },
+      { id: 17 },
+      { id: 18 },
+      { id: 19 },
+      { id: 20 },
+      { id: 21 },
+      { id: 22 },
+      { id: 23 },
+      { id: 24 },
+      { id: 25 },
+      { id: 26 },
+      { id: 27 },
+      { id: 28 },
+      { id: 29 },
+      { id: 30 },
+      { id: 31 },
+      { id: 32 },
+      { id: 33 },
+      { id: 34 },
+      { id: 35 },
+      { id: 36 },
+      { id: 37 },
+      { id: 38 },
+      { id: 39 },
+      { id: 40 },
+    ]);
+    setSelectedLength([]);
+    setSelectedNumbers([]);
+    setProgress(0)
+    setSelectedBetData({});
+    setCount(0);
+    setBetSize(10);
+    setBetsNumber(0);
+    setAuto(false);
+  }
+  const handleMin = () => {
     setBetSize(10);
   }
+
+
+
   const closeResultModal = () => {
     setGameNumbers([
       { id: 1, },
@@ -337,9 +357,12 @@ const PlayKeno = ({ auto, setAuto, gameNumbers, setGameNumbers, setProgress }) =
     setSelectedLength([]);
     setSelectedNumbers([]);
     setProgress(0)
-setSelectedBetData({});
+    setSelectedBetData({});
     setResultModal(false);
   };
+
+
+
   const handleMax = () => {
     setBetSize(15500000)
   }
@@ -351,7 +374,7 @@ setSelectedBetData({});
     }
   }
   const handle2x = () => {
-    if (betSize == 15500000) {
+    if (betSize >= 15500000) {
       setBetSize(15500000)
     } else {
       setBetSize(betSize * 2)
@@ -360,70 +383,72 @@ setSelectedBetData({});
   const handleSelectError = () => {
     toast.error("Select Atleast 1 Number")
   }
+
+
+  const handlePlayClick = () => {
+    if (!singleBetLoading && (selectedNumbers.length > 0 || auto)) {
+      handlePlay();
+    } else if (!singleBetLoading) {
+      handleSelectError();
+    }
+  }
+
   return (
     <div className="p-2 md:p-6 w-full">
       <div className="flex flex-wrap gap-3 w-full">
         <div className=" flex gap-[3px] md:gap-[10px] w-full md:w-[491px]">
           <div className="grid gap-[3px] md:gap-[10px] w-1/3">
             <div className="flex gap-[3px] md:gap-[10px]">
-              <div onClick={handleMinus} className="w-[50px] h-[25px] md:w-[73px] md:h-8 bg-dark-green flex justify-center items-center text-white rounded-md font-rubik cursor-pointer active:scale-95 select-none">
+              <div onClick={handleMinus} className="w-[50px] h-[25px] md:w-[73px] md:h-8 bg-dark-green flex justify-center items-center text-white rounded-md font-rubik cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105">
                 -
               </div>
-              <div onClick={handlePlus} className="w-[50px] h-[25px] md:w-[73px] md:h-8 bg-dark-green flex justify-center items-center text-white rounded-md font-rubik cursor-pointer active:scale-95 select-none">
+              <div onClick={handlePlus} className="w-[50px] h-[25px] md:w-[73px] md:h-8 bg-dark-green flex justify-center items-center text-white rounded-md font-rubik cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105">
                 +
               </div>
             </div>
-            <div onClick={handleClear} className="w-[103.19px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik cursor-pointer active:scale-95 select-none">
+            <div onClick={handleClear} className="w-[103.19px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik cursor-pointer transition-all ease-in-out duration-300 transform hover:scale-105 active:scale-95 select-none">
               clear
             </div>
           </div>
           <div className="grid gap-[3px] md:gap-[10px] w-1/3">
-            <div onClick={handleClear} className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-center cursor-pointer active:scale-95 select-none">
+            <div onClick={handleMin} className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-center cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105">
               min
             </div>
-            <div onClick={handleHalf} className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-center cursor-pointer active:scale-95 select-none">
+            <div onClick={handleHalf} className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-center cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105">
               1/2
             </div>
           </div>
           <div className="grid gap-[3px] md:gap-[10px] w-1/3  ">
-            <div onClick={handleMax} className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-end cursor-pointer active:scale-95 select-none">
+            <div onClick={handleMax} className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-end cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105">
               max
             </div>
-            <div onClick={handle2x} className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-end cursor-pointer active:scale-95 select-none">
+            <div onClick={handle2x} className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-end cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105">
               2x
             </div>
           </div>
         </div>
-        <div
-          onClick={selectedNumbers.length > 0 || auto ? handlePlay : handleSelectError}
-          className={`${selectedNumbers.length > 0 || auto?"cursor-pointer": " cursor-not-allowed "}w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
+        {
+          betLoading ? 
+          <div
+            onClick={handleStopBets}
+            className={`${selectedNumbers.length > 0 || auto ? "cursor-pointer" : " cursor-not-allowed "}w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
             ${auto ? "!text-[24px]" : ""}
-            text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 `}
+            text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105`}
+          >
+            stop auto play
+          </div>:
+          <div
+          onClick={handlePlayClick}
+          className={`${selectedNumbers.length > 0 || auto || singleBetLoading ? "cursor-pointer" : " cursor-not-allowed "}w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
+            ${auto ? "!text-[24px]" : ""}
+            text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
         >
           {auto ? "start auto play" : "play"}
         </div>
+        }
+        
       </div>
-      <div>
-        {/* Modal  */}
-        {resultModal && (
-          <UiModal isOpen={resultModal} onClose={closeResultModal}>
-            <div className="px-[118px] justify-center text-center">
-              <img src={ModalImg} className="mx-auto" alt="Modal image" />
-              <h1 className="text-2xl font-rubik text-primary-title mt-[28px] uppercase">
-                {winnerCredit > 0 ? "Your Won Credits" : "Your Lose Credits"}
-              </h1>
-              <p className="text-stone-950 text-opacity-50">
-                {winnerCredit}-{selectedCurrency}
-              </p>
-              <UiButton
-                label="OK"
-                onClose={closeResultModal}
-                classes="!w-full h-16 mt-[30px] mb-[56px]"
-              />
-            </div>
-          </UiModal>
-        )}
-      </div>
+
     </div>
   );
 };

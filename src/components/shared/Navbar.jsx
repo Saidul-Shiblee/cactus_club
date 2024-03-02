@@ -13,8 +13,13 @@ import UiDropdownBtn from "../Ui/UiDropdownBtn";
 const Navbar = () => {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isLoggedIn } = useGlobalContext();
+  const { isLoggedIn, currencyBalance, selectedCurrency } = useGlobalContext();
   const navigate =useNavigate()
+  const hanldeTransictionRoute = () => {
+    if(currencyBalance.ETH == 0 || currencyBalance.USDC == 0 || currencyBalance.USDT == 0){
+      navigate("/transaction")
+    }
+  }
 
 
   return (
@@ -90,10 +95,10 @@ const Navbar = () => {
 
           {isLoggedIn ? (
             <div className="flex items-center">
-              <div onClick={() => navigate("/transaction")}>
+              <div onClick={hanldeTransictionRoute}>
                 <UiDropdownBtn />
               </div>
-              <div className="ml-8 flex items-center mt-2">
+              <div className="ml-8 shrink-0 grow flex items-center mt-2">
                 <AvartarDropdown />
               </div>
             </div>

@@ -59,6 +59,7 @@ export default {
       "primary-dark-gray": "#955B38",
       "dark-green": "#169C9C",
       "gray-primary": "#0E0E0E80",
+      "green-hover": "#139C9C"
     }),
     
   },

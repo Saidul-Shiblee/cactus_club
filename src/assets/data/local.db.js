@@ -1,21 +1,16 @@
 export const NavItem = [
     {
         id: 1,
-        label: "GAME INFO",
-        href: "/gameinfo",
+        label: "HOME",
+        href: "/",
     },
     {
         id: 2,
-        label: "NEWS",
-        href: "/news",
+        label: "KENO",
+        href: "/keno",
     },
     {
         id: 3,
-        label: "SUPPORT",
-        href: "/support",
-    },
-    {
-        id: 4,
         label: "FAQ",
         href: "/FAQ",
     }
