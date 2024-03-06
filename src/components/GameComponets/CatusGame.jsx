@@ -77,11 +77,13 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
           }
         })
       );
-      setGameSelectedNumbers(gameNumbers);
+      
     }
   };
 
-
+useEffect(() => {
+  setGameSelectedNumbers(gameNumbers);
+},[gameNumbers])
 
   useEffect(() => {
     const selectedData = betXData.find(
@@ -153,12 +155,13 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
       </div>
       <div>
         <div className="relative h-16 px-3 md:px-[24px]">
+          <div className="w-full relative">
           <div
-            className={`w-full relative z-30 ${progress > 0 ? "text-[#955B38]" : "text-primary-game"
+            className={`w-full relative z-30  ${progress > 0 ? "text-[#955B38] rounded-l-xl bg-primary-game" : "text-primary-game"
               } text-[8px] md:text-sm font-normal grid gap-2 font-rubik uppercase text-center`}
           >
             {selectedNumbers.length > 0 ? (
-              <div className="flex justify-between items-center gap-[1px] w-full ">
+              <div className={`flex ml-3 justify-between items-center w-full`}>
                 {selectedBetData?.bet.map((value, index) => {
                   const orginalProgress = progress ? progress + 10 : 0
                   return (
@@ -166,7 +169,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
                       style={{
                         width: `${100 / (selectedNumbers.length + 1)}%`,
                       }}
-                      className={`flex  flex-col py-1 ${index + 1 <= orginalProgress / 10
+                      className={`flex flex-col py-1 ${index + 1 <= orginalProgress / 10
                         ? "bg-primary-game"
                         : "bg-white"
                         }`}
@@ -182,6 +185,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
               <p className="bg-[#FFE2C9] py-2 rounded-md">Select between 1 and 10 numbers to play!</p>
             )}
             {/* </div> */}
+          </div>
           </div>
         </div>
       </div>

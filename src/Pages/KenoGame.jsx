@@ -13,7 +13,7 @@ import StartPlayKeno from '../components/GameComponets/StartPlayKeno';
 
 const KenoGame = () => {
   const [auto, setAuto] = useState(false)
-  const [progress,setProgress]=useState(0)
+  const [progress, setProgress] = useState(0)
   const [resultModal, setResultModal] = useState(false);
   const [betAmount, setBetAmount] = useState(0)
   const [winnerCredit, setWinnerCredit] = useState(0);
@@ -67,13 +67,15 @@ const KenoGame = () => {
     { id: 40 },
   ])
   const [count, setCount] = useState(0);
+  const [startAutoPlay, setStartAutoPlay] = useState(true);
+
 
   useEffect(() => {
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
     setSelectedLength([]);
     setSelectedNumbers([]);
   }, []);
-  
+
   return (
     <MainLayout>
       <Toaster />
@@ -81,7 +83,7 @@ const KenoGame = () => {
         <CactusKenoTitle />
         <div className="flex flex-wrap md:flex-wrap lg:flex-nowrap px-[15px] md:pr-0 md:pl-[34px] gap-7 mt-2 ">
           <div className="bg-white rounded-lg w-full md:w-[830px] mb-8">
-          <CatusGame
+            <CatusGame
               gameNumbers={gameNumbers}
               setGameNumbers={setGameNumbers}
               progress={progress}
@@ -93,7 +95,29 @@ const KenoGame = () => {
               gameSelectedNumbers={gameSelectedNumbers}
               setGameSelectedNumbers={setGameSelectedNumbers}
             />
-            <div className='block md:hidden mb-3 mx-2'>
+
+            <GameCredit
+              setAuto={setAuto}
+              auto={auto}
+              count={count}
+              setCount={setCount}
+              gameNumbers={gameNumbers}
+              setGameNumbers={setGameNumbers}
+              betAmount={betAmount}
+              setBetAmount={setBetAmount}
+              startAutoPlay={startAutoPlay}
+              setStartAutoPlay={setStartAutoPlay}
+              progress={progress}
+              setProgress={setProgress}
+              resultModal={resultModal}
+              setResultModal={setResultModal}
+              winnerCredit={winnerCredit}
+              setWinnerCredit={setWinnerCredit}
+              gameSelectedNumbers={gameSelectedNumbers}
+              setGameSelectedNumbers={setGameSelectedNumbers}
+
+            />
+            {/* <div className='block md:hidden my-3 mx-2'>
             <StartPlayKeno 
             auto={auto}
             setAuto={setAuto}
@@ -112,25 +136,15 @@ const KenoGame = () => {
             gameSelectedNumbers={gameSelectedNumbers}
             setGameSelectedNumbers={setGameSelectedNumbers}
             />
-            </div>
-            <GameCredit
-              setAuto={setAuto}
-              auto={auto}
-              count = {count}
-              setCount={setCount}
-              gameNumbers={gameNumbers}
-              setGameNumbers={setGameNumbers}
-              betAmount={betAmount}
-              setBetAmount={setBetAmount}
+           </div> */}
 
-            />
             <PlayKeno
               auto={auto}
               setAuto={setAuto}
               gameNumbers={gameNumbers}
               setGameNumbers={setGameNumbers}
               progress={progress}
-              count = {count}
+              count={count}
               setCount={setCount}
               setProgress={setProgress}
               resultModal={resultModal}
@@ -141,6 +155,8 @@ const KenoGame = () => {
               setWinnerCredit={setWinnerCredit}
               gameSelectedNumbers={gameSelectedNumbers}
               setGameSelectedNumbers={setGameSelectedNumbers}
+              startAutoPlay={startAutoPlay}
+              setStartAutoPlay={setStartAutoPlay}
             />
             <BalanceRequirment />
           </div>

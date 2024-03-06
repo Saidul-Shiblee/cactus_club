@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/context";
@@ -27,6 +27,8 @@ const PlayKeno = ({
   winnerCredit,
   gameSelectedNumbers,
   setGameSelectedNumbers,
+  startAutoPlay,
+  setStartAutoPlay,
 }) => {
   const navigate = useNavigate();
   const {
@@ -50,7 +52,7 @@ const PlayKeno = ({
   const [betLoading, setBetLoading] = useState(false);
   const [stopLoop, setStopLoop] = useState(false);
   const [singleBetLoading, setSingleBetLoading] = useState(false);
-  const [startAutoPlay, setStartAutoPlay] = useState(true);
+  // const [startAutoPlay, setStartAutoPlay] = useState(true);
 
 
 
@@ -72,16 +74,16 @@ const PlayKeno = ({
 
 
   const handleAutoPlay =()=>{
-    console.log('first')
+    // console.log('first')
     abortRef.current = true;
     setStartAutoPlay(true);
   }
   const handlePlay = async () => {
-console.log("first");
-   setStartAutoPlay(false)
-    console.log('first')
+// console.log("first");
+//     console.log('first')
     // console.log("Selected Currencty", selectedCurrency,"+", betAmount);
     if (auto) {
+      setStartAutoPlay(false)
       for (let i = 0; i < betsNumber; i++) {
 
         if (abortRef.current) {
@@ -110,6 +112,7 @@ console.log("first");
           );
           setCurrencyBalance(res?.data?.data?.Balance);
           const winFields = res?.data?.data?.WinFields;
+          console.log(res)
           let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
           let order = 0;
           const numbersToRenderNext = copiedGameNumbers?.map((el) => {
@@ -126,14 +129,13 @@ console.log("first");
               return el;
             }
           });
-          if (res?.data?.code == -2) {
+          if (res?.data?.data?.code === -2) {
             setAuthToken("");
             setIsLoggedIn(false);
             setCurrencyBalance(null);
             setSelectedLength([]);
             setSelectedNumbers([]);
-            localStorage.removeItem("cactus_club_token");
-            localStorage.removeItem("cactus_club_currency_balance");
+            localStorage.clear();
             navigate("/");
           }
           setGameNumbers(numbersToRenderNext);
@@ -148,7 +150,6 @@ console.log("first");
           numbersToRenderNext
             .filter((el) => el.matched || el.existInResult)
             .map((el) => {
-              console.log("going...");
               setTimeout(() => {
                 reveledPlay();
               }, el.order * 400);
@@ -262,6 +263,15 @@ console.log("first");
       }
     }
   };
+
+  // Reset Auto play off functionality
+
+  // useEffect(() => {
+  //   if(!startAutoPlay && !auto  ){
+  //     setAuto(false)
+  //     setBetsNumber(0);
+  //   }
+  // },[startAutoPlay])
 
   const handleStopBets = () => {
     setStopLoop(true);
@@ -476,7 +486,7 @@ console.log("first");
               selectedNumbers.length > 0 || auto || singleBetLoading
                 ? "cursor-pointer"
                 : " cursor-not-allowed "
-            }w-full hidden md:block md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
+            }w-full hidden md:block md:flex md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
             ${auto ? "!text-[24px]" : "w-full"}
             text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
           >

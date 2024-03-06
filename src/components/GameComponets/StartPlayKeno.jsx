@@ -12,7 +12,7 @@ import winKenoSound from "./../../assets/game_sounds/win.mp3";
 import useSound from "use-sound";
 
 const StartPlayKeno = ({
-    auto,
+  auto,
   setAuto,
   gameNumbers,
   setGameNumbers,
@@ -29,7 +29,7 @@ const StartPlayKeno = ({
   setGameSelectedNumbers,
 }) => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     authToken,
     setIsLoggedIn,
@@ -72,14 +72,14 @@ const StartPlayKeno = ({
   const abortRef = React.useRef(false);
 
 
-  const handleAutoPlay =()=>{
+  const handleAutoPlay = () => {
     console.log('first')
     abortRef.current = true;
     setStartAutoPlay(true);
   }
   const handlePlay = async () => {
-console.log("first");
-   setStartAutoPlay(false)
+    console.log("first");
+    setStartAutoPlay(false)
     console.log('first')
     // console.log("Selected Currencty", selectedCurrency,"+", betAmount);
     if (auto) {
@@ -246,9 +246,9 @@ console.log("first");
             winPlay();
             setResultModal(true);
           }
-          if(res?.data?.data?.Profit < 0){
-           
-          setSelectedLength([])
+          if (res?.data?.data?.Profit < 0) {
+
+            setSelectedLength([])
           }
           setGameNumbers(gameSelectedNumbers)
           setProgress(0);
@@ -259,7 +259,7 @@ console.log("first");
         console.log(error);
         toast.error("Something Went Wrong!");
       } finally {
-        
+
       }
     }
   };
@@ -413,39 +413,37 @@ console.log("first");
       handleSelectError();
     }
   };
-    return (
-        <div>
-             {auto ? (
-          <div
-            onClick={() => (startAutoPlay ? handlePlay() : handleAutoPlay())}
-            className={`${
-              selectedNumbers.length > 0 || auto || singleBetLoading
-                ? "cursor-pointer"
-                : " cursor-not-allowed "
+  return (
+    <div>
+      {auto ? (
+        <div
+          onClick={() => (startAutoPlay ? handlePlay() : handleAutoPlay())}
+          className={`${selectedNumbers.length > 0 || auto || singleBetLoading
+              ? "cursor-pointer"
+              : " cursor-not-allowed "
             }w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
             ${auto ? "!text-[24px]" : "w-full"}
             text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
-          >
-            {startAutoPlay ? "start auto play" : "stop auto play"}
-          </div>
-        ) : (
-          <div
-            onClick={() => {
-              handlePlay();
-            }}
-            className={`${
-              selectedNumbers.length > 0 || auto || singleBetLoading
-                ? "cursor-pointer"
-                : " cursor-not-allowed "
-            }w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
-            ${auto ? "!text-[24px]" : "w-full"}
-            text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
-          >
-            {"play"}
-          </div>
-        )}
+        >
+          {startAutoPlay ? "start auto play" : "stop auto play"}
         </div>
-    );
+      ) : (
+        <div
+          onClick={() => {
+            handlePlay();
+          }}
+          className={`${selectedNumbers.length > 0 || auto || singleBetLoading
+              ? "cursor-pointer"
+              : " cursor-not-allowed "
+            }w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
+            ${auto ? "!text-[24px]" : "w-full"}
+            text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
+        >
+          {"play"}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default StartPlayKeno;
