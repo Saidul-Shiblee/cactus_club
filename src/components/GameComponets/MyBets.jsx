@@ -5,12 +5,15 @@ import { formattedTimeOnly } from "../../utilities/utilitiesFunction";
 import BetDetailsModal from "./BetDetailsModal";
 import UiModal from "../Ui/UiModal";
 import { useNavigate } from "react-router-dom";
+import VerifyData from "./VerifyData";
 const MyBets = () => {
   const { authToken, isLoggedIn, setIsLoggedIn } = useGlobalContext();
   const [playerbet, setPlayerBet] = useState();
   const [loading, setLoading] = useState(false);
   const [selectedBet, setSelectedBet] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedHistoryVerfiy, setSelectedHistoryVerify] = useState(null);
+
 
   const navigate = useNavigate();
 
@@ -43,11 +46,27 @@ const MyBets = () => {
 
   const handleSelectBet = async (data) => {
     try {
-   
+   const res = await axios.get(`https://apis.yummylabs.io/getKenoBetHistoryInfo?BetID=${data.BetID}`)
+   if(res?.data?.data?.records){
+    setSelectedBet(res?.data?.data?.records);
+   }
     } catch (error) {
       console.log(error);
     }
-    setSelectedBet(data);
+    // Verify Data 
+    try {
+      const response = await axios.get(`https://apis.yummylabs.io/getKenoBetHistoryVerify?BetID=${data.BetID}`, {
+          headers: {
+            Authorization: authToken,
+          }
+      })
+      console.log("res>>\n", response);
+      if(response?.data){
+        setSelectedHistoryVerify(response?.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
     setModalOpen(true);
   };
 
@@ -186,7 +205,11 @@ const MyBets = () => {
       </div>
       {
         <UiModal isOpen={isModalOpen} onClose={closeModal} close={true}>
-          {<BetDetailsModal data={selectedBet} />}
+         <div>
+         {<BetDetailsModal data={selectedBet} historyVerify={selectedHistoryVerfiy}/>}
+          {/* {<VerifyData data={selectedHistoryVerfiy}/>} */}
+         </div>
+          
         </UiModal>
       }
     </div>

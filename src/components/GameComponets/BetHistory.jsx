@@ -3,8 +3,6 @@ import AllBets from './AllBets';
 import MyBets from './MyBets';
 
 const BetHistory = () => {
-  // const [allBets, setAllBets] = useState(false);
-  // const [myBets, setMyBets] = useState(false);
   const [betHistory, setBetHostory] = useState("allbets");
   return (
     <div>

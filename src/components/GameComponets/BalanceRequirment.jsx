@@ -11,10 +11,10 @@ const BalanceRequirment = () => {
                         selectedCurrency =="ETH" && ((currencyBalance?.ETHER /0.00002)*10)
                     }
                     {
-                        selectedCurrency =="USDT" && ((currencyBalance?.USDT /0.00002)*10)
+                        selectedCurrency =="USDT" && ((currencyBalance?.USDT /0.1)*10)
                     }
                     {
-                         selectedCurrency =="USDC" && ((currencyBalance?.USDC /0.00002)*10)
+                         selectedCurrency =="USDC" && ((currencyBalance?.USDC /0.1)*10)
                     }
                 </h5>
             </div>

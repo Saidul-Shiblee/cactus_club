@@ -16,14 +16,10 @@ const AllBets = () => {
   const fetchInitialData = async () => {
     try {
       const response = await axios.get("https://apis.yummylabs.io/getAllBetHistory");
-      console.log(response.data.data.records);
-      if(response.data.code == -1) {
-        setAuthToken("")
-        setIsLoggedIn(false)
-        setCurrencyBalance(null)
-        localStorage.removeItem("cactus_club_token");
-        localStorage.removeItem("cactus_club_currency_balance");
-        navigate('/')
+      if(response?.data?.code == -2){
+        setIsLoggedIn(false);
+        navigate("/");
+        localStorage.clear();
       }
       setAllBetsData(response.data.data.records)
     } catch (error) {

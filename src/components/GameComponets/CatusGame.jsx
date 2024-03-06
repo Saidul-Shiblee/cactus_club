@@ -8,7 +8,7 @@ import deSelectedKenoSound from './../../assets/game_sounds/Deselect_Keno_Number
 import selectedKenoSound from './../../assets/game_sounds/Select_Keno_Number.mp3';
 
 // import audio from "./../../assets/game_sounds/Select_Keno_Number.mp3"
-const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResultModal, setProgress, winnerCredit, gameSelectedNumbers, setGameSelectedNumbers }) => {
+const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResultModal, setProgress, winnerCredit, gameSelectedNumbers, setGameSelectedNumbers, betAmount, setBetAmount }) => {
   const {
     isLoggedIn,
     selectedNumbers,
@@ -16,7 +16,9 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
     selectedLength,
     setSelectedLength,
     selectedBetData,
-    setSelectedBetData
+    setSelectedBetData,
+    selectedCurrency,
+    betSize
   } = useGlobalContext();
   const [isPlaying, setIsPlaying] = useState(false);
   const [deselectedPlay] = useSound(deSelectedKenoSound);
@@ -27,52 +29,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
   const navigate = useNavigate();
 
   const onClose = () => {
-    console.log(gameSelectedNumbers, "\n>>")
     setGameNumbers(gameSelectedNumbers)
-    // setGameNumbers([
-    //   { id: 1, },
-    //   { id: 2 },
-    //   { id: 3 },
-    //   { id: 4 },
-    //   { id: 5 },
-    //   { id: 6 },
-    //   { id: 7 },
-    //   { id: 8 },
-    //   { id: 9 },
-    //   { id: 10 },
-    //   { id: 11 },
-    //   { id: 12 },
-    //   { id: 13 },
-    //   { id: 14 },
-    //   { id: 15 },
-    //   { id: 16 },
-    //   { id: 17 },
-    //   { id: 18 },
-    //   { id: 19 },
-    //   { id: 20 },
-    //   { id: 21 },
-    //   { id: 22 },
-    //   { id: 23 },
-    //   { id: 24 },
-    //   { id: 25 },
-    //   { id: 26 },
-    //   { id: 27 },
-    //   { id: 28 },
-    //   { id: 29 },
-    //   { id: 30 },
-    //   { id: 31 },
-    //   { id: 32 },
-    //   { id: 33 },
-    //   { id: 34 },
-    //   { id: 35 },
-    //   { id: 36 },
-    //   { id: 37 },
-    //   { id: 38 },
-    //   { id: 39 },
-    //   { id: 40 },
-    // ]);
-    // setSelectedLength([]);
-    // setSelectedNumbers([]);
     setProgress(0)
     // setSelectedBetData({});
     setResultModal(false);
@@ -87,11 +44,11 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
       navigate("/login");
     } else {
       const selectedCount = gameNumbers.filter((el) => el.selected).length;
-      
+
       if (
         selectedCount >= 10 &&
         !gameNumbers.find((el) => el.id === id && el.selected)
-        
+
 
       ) {
         toast.error("Max 10 numbers selected!");
@@ -111,7 +68,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
       }
       setGameNumbers((pv) =>
         pv.map((el) => {
-          if (el.id === id && !el.selected) {            
+          if (el.id === id && !el.selected) {
             return { ...el, selected: true };
           } else if (el.id === id && el.selected) {
             return { id: id };
@@ -133,6 +90,9 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
     setSelectedBetData(selectedData)
   }, [selectedNumbers])
 
+  console.log("Bet amount", (betSize / 10) * 0.00002);
+
+
   return (
     <div>
       <div>
@@ -151,57 +111,65 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
               />
             )
           )}
-           <div>
-        {/* Modal  */}
-        {resultModal && winnerCredit > 0 && (
-          <div className="absolute inset-0  z-[10]">
-            <div className="flex items-center justify-center mt-36">
-              <div className="absolute z-50 bg-[#46CBA1E5] p-3 mx-2 md:mx-0 rounded-md shadow">
-                <div className="flex justify-end">
-                  <button
-                    onClick={onClose}
-                    className="absolute top-[-10px] right-[-10px] text-white bg-emerald-400 w-7 h-7 rounded-full"
-                  >
-                    X
-                  </button>
-                </div>
-                <div className="mt-4 w-[282px]" >
-                  <p className=" font-poppins font-bold text-white text-xl uppercase text-center">
-                    {/* {winnerCredit > 0 ? "You won" : "You Lose"} */}
-                    You Won
-                  </p>
-                  <p className="mt-2 font-poppins font-bold text-white text-[12px] uppercase text-center">0.00002 ETH</p>
-                  <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">{winnerCredit}</p>
+          <div>
+            {/* Modal  */}
+            {resultModal && winnerCredit > 0 && (
+              <div className="absolute inset-0  z-[10]">
+                <div className="flex items-center justify-center mt-36">
+                  <div className="absolute z-50 bg-[#46CBA1E5] p-3 mx-2 md:mx-0 rounded-md shadow">
+                    <div className="flex justify-end">
+                      <button
+                        onClick={onClose}
+                        className="absolute top-[-10px] right-[-10px] text-white bg-emerald-400 w-7 h-7 rounded-full"
+                      >
+                        X
+                      </button>
+                    </div>
+                    <div className="mt-4 w-[282px]" >
+                      <p className=" font-poppins font-bold text-white text-xl uppercase text-center">
+                        You Won
+                      </p>
+                      <p className="mt-2 font-poppins font-bold text-white text-[12px] uppercase text-center">
+                        {
+                          selectedCurrency == "ETH" && ((betSize / 10) * 0.00002)
+                        }
+                        {
+                          selectedCurrency == "USDT" && ((betSize / 10) * 0.1)
+                        }
+                        {
+                          selectedCurrency == "USDC" && ((betSize / 10) * 0.1)
+                        }
+                         {selectedCurrency}
+                      </p>
+                      <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">{winnerCredit}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
-        )}
-      </div>
         </div>
-       
+
       </div>
       <div>
-        <div className="relative h-16 px-[24px]">
+        <div className="relative h-16 px-3 md:px-[24px]">
           <div
-            className={`w-full relative z-30 ${
-              progress > 0 ? "text-[#955B38]" : "text-primary-game"
-            } text-xs md:text-sm font-normal font-rubik uppercase text-center`}
+            className={`w-full relative z-30 ${progress > 0 ? "text-[#955B38]" : "text-primary-game"
+              } text-[8px] md:text-sm font-normal grid gap-2 font-rubik uppercase text-center`}
           >
             {selectedNumbers.length > 0 ? (
               <div className="flex justify-between items-center gap-[1px] w-full ">
                 {selectedBetData?.bet.map((value, index) => {
-                 const orginalProgress = progress ?progress+10:0
+                  const orginalProgress = progress ? progress + 10 : 0
                   return (
                     <div
                       style={{
                         width: `${100 / (selectedNumbers.length + 1)}%`,
                       }}
-                      className={`flex  flex-col py-1  rounded-r-xl ${
-                        index + 1 <= orginalProgress / 10
-                          ? "bg-primary-game"
-                          : "bg-white"
-                      }`}
+                      className={`flex  flex-col py-1 ${index + 1 <= orginalProgress / 10
+                        ? "bg-primary-game"
+                        : "bg-white"
+                        }`}
                       key={index}
                     >
                       <h6>{value}</h6>
@@ -218,7 +186,7 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
         </div>
       </div>
 
-     
+
 
 
     </div>

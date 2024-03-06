@@ -11,7 +11,7 @@ export default function InfoData({ data }) {
               id="deposite"
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden font-poppins font-normal"
             >
-              {data.User}
+              {data.Player}
             </p>
           </div>
         </div>
@@ -41,7 +41,7 @@ export default function InfoData({ data }) {
               id="deposite"
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden font-poppins font-normal"
             >
-              {data.Bet + " " + data.Coin}
+              {data.BetAmount + " " + data.Coin}
             </p>
           </div>
         </div>
@@ -56,7 +56,9 @@ export default function InfoData({ data }) {
               id="deposite"
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden font-poppins font-normal"
             >
-              2, 4, 6, 8, 10, 12, 14, 16, 18, 20
+              {
+                JSON.parse(data.WinningNumbers).map((item) => <span key={item}>{item}, </span> )
+              }
             </p>
           </div>
         </div>
@@ -71,7 +73,9 @@ export default function InfoData({ data }) {
               id="deposite"
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden font-poppins font-normal"
             >
-              22, 23, 24, 25
+              {
+                JSON.parse(data.NumbersPicked).map((item) => <span key={item}>{item}, </span> )
+              }
             </p>
           </div>
         </div>

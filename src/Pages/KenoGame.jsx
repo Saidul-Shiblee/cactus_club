@@ -8,6 +8,8 @@ import BetHistory from '../components/GameComponets/BetHistory';
 import BalanceRequirment from '../components/GameComponets/BalanceRequirment';
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { useGlobalContext } from '../context/context';
+import StartPlayKeno from '../components/GameComponets/StartPlayKeno';
 
 const KenoGame = () => {
   const [auto, setAuto] = useState(false)
@@ -16,6 +18,10 @@ const KenoGame = () => {
   const [betAmount, setBetAmount] = useState(0)
   const [winnerCredit, setWinnerCredit] = useState(0);
   const [gameSelectedNumbers, setGameSelectedNumbers] = useState();
+  const {
+    setSelectedLength,
+    setSelectedNumbers
+  } = useGlobalContext();
 
 
   const [gameNumbers, setGameNumbers] = useState([
@@ -64,6 +70,8 @@ const KenoGame = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0); 
+    setSelectedLength([]);
+    setSelectedNumbers([]);
   }, []);
   
   return (
@@ -85,6 +93,26 @@ const KenoGame = () => {
               gameSelectedNumbers={gameSelectedNumbers}
               setGameSelectedNumbers={setGameSelectedNumbers}
             />
+            <div className='block md:hidden mb-3 mx-2'>
+            <StartPlayKeno 
+            auto={auto}
+            setAuto={setAuto}
+            gameNumbers={gameNumbers}
+            setGameNumbers={setGameNumbers}
+            progress={progress}
+            count = {count}
+            setCount={setCount}
+            setProgress={setProgress}
+            resultModal={resultModal}
+            setResultModal={setResultModal}
+            betAmount={betAmount}
+            setBetAmount={setBetAmount}
+            winnerCredit={winnerCredit}
+            setWinnerCredit={setWinnerCredit}
+            gameSelectedNumbers={gameSelectedNumbers}
+            setGameSelectedNumbers={setGameSelectedNumbers}
+            />
+            </div>
             <GameCredit
               setAuto={setAuto}
               auto={auto}
@@ -92,6 +120,8 @@ const KenoGame = () => {
               setCount={setCount}
               gameNumbers={gameNumbers}
               setGameNumbers={setGameNumbers}
+              betAmount={betAmount}
+              setBetAmount={setBetAmount}
 
             />
             <PlayKeno

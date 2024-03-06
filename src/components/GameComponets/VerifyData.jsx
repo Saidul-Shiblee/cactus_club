@@ -1,6 +1,102 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-export default function VerifyData() {
+export default function VerifyData({ data }) {
+  const [screenSize, setScreenSize] = useState('large');
+
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 640) {
+        setScreenSize('small');
+      } else if (screenWidth <= 1024) { // Adjust the threshold as per your definition of a mid-sized screen
+        setScreenSize('mid');
+      } else {
+        setScreenSize('large');
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  console.log("historyVerify", data)
+  const textTwoLines = (text) => {
+    if (!text) {
+      return ['', ''];
+    }
+    if (screenSize === "small") {
+      if (text.indexOf(' ') === -1) {
+        const halfIndex = Math.ceil(text.length / 1.7);
+        const firstLine = text.slice(0, halfIndex);
+        const secondLine = text.slice(halfIndex);
+        return [firstLine, secondLine];
+      }
+    }
+    if (screenSize === "large") {
+      if (text.indexOf(' ') === -1) {
+        const halfIndex = Math.ceil(text.length / 1.2);
+        const firstLine = text.slice(0, halfIndex);
+        const secondLine = text.slice(halfIndex);
+        return [firstLine, secondLine];
+      }
+    }
+    if (screenSize === "mid") {
+      if (text.indexOf(' ') === -1) {
+        const halfIndex = Math.ceil(text.length / 1.5);
+        const firstLine = text.slice(0, halfIndex);
+        const secondLine = text.slice(halfIndex);
+        return [firstLine, secondLine];
+      }
+    }
+    const words = text.split(' ');
+    const halfIndex = Math.ceil(words?.length / 2);
+    const firstLine = words.slice(0, halfIndex).join(' ');
+    const secondLine = words.slice(halfIndex).join(' ');
+    return [firstLine, secondLine];
+  };
+  const sha51TextTwoLines = (text) => {
+    if (!text) {
+      return ['', ''];
+    }
+    if (screenSize === "small") {
+      if (text.indexOf(' ') === -1) {
+        const thirdIndex = Math.ceil(text.length / 3);
+        const secondIndex = Math.ceil(text.length * (2 / 3));
+        const firstLine = text.slice(0, thirdIndex);
+        const secondLine = text.slice(thirdIndex, secondIndex);
+        const thirdLine = text.slice(secondIndex);
+        return [firstLine, secondLine, thirdLine];
+      }
+    }
+    if (screenSize === "large") {
+      if (text.indexOf(' ') === -1) {
+        const halfIndex = Math.ceil(text.length / 1.5);
+        const firstLine = text.slice(0, halfIndex);
+        const secondLine = text.slice(halfIndex);
+        return [firstLine, secondLine];
+      }
+    }
+    if (screenSize === "mid") {
+      if (text.indexOf(' ') === -1) {
+        const halfIndex = Math.ceil(text.length / 1.5);
+        const firstLine = text.slice(0, halfIndex);
+        const secondLine = text.slice(halfIndex);
+        return [firstLine, secondLine];
+      }
+    }
+    const words = text.split(' ');
+    const halfIndex = Math.ceil(words?.length / 2);
+    const firstLine = words.slice(0, halfIndex).join(' ');
+    const secondLine = words.slice(halfIndex).join(' ');
+    return [firstLine, secondLine];
+  };
+
+  const [sha51ServerSeedLine1, sha51ServerSeedLine2, sha51ServerSeedLine3] = sha51TextTwoLines(data.data.SHA512ServerSeedStepClientSeed);
+  const [nextServerSeedLine1, nextServerSeedLine2] = textTwoLines(data.data.ServerSeedStepClientSeed);
+
+
   return (
     <div>
       <div>
@@ -13,7 +109,7 @@ export default function VerifyData() {
               id="deposite"
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden font-poppins font-normal"
             >
-              ioKGgsohsvusmgkHGaCk8C2BIOLLuTBrTMLKopa8
+              {data.data.ServerSeed}
             </p>
           </div>
         </div>
@@ -28,7 +124,7 @@ export default function VerifyData() {
               id="deposite"
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden font-poppins font-normal"
             >
-              IyJ6K7T0L2zxamQb2oEmVrnWNJuOrfHA
+              {data.data.ClinetSeed}
             </p>
           </div>
         </div>
@@ -46,7 +142,7 @@ export default function VerifyData() {
               id="deposite"
               className="md:w-full px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden  font-poppins font-normal"
             >
-              ioKGgsohsvusmgkHGaCk8C2BIOLLuTBrTMLKopa80IyJ6K7T0L2zxamQb2oEmVrnWNJuOrfHA
+              {nextServerSeedLine1}{nextServerSeedLine2 && <br className="sm:hidden" />} {nextServerSeedLine2}
             </p>
           </div>
         </div>
@@ -61,8 +157,7 @@ export default function VerifyData() {
               id="deposite"
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden  font-poppins font-normal"
             >
-              063665672557fe48d579a1e7fb34142d8912f1e52f34de55029cfa3b5d9615c7d43302352b40a
-              e89d68fa2b0079a8a52d99124f5adaa48370aaf396814cca329
+              {sha51ServerSeedLine1}{sha51ServerSeedLine2 && <br className="sm:hidden" />} {sha51ServerSeedLine3} {sha51ServerSeedLine2}
             </p>
           </div>
         </div>
@@ -86,50 +181,27 @@ export default function VerifyData() {
             </th>
           </tr>
         </thead>
-        <tbody>
-          <tr className="bg-[#F5AA52]">
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              44
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              32
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              13
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              13
-            </td>
-          </tr>
-          <tr className="">
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              44
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              32
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              13
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              13
-            </td>
-          </tr>
-          <tr className="bg-[#F5AA52]">
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              44
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              32
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              13
-            </td>
-            <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-              13
-            </td>
-          </tr>
-        </tbody>
+          {
+            data.data.HashTable.map((hashData, index) =>
+              <tbody key={hashData.Field}>
+                <tr className={`${index %2 == 0 ? "bg-white": "bg-[#F5AA52]"}`}>
+                  <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
+                  {hashData.HashPart}
+                  </td>
+                  <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
+                  {hashData.Number}
+                  </td>
+                  <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
+                  {hashData.Field}
+                  </td>
+                  <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
+                    {hashData.HashPart}
+                  </td>
+                </tr>
+              </tbody>
+
+            )
+          }
       </table>
     </div>
   );

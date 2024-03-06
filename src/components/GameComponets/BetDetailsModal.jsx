@@ -3,7 +3,7 @@ import UiButton from "../Ui/UiButton";
 import InfoData from "./InfoData";
 import VerifyData from "./VerifyData";
 
-export default function BetDetailsModal({ data }) {
+export default function BetDetailsModal({ data, historyVerify }) {
   const [selectType, setSelectType] = useState(0);
   return (
     <div className="px-[12px] md:px-[50px] w-[345px] md:w-[900px]">
@@ -26,7 +26,7 @@ export default function BetDetailsModal({ data }) {
           </button>
         </div>
       </div>
-      {selectType === 0 ? <InfoData data={data} /> : <VerifyData data={data} />}
+      {selectType === 0 ? <InfoData data={data} /> : <VerifyData data={historyVerify} />}
       <div className="flex items-center justify-center mt-[45px]">
         <UiButton label={"OK"} />
       </div>

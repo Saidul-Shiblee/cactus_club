@@ -4,6 +4,7 @@ import minusIcon from "./../../assets/icons/minus.svg";
 import plusIcon from "./../../assets/icons/plus.svg";
 import { useGlobalContext } from '../../context/context';
 import { GameNumber } from '../../assets/data/local.db';
+import toast from 'react-hot-toast';
 const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers, count, setCount}) => {
   const {
     betsNumber,
@@ -60,6 +61,22 @@ const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers, count, setCount
         setAuto(false)
       } else {
         setAuto(!auto)
+      }
+    }
+
+    const handleBetNumberChange = (e) =>{
+      let value = e.target.value;
+      if (!/^\d*$/.test(value)) {
+        toast.error('Input field value contains only number!');
+        setBetsNumber(0);
+        return;
+      }
+      if(value > 1000){
+        value = 1000;
+        setBetsNumber(value);
+        toast.error("Max bets number 1000")
+      } else {
+        setBetsNumber(value);
       }
     }
     return (
@@ -122,14 +139,14 @@ const GameCredit = ({setAuto, auto, gameNumbers, setGameNumbers, count, setCount
                   <p className="text-white text-sm font-poppins text-center font-bold uppercase mb-2">
                     number of bets
                   </p>
-                  <div className="flex ml-3 gap-6 bg-white bg-opacity-10 rounded-lg">
-                    <div onClick={decreaseBetNumbers} className="bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer">
+                  <div className="flex ml-[4px] gap-2 bg-white bg-opacity-10 rounded-lg">
+                    <div onClick={decreaseBetNumbers} className="bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer transition-all ease-in-out duration-300 transform hover:scale-105">
                       <img src={minusIcon} alt="icon" />
                     </div>
-                    <div className=" text-white text-base font-normal font-rubik">
-                      {betsNumber}
-                    </div>
-                    <div onClick={increaseBetNumbers} className="bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer ml-3">
+                    <input onChange={handleBetNumberChange} onBlur={(e) => e.target.value ==""?setBetsNumber(0): betsNumber } className=" text-white text-base font-normal font-rubik bg-none border-none outline-none w-12 bg-white bg-opacity-0 text-center" type='text' value={betsNumber} />
+                      {/* {betsNumber} */}
+                    {/* </div> */}
+                    <div onClick={increaseBetNumbers} className="bg-white flex justify-center items-center rounded-[100px] h-[22px] w-[22px] cursor-pointer ml-3 transition-all ease-in-out duration-300 transform hover:scale-105">
                       <img src={plusIcon} alt="icon" />
                     </div>
                   </div>
