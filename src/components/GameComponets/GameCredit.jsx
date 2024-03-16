@@ -73,28 +73,61 @@ const GameCredit = ({
       setBetsNumber(0);
     }
   }
+  // const selectRandomElements = () => {
+  //   console.log("click..")
+  //   // if (selectedNumbers.length > 0) {
+  //   //   setGameNumbers(GameNumber);
+  //   //   setSelectedNumbers([]);
+  //   // }
+  //   // if (selectedNumbers.length <= 0) {
+  //     const randomSelect = new Set();
+  //     while (randomSelect.size < count) {
+  //       randomSelect.add(Math.floor(Math.random() * gameNumbers.length));
+  //     }
+  //     setSelectedNumbers([...randomSelect]);
+  //     const newData = gameNumbers.map((el, index) => {
+  //       if (randomSelect.has(index)) {
+  //         return { ...el, selected: true };
+  //       } else {
+  //         return el;
+  //       }
+  //     });
+  //     setGameNumbers(newData);
+  //   // }
+  // };
+
   const selectRandomElements = () => {
-    console.log("click..")
-    if (selectedNumbers.length > 0) {
-      setGameNumbers(GameNumber);
-      setSelectedNumbers([]);
+    const randomSelect = new Set();
+    
+    // Clear previous selection
+    setSelectedNumbers([]);
+    
+    // Reset selected status in gameNumbers
+    const newData = gameNumbers.map(el => ({ ...el, selected: false }));
+    
+    while (randomSelect.size < count) {
+      randomSelect.add(Math.floor(Math.random() * gameNumbers.length));
     }
-    if (selectedNumbers.length <= 0) {
-      const randomSelect = new Set();
-      while (randomSelect.size < count) {
-        randomSelect.add(Math.floor(Math.random() * gameNumbers.length));
-      }
-      setSelectedNumbers([...randomSelect]);
-      const newData = gameNumbers.map((el, index) => {
-        if (randomSelect.has(index)) {
-          return { ...el, selected: true };
-        } else {
-          return el;
-        }
-      });
-      setGameNumbers(newData);
-    }
+    
+    setSelectedNumbers([...randomSelect]);
+    
+    // Update selected status for randomly selected elements
+    randomSelect.forEach(index => {
+      newData[index].selected = true;
+    });
+  console.log(newData)
+
+    setGameNumbers(newData);
   };
+  
+  
+  
+  
+  
+  
+
+
+
   const handleAutoBet = () => {
     if (betsNumber == 0) {
       setAuto(false)

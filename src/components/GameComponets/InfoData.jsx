@@ -1,4 +1,6 @@
 export default function InfoData({ data }) {
+  const winningNumbers = JSON.parse(data.WinningNumbers);
+  const NumbersPicked = JSON.parse(data.NumbersPicked);
   return (
     <div>
       <div>
@@ -57,7 +59,7 @@ export default function InfoData({ data }) {
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden font-poppins font-normal"
             >
               {
-                JSON.parse(data.WinningNumbers).map((item) => <span key={item}>{item}, </span> )
+                winningNumbers.map((item, index) => <span key={item}>{item}{index !== winningNumbers.length - 1 && <span>, </span>}</span> )
               }
             </p>
           </div>
@@ -74,7 +76,7 @@ export default function InfoData({ data }) {
               className="md:w-full rounded-[20px] px-[20px] md:px-[40px] text-[10px] md:text-base overflow-hidden font-poppins font-normal"
             >
               {
-                JSON.parse(data.NumbersPicked).map((item) => <span key={item}>{item}, </span> )
+                NumbersPicked.map((item, index) => <span key={item}>{item}{index !== NumbersPicked.length - 1 && <span>, </span>} </span> )
               }
             </p>
           </div>

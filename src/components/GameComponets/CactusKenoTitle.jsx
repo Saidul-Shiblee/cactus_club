@@ -259,6 +259,7 @@ const CactusKenoTitle = () => {
             <h2 className=' text-primary-title font-rubik text-[24px] font-normal uppercase pb-3 text-center'>how to play cactus keno</h2>
             <p className=' font-IBM text-base text-[#0E0E0E80]'>
             Join the excitement of Cactus Club Keno, where your intuition could lead to fantastic rewards! Here's a simple guide on how to play:
+            <br/>
             </p>
             <div>
              

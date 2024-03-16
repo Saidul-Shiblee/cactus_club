@@ -18,9 +18,11 @@ const KenoGame = () => {
   const [betAmount, setBetAmount] = useState(0)
   const [winnerCredit, setWinnerCredit] = useState(0);
   const [gameSelectedNumbers, setGameSelectedNumbers] = useState();
+  const [notSelectedTielsError, setNotSelectedTielsError] = useState(false)
+  const [InsufficientFundsError, setInsufficientFundsError] = useState(false)
   const {
     setSelectedLength,
-    setSelectedNumbers
+    setSelectedNumbers,
   } = useGlobalContext();
 
 
@@ -94,6 +96,10 @@ const KenoGame = () => {
               setWinnerCredit={setWinnerCredit}
               gameSelectedNumbers={gameSelectedNumbers}
               setGameSelectedNumbers={setGameSelectedNumbers}
+              notSelectedTielsError={notSelectedTielsError}
+              setNotSelectedTielsError={setNotSelectedTielsError}
+              InsufficientFundsError={InsufficientFundsError}
+              setInsufficientFundsError={setInsufficientFundsError}
             />
 
             <GameCredit
@@ -157,6 +163,10 @@ const KenoGame = () => {
               setGameSelectedNumbers={setGameSelectedNumbers}
               startAutoPlay={startAutoPlay}
               setStartAutoPlay={setStartAutoPlay}
+              notSelectedTielsError={notSelectedTielsError}
+              setNotSelectedTielsError={setNotSelectedTielsError}
+              InsufficientFundsError={InsufficientFundsError}
+              setInsufficientFundsError={setInsufficientFundsError}
             />
             <BalanceRequirment />
           </div>

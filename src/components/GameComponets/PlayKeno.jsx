@@ -26,6 +26,10 @@ const PlayKeno = ({
   setGameSelectedNumbers,
   startAutoPlay,
   setStartAutoPlay,
+  notSelectedTielsError, 
+  setNotSelectedTielsError,
+  InsufficientFundsError, 
+  setInsufficientFundsError
 }) => {
   const navigate = useNavigate();
   const {
@@ -79,7 +83,7 @@ const PlayKeno = ({
   }
   const handlePlay = async () => {
 if (!hasSelectedTrue(gameNumbers)) {
-  toast.error("Please select at least one number!");
+  setNotSelectedTielsError(true);
   return;
 }
     if (auto) {
@@ -100,8 +104,8 @@ if (!hasSelectedTrue(gameNumbers)) {
                 .filter((item) => item.selected)
                 .map((item) => item.id),
               BetAmount: selectedCurrency === "ETH"
-                ? (betSize / 10) * 0.00002
-                : (betSize / 10) * 0.1,
+                ? parseFloat((betSize / 10) * 0.00002).toFixed(5)
+                : parseFloat((betSize / 10) * 0.1).toFixed(5),
               CoinType: selectedCurrency,
               ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
             },
@@ -131,6 +135,9 @@ if (!hasSelectedTrue(gameNumbers)) {
               return el;
             }
           });
+          if(res?.data?.data?.code == 1){
+            setInsufficientFundsError(true);
+          }
           if (res?.data?.data?.code === -2) {
             setAuthToken("");
             setIsLoggedIn(false);
@@ -164,7 +171,6 @@ if (!hasSelectedTrue(gameNumbers)) {
           setBetsNumber((pre) => pre - 1);
         } catch (error) {
           console.log(error);
-          toast.error("Something went wrong!");
         } finally {
           setGameNumbers(gameSelectedNumbers)
           setProgress(0);
@@ -188,8 +194,8 @@ if (!hasSelectedTrue(gameNumbers)) {
               .map((item) => item.id),
             BetAmount:
               selectedCurrency === "ETH"
-                ? (betSize / 10) * 0.00002
-                : (betSize / 10) * 0.1,
+                ? parseFloat((betSize / 10) * 0.00002).toFixed(5)
+                : parseFloat((betSize / 10) * 0.1).toFixed(5),
             CoinType: selectedCurrency,
             ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
           },
@@ -200,7 +206,13 @@ if (!hasSelectedTrue(gameNumbers)) {
             },
           }
         );
+
+
+        if(res?.data?.code == 1){
+          setInsufficientFundsError(true);
+        }
         if (res?.data?.data?.Balance) {
+          setInsufficientFundsError(false);
           setCurrencyBalance(res?.data?.data?.Balance);
         }
 
@@ -212,6 +224,7 @@ if (!hasSelectedTrue(gameNumbers)) {
           localStorage.clear();
         }
         setWinnerCredit(res?.data?.data?.Profit);
+        console.log("profit", res?.data?.data?.Profit)
         const winFields = res?.data?.data?.WinFields;
         let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
         let order = 0;
@@ -263,7 +276,6 @@ if (!hasSelectedTrue(gameNumbers)) {
         }, 5000);
       } catch (error) {
         console.log(error);
-        toast.error("Something Went Wrong!");
       } finally {
 
       }
@@ -401,7 +413,7 @@ if (!hasSelectedTrue(gameNumbers)) {
   };
 
   const handleMax = () => {
-    setBetSize(15500000);
+    setBetSize(500000);
   };
   const handleHalf = () => {
     if (betSize % 2 == 0 && betSize > 20) {
@@ -411,8 +423,8 @@ if (!hasSelectedTrue(gameNumbers)) {
     }
   };
   const handle2x = () => {
-    if (betSize >= 15500000) {
-      setBetSize(15500000);
+    if (betSize >= 500000) {
+      setBetSize(500000);
     } else {
       setBetSize(betSize * 2);
     }
@@ -492,7 +504,7 @@ if (!hasSelectedTrue(gameNumbers)) {
               selectedNumbers.length > 0 || auto || singleBetLoading
                 ? "cursor-pointer"
                 : " cursor-not-allowed "
-            }w-full hidden md:block md:flex md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
+            }w-full ${singleBetLoading?"cursor-not-allowed": "cursor-pointer"} hidden md:block md:flex md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
             ${auto ? "!text-[24px]" : "w-full"}
             text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
           >
@@ -501,13 +513,13 @@ if (!hasSelectedTrue(gameNumbers)) {
         ) : (
           <div
             onClick={() => {
-              handlePlay();
+              !singleBetLoading && handlePlay();
             }}
             className={`${
               selectedNumbers.length > 0 || auto || singleBetLoading
                 ? "cursor-pointer"
                 : " cursor-not-allowed "
-            }w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
+            }w-full ${singleBetLoading?"cursor-not-allowed": "cursor-pointer"} md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
             ${auto ? "!text-[24px]" : "w-full"}
             text-3xl md:text-4xl hidden md:block md:flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
           >

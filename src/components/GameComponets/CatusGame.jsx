@@ -8,7 +8,8 @@ import deSelectedKenoSound from './../../assets/game_sounds/Deselect_Keno_Number
 import selectedKenoSound from './../../assets/game_sounds/Select_Keno_Number.mp3';
 
 // import audio from "./../../assets/game_sounds/Select_Keno_Number.mp3"
-const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResultModal, setProgress, winnerCredit, gameSelectedNumbers, setGameSelectedNumbers, betAmount, setBetAmount }) => {
+const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResultModal, setProgress, winnerCredit, gameSelectedNumbers, setGameSelectedNumbers, betAmount, setBetAmount, notSelectedTielsError, setNotSelectedTielsError, InsufficientFundsError, 
+  setInsufficientFundsError }) => {
   const {
     isLoggedIn,
     selectedNumbers,
@@ -18,11 +19,13 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
     selectedBetData,
     setSelectedBetData,
     selectedCurrency,
-    betSize
+    betSize,
+
   } = useGlobalContext();
   const [isPlaying, setIsPlaying] = useState(false);
   const [deselectedPlay] = useSound(deSelectedKenoSound);
   const [selectedPlay] = useSound(selectedKenoSound);
+  const [maxNumberError, setMaxNumberError] = useState(false);
 
 
 
@@ -33,6 +36,12 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
     setProgress(0)
     // setSelectedBetData({});
     setResultModal(false);
+  }
+
+  const maxNumberErrorModalClose = () => {
+    setMaxNumberError(false);
+    setNotSelectedTielsError(false);
+    setInsufficientFundsError(false);
   }
 
 
@@ -51,7 +60,8 @@ const CatusGame = ({ gameNumbers, setGameNumbers, progress, resultModal, setResu
 
 
       ) {
-        toast.error("Max 10 numbers selected!");
+        // toast.error("Max 10 numbers selected!");
+        setMaxNumberError(true)
         return;
       }
       if (selectedNumbers.includes(id)) {
@@ -92,8 +102,6 @@ useEffect(() => {
     setSelectedBetData(selectedData)
   }, [selectedNumbers])
 
-  console.log("Bet amount", (betSize / 10) * 0.00002);
-
 
   return (
     <div>
@@ -127,7 +135,7 @@ useEffect(() => {
                         X
                       </button>
                     </div>
-                    <div className="mt-4 w-[282px]" >
+                    <div className="mt-4 min-w-[282px]" >
                       <p className=" font-poppins font-bold text-white text-xl uppercase text-center">
                         You Won
                       </p>
@@ -143,22 +151,55 @@ useEffect(() => {
                         }
                          {selectedCurrency}
                       </p>
-                      <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">{winnerCredit}</p>
+                      <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">
+                        {selectedCurrency == "ETH" && (winnerCredit*500000)} 
+                        {(selectedCurrency == "USDC" || selectedCurrency =="USDT") && (winnerCredit*100)} 
+                       Credits</p>
                     </div>
                   </div>
                 </div>
               </div>
             )}
+
+            {/* Max number error modal  */}
+            {
+             (InsufficientFundsError || notSelectedTielsError || maxNumberError) && (
+                <div className="absolute inset-0  z-[10]">
+                <div className="flex items-center justify-center mt-36">
+                  <div className="absolute z-50 bg-red-700 bg-opacity-90 p-3 mx-2 md:mx-0 rounded-md shadow">
+                    <div className="flex justify-end">
+                      <button
+                        onClick={maxNumberErrorModalClose}
+                        className="absolute top-[-10px] right-[-10px] text-white bg-red-700 w-7 h-7 rounded-full"
+                      >
+                        X
+                      </button>
+                    </div>
+                    <div className="mt-4 w-[282px]" >
+                      <p className=" font-poppins font-bold text-white text-xl text-center">
+                        OOPS!
+                      </p>
+                      <p className=" font-poppins font-bold text-white text-2xl text-center leading-snug">
+                        {maxNumberError && "You cannot select more than 10 numbers"}
+                        {notSelectedTielsError && "Please select 1 to 10 numbers to begin"}
+                        {InsufficientFundsError && "Insufficient funds"}
+                        </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              )
+            }
           </div>
         </div>
 
       </div>
       <div>
         <div className="relative h-16 px-3 md:px-[24px]">
-          <div className="w-full relative">
+          <div className="w-full relative ">
           <div
             className={`w-full relative z-30  ${progress > 0 ? "text-[#955B38] rounded-xl bg-primary-game" : "text-primary-game"
-              } text-[8px] md:text-sm font-normal grid gap-2 font-rubik uppercase text-center  overflow-hidden`}
+              } text-[8px] md:text-sm font-normal grid gap-2 font-rubik uppercase text-center  overflow-hidden `}
           >
             {selectedNumbers.length > 0 ? (
               <div className={`flex ml-3 justify-between items-center w-full`}>
@@ -172,7 +213,7 @@ useEffect(() => {
                       className={` flex flex-col py-1 ${
                         index + 1 <= orginalProgress / 10
                           ? "bg-primary-game"
-                          : "bg-white"
+                          : "bg-[#FFE2C9]"
                       }`}
                       key={index}
                     >

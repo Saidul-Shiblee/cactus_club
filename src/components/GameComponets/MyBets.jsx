@@ -6,6 +6,7 @@ import BetDetailsModal from "./BetDetailsModal";
 import UiModal from "../Ui/UiModal";
 import { useNavigate } from "react-router-dom";
 import VerifyData from "./VerifyData";
+import UiButton from "../Ui/UiButton";
 const MyBets = () => {
   const { authToken, isLoggedIn, setIsLoggedIn } = useGlobalContext();
   const [playerbet, setPlayerBet] = useState();
@@ -29,7 +30,7 @@ const MyBets = () => {
         }
       );
       setPlayerBet(res?.data?.data?.records);
-      if(res?.data?.code == -2){
+      if (res?.data?.code == -2) {
         setIsLoggedIn(false);
         navigate("/");
         localStorage.clear();
@@ -46,22 +47,22 @@ const MyBets = () => {
 
   const handleSelectBet = async (data) => {
     try {
-   const res = await axios.get(`https://apis.yummylabs.io/getKenoBetHistoryInfo?BetID=${data.BetID}`)
-   if(res?.data?.data?.records){
-    setSelectedBet(res?.data?.data?.records);
-   }
+      const res = await axios.get(`https://apis.yummylabs.io/getKenoBetHistoryInfo?BetID=${data.BetID}`)
+      if (res?.data?.data?.records) {
+        setSelectedBet(res?.data?.data?.records);
+      }
     } catch (error) {
       console.log(error);
     }
     // Verify Data 
     try {
       const response = await axios.get(`https://apis.yummylabs.io/getKenoBetHistoryVerify?BetID=${data.BetID}`, {
-          headers: {
-            Authorization: authToken,
-          }
+        headers: {
+          Authorization: authToken,
+        }
       })
       console.log("res>>\n", response);
-      if(response?.data){
+      if (response?.data) {
         setSelectedHistoryVerify(response?.data)
       }
     } catch (error) {
@@ -137,7 +138,7 @@ const MyBets = () => {
                             className={`text-[11px] ${(index + 1) % 2 != 0
                               ? "bg-white bg-opacity-50"
                               : "bg-none"
-                              } text-[#128880] font-semibold font-poppins py-2 text-center pl-[6px] md:pl-0 cursor-pointer`}
+                              } text-[#128880] font-semibold font-poppins py-2 text-center pl-[6px] md:pl-0 cursor-pointer hover:underline`}
                           >
                             {data.BetID}
                           </td>
@@ -185,7 +186,7 @@ const MyBets = () => {
                             className={`text-[11px] ${(index + 1) % 2 != 0
                               ? "bg-white bg-opacity-50"
                               : "bg-none"
-                              } ${data.Profit<0?"text-[#C21C00]": "text-[#128880]" } font-semibold font-poppins py-2 text-center pl-2 pr-[6px] md:pr-0`}
+                              } ${data.Profit < 0 ? "text-[#C21C00]" : "text-[#128880]"} font-semibold font-poppins py-2 text-center pl-2 pr-[6px] md:pr-0`}
                           >
                             {data.Profit}
                           </td>
@@ -205,11 +206,15 @@ const MyBets = () => {
       </div>
       {
         <UiModal isOpen={isModalOpen} onClose={closeModal} close={true}>
-         <div>
-         {<BetDetailsModal data={selectedBet} historyVerify={selectedHistoryVerfiy}/>}
-          {/* {<VerifyData data={selectedHistoryVerfiy}/>} */}
-         </div>
-          
+          <div>
+            {<BetDetailsModal data={selectedBet} historyVerify={selectedHistoryVerfiy} />}
+            {/* {<VerifyData data={selectedHistoryVerfiy}/>} */}
+          </div>
+          <div className="flex items-center justify-center mt-[45px]">
+            <div onClick={closeModal}>
+              <UiButton label={"OK"} />
+            </div>
+          </div>
         </UiModal>
       }
     </div>
