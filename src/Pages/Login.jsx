@@ -205,7 +205,7 @@ const Login = () => {
               )}
             </button>
             <div>
-              <UiModal isOpen={isModalOpen}>
+              <UiModal isOpen={isModalOpen} onClose={closeModal}>
                 <div className=" px-2 md:px-[118px] justify-center text-center">
                   <img src={ModalImg} className="mx-auto" alt="Modal image" />
                   <h1 className="text-2xl font-rubik text-primary-title mt-[28px] uppercase">
