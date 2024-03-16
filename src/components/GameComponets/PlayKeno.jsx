@@ -192,10 +192,9 @@ if (!hasSelectedTrue(gameNumbers)) {
             SelectedField: gameNumbers
               .filter((item) => item.selected)
               .map((item) => item.id),
-            BetAmount:
-              selectedCurrency === "ETH"
-                ? parseFloat((betSize / 10) * 0.00002).toFixed(5)
-                : parseFloat((betSize / 10) * 0.1).toFixed(5),
+            BetAmount: selectedCurrency === "ETH"
+                ? +parseFloat((betSize / 10) * 0.00002).toFixed(5)
+                : +parseFloat((betSize / 10) * 0.1).toFixed(5),
             CoinType: selectedCurrency,
             ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
           },
@@ -216,6 +215,8 @@ if (!hasSelectedTrue(gameNumbers)) {
           setCurrencyBalance(res?.data?.data?.Balance);
         }
 
+        console.log("res", res);
+
         if (res?.data?.code == -2) {
           setIsLoggedIn(false);
           navigate("/");
@@ -226,10 +227,11 @@ if (!hasSelectedTrue(gameNumbers)) {
         setWinnerCredit(res?.data?.data?.Profit);
         console.log("profit", res?.data?.data?.Profit)
         const winFields = res?.data?.data?.WinFields;
+        console.log("win Fields", winFields);
         let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
         let order = 0;
         const numbersToRenderNext = copiedGameNumbers?.map((el) => {
-          if (winFields.includes(el.id) && el.hasOwnProperty("selected")) {
+          if (winFields.includes(el?.id) && el.hasOwnProperty("selected")) {
             order += 1;
             return { ...el, matched: true, order };
           } else if (
@@ -513,15 +515,15 @@ if (!hasSelectedTrue(gameNumbers)) {
         ) : (
           <div
             onClick={() => {
-              !singleBetLoading && handlePlay();
+             !singleBetLoading && handlePlay();
             }}
             className={`${
               selectedNumbers.length > 0 || auto || singleBetLoading
                 ? "cursor-pointer"
                 : " cursor-not-allowed "
-            }w-full ${singleBetLoading?"cursor-not-allowed": "cursor-pointer"} md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
+            }w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
             ${auto ? "!text-[24px]" : "w-full"}
-            text-3xl md:text-4xl hidden md:block md:flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
+            text-3xl ${singleBetLoading?"cursor-not-allowed": "cursor-pointer"} md:text-4xl hidden md:block md:flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
           >
             {"play"}
           </div>

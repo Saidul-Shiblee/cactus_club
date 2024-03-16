@@ -13,6 +13,7 @@ import reveledKenoSound from "./../../assets/game_sounds/Reveal_Number.mp3";
 import winKenoSound from "./../../assets/game_sounds/win.mp3";
 import useSound from "use-sound";
 import axios from 'axios';
+import { generateRandomArray } from '../../utilities/utilitiesFunction';
 const GameCredit = ({
   setAuto, auto, gameNumbers, setGameNumbers, count, setCount, startAutoPlay,
   setStartAutoPlay,
@@ -97,25 +98,18 @@ const GameCredit = ({
   // };
 
   const selectRandomElements = () => {
-    const randomSelect = new Set();
+    const randomSelect = generateRandomArray(count)
     
-    // Clear previous selection
-    setSelectedNumbers([]);
-    
-    // Reset selected status in gameNumbers
-    const newData = gameNumbers.map(el => ({ ...el, selected: false }));
-    
-    while (randomSelect.size < count) {
-      randomSelect.add(Math.floor(Math.random() * gameNumbers.length));
-    }
-    
-    setSelectedNumbers([...randomSelect]);
-    
-    // Update selected status for randomly selected elements
-    randomSelect.forEach(index => {
-      newData[index].selected = true;
+    const newData = GameNumber.map(el => {
+      if(randomSelect.includes(el.id)){
+        return {
+          ...el, selected:true
+        }
+      } else {
+        return el
+      }
     });
-  console.log(newData)
+    setSelectedNumbers(randomSelect);
 
     setGameNumbers(newData);
   };

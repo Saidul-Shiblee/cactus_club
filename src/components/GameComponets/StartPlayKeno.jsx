@@ -2,16 +2,13 @@ import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useSound from "use-sound";
 import { useGlobalContext } from "../../context/context";
-import UiButton from "../Ui/UiButton";
-import UiModal from "../Ui/UiModal";
-import ModalImg from "./../../assets/image/modalImg.png";
-import { GameNumber } from "../../assets/data/local.db";
+import { hasSelectedTrue } from "../../utilities/utilitiesFunction";
 import reveledKenoSound from "./../../assets/game_sounds/Reveal_Number.mp3";
 import winKenoSound from "./../../assets/game_sounds/win.mp3";
-import useSound from "use-sound";
 
-const StartPlayKeno = ({
+const PlayKeno = ({
   auto,
   setAuto,
   gameNumbers,
@@ -27,8 +24,13 @@ const StartPlayKeno = ({
   winnerCredit,
   gameSelectedNumbers,
   setGameSelectedNumbers,
+  startAutoPlay,
+  setStartAutoPlay,
+  notSelectedTielsError, 
+  setNotSelectedTielsError,
+  InsufficientFundsError, 
+  setInsufficientFundsError
 }) => {
-
   const navigate = useNavigate();
   const {
     authToken,
@@ -45,13 +47,14 @@ const StartPlayKeno = ({
     setAuthToken,
     setSelectedBetData,
     selectedBetData,
+    setshouldIncrease,
   } = useGlobalContext();
   const [reveledPlay] = useSound(reveledKenoSound);
   const [winPlay] = useSound(winKenoSound);
   const [betLoading, setBetLoading] = useState(false);
   const [stopLoop, setStopLoop] = useState(false);
   const [singleBetLoading, setSingleBetLoading] = useState(false);
-  const [startAutoPlay, setStartAutoPlay] = useState(true);
+  // const [startAutoPlay, setStartAutoPlay] = useState(true);
 
 
 
@@ -72,17 +75,21 @@ const StartPlayKeno = ({
   const abortRef = React.useRef(false);
 
 
-  const handleAutoPlay = () => {
-    console.log('first')
-    abortRef.current = true;
-    setStartAutoPlay(true);
+  const handleAutoPlay =()=>{
+    // console.log('first')
+ setshouldIncrease(true);
+ abortRef.current = true;
+ setStartAutoPlay(true);
   }
   const handlePlay = async () => {
-    console.log("first");
-    setStartAutoPlay(false)
-    console.log('first')
-    // console.log("Selected Currencty", selectedCurrency,"+", betAmount);
+if (!hasSelectedTrue(gameNumbers)) {
+  setNotSelectedTielsError(true);
+  return;
+}
     if (auto) {
+      setshouldIncrease(false);
+      setStartAutoPlay(false)
+      abortRef.current = false;
       for (let i = 0; i < betsNumber; i++) {
 
         if (abortRef.current) {
@@ -97,8 +104,8 @@ const StartPlayKeno = ({
                 .filter((item) => item.selected)
                 .map((item) => item.id),
               BetAmount: selectedCurrency === "ETH"
-                ? (betSize / 10) * 0.00002
-                : (betSize / 10) * 0.1,
+                ? parseFloat((betSize / 10) * 0.00002).toFixed(5)
+                : parseFloat((betSize / 10) * 0.1).toFixed(5),
               CoinType: selectedCurrency,
               ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
             },
@@ -111,6 +118,7 @@ const StartPlayKeno = ({
           );
           setCurrencyBalance(res?.data?.data?.Balance);
           const winFields = res?.data?.data?.WinFields;
+          console.log(res)
           let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
           let order = 0;
           const numbersToRenderNext = copiedGameNumbers?.map((el) => {
@@ -127,14 +135,16 @@ const StartPlayKeno = ({
               return el;
             }
           });
-          if (res?.data?.code == -2) {
+          if(res?.data?.data?.code == 1){
+            setInsufficientFundsError(true);
+          }
+          if (res?.data?.data?.code === -2) {
             setAuthToken("");
             setIsLoggedIn(false);
             setCurrencyBalance(null);
             setSelectedLength([]);
             setSelectedNumbers([]);
-            localStorage.removeItem("cactus_club_token");
-            localStorage.removeItem("cactus_club_currency_balance");
+            localStorage.clear();
             navigate("/");
           }
           setGameNumbers(numbersToRenderNext);
@@ -149,7 +159,6 @@ const StartPlayKeno = ({
           numbersToRenderNext
             .filter((el) => el.matched || el.existInResult)
             .map((el) => {
-              console.log("going...");
               setTimeout(() => {
                 reveledPlay();
               }, el.order * 400);
@@ -162,7 +171,6 @@ const StartPlayKeno = ({
           setBetsNumber((pre) => pre - 1);
         } catch (error) {
           console.log(error);
-          toast.error("Something went wrong!");
         } finally {
           setGameNumbers(gameSelectedNumbers)
           setProgress(0);
@@ -170,6 +178,10 @@ const StartPlayKeno = ({
             setAuto(false);
           }
         }
+            if (i === betsNumber - 1) {
+              abortRef.current = true;
+              setStartAutoPlay(true);
+            }
       }
     } else {
       setSingleBetLoading(true);
@@ -180,10 +192,9 @@ const StartPlayKeno = ({
             SelectedField: gameNumbers
               .filter((item) => item.selected)
               .map((item) => item.id),
-            BetAmount:
-              selectedCurrency === "ETH"
-                ? (betSize / 10) * 0.00002
-                : (betSize / 10) * 0.1,
+            BetAmount: selectedCurrency === "ETH"
+                ? +parseFloat((betSize / 10) * 0.00002).toFixed(5)
+                : +parseFloat((betSize / 10) * 0.1).toFixed(5),
             CoinType: selectedCurrency,
             ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
           },
@@ -194,9 +205,17 @@ const StartPlayKeno = ({
             },
           }
         );
+
+
+        if(res?.data?.code == 1){
+          setInsufficientFundsError(true);
+        }
         if (res?.data?.data?.Balance) {
+          setInsufficientFundsError(false);
           setCurrencyBalance(res?.data?.data?.Balance);
         }
+
+        console.log("res", res);
 
         if (res?.data?.code == -2) {
           setIsLoggedIn(false);
@@ -206,11 +225,13 @@ const StartPlayKeno = ({
           localStorage.clear();
         }
         setWinnerCredit(res?.data?.data?.Profit);
+        console.log("profit", res?.data?.data?.Profit)
         const winFields = res?.data?.data?.WinFields;
+        console.log("win Fields", winFields);
         let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
         let order = 0;
         const numbersToRenderNext = copiedGameNumbers?.map((el) => {
-          if (winFields.includes(el.id) && el.hasOwnProperty("selected")) {
+          if (winFields.includes(el?.id) && el.hasOwnProperty("selected")) {
             order += 1;
             return { ...el, matched: true, order };
           } else if (
@@ -246,9 +267,9 @@ const StartPlayKeno = ({
             winPlay();
             setResultModal(true);
           }
-          if (res?.data?.data?.Profit < 0) {
+          if(res?.data?.data?.Profit < 0){
 
-            setSelectedLength([])
+          setSelectedLength([])
           }
           setGameNumbers(gameSelectedNumbers)
           setProgress(0);
@@ -257,12 +278,20 @@ const StartPlayKeno = ({
         }, 5000);
       } catch (error) {
         console.log(error);
-        toast.error("Something Went Wrong!");
       } finally {
 
       }
     }
   };
+
+  // Reset Auto play off functionality
+
+  // useEffect(() => {
+  //   if(!startAutoPlay && !auto  ){
+  //     setAuto(false)
+  //     setBetsNumber(0);
+  //   }
+  // },[startAutoPlay])
 
   const handleStopBets = () => {
     setStopLoop(true);
@@ -386,7 +415,7 @@ const StartPlayKeno = ({
   };
 
   const handleMax = () => {
-    setBetSize(15500000);
+    setBetSize(500000);
   };
   const handleHalf = () => {
     if (betSize % 2 == 0 && betSize > 20) {
@@ -396,8 +425,8 @@ const StartPlayKeno = ({
     }
   };
   const handle2x = () => {
-    if (betSize >= 15500000) {
-      setBetSize(15500000);
+    if (betSize >= 500000) {
+      setBetSize(500000);
     } else {
       setBetSize(betSize * 2);
     }
@@ -413,37 +442,94 @@ const StartPlayKeno = ({
       handleSelectError();
     }
   };
+
   return (
-    <div>
-      {auto ? (
-        <div
-          onClick={() => (startAutoPlay ? handlePlay() : handleAutoPlay())}
-          className={`${selectedNumbers.length > 0 || auto || singleBetLoading
-              ? "cursor-pointer"
-              : " cursor-not-allowed "
-            }w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
+    <div className="p-2 md:p-6 w-full">
+      <div className="flex flex-wrap gap-3 w-full">
+        <div className=" flex gap-[3px] md:gap-[10px] w-full md:w-[491px]">
+          <div className="grid gap-[3px] md:gap-[10px] w-1/3">
+            <div className="flex gap-[3px] md:gap-[10px]">
+              <div
+                onClick={handleMinus}
+                className="w-[50px] h-[25px] md:w-[73px] md:h-8 bg-dark-green flex justify-center items-center text-white rounded-md font-rubik cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105"
+              >
+                -
+              </div>
+              <div
+                onClick={handlePlus}
+                className="w-[50px] h-[25px] md:w-[73px] md:h-8 bg-dark-green flex justify-center items-center text-white rounded-md font-rubik cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105"
+              >
+                +
+              </div>
+            </div>
+            <div
+              onClick={handleClear}
+              className="w-[103.19px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik cursor-pointer transition-all ease-in-out duration-300 transform hover:scale-105 active:scale-95 select-none"
+            >
+              clear
+            </div>
+          </div>
+          <div className="grid gap-[3px] md:gap-[10px] w-1/3">
+            <div
+              onClick={handleMin}
+              className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-center cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105"
+            >
+              min
+            </div>
+            <div
+              onClick={handleHalf}
+              className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-center cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105"
+            >
+              1/2
+            </div>
+          </div>
+          <div className="grid gap-[3px] md:gap-[10px] w-1/3  ">
+            <div
+              onClick={handleMax}
+              className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-end cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105"
+            >
+              max
+            </div>
+            <div
+              onClick={handle2x}
+              className="w-[106.83px] h-[24.77px] md:w-[157px] md:h-8 bg-dark-green flex text-center justify-center items-center rounded-md text-white uppercase text-sm font-rubik place-self-end cursor-pointer active:scale-95 select-none transition-all ease-in-out duration-300 transform hover:scale-105"
+            >
+              2x
+            </div>
+          </div>
+        </div>
+
+        {auto ? (
+          <div
+            onClick={() => (startAutoPlay ? handlePlay() : handleAutoPlay())}
+            className={`${
+              selectedNumbers.length > 0 || auto || singleBetLoading
+                ? "cursor-pointer"
+                : " cursor-not-allowed "
+            }w-full ${singleBetLoading?"cursor-not-allowed": "cursor-pointer"} hidden md:block md:flex md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
             ${auto ? "!text-[24px]" : "w-full"}
             text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
-        >
-          {startAutoPlay ? "start auto play" : "stop auto play"}
-        </div>
-      ) : (
-        <div
-          onClick={() => {
-            handlePlay();
-          }}
-          className={`${selectedNumbers.length > 0 || auto || singleBetLoading
-              ? "cursor-pointer"
-              : " cursor-not-allowed "
+          >
+            {startAutoPlay ? "start auto play" : "stop auto play"}
+          </div>
+        ) : (
+          <div
+            onClick={() => {
+             !singleBetLoading && handlePlay();
+            }}
+            className={`${
+              selectedNumbers.length > 0 || auto || singleBetLoading
+                ? "cursor-pointer"
+                : " cursor-not-allowed "
             }w-full md:w-[279px] h-[56px] md:h-[73px] bg-primary-game hover:bg-dark-green rounded-md text-white
             ${auto ? "!text-[24px]" : "w-full"}
-            text-3xl md:text-4xl flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
-        >
-          {"play"}
-        </div>
-      )}
+            text-3xl ${singleBetLoading?"cursor-not-allowed": "cursor-pointer"} md:text-4xl hidden md:block md:flex justify-center items-center select-none font-rubik uppercase active:scale-95 transition-all ease-in-out duration-300 transform hover:scale-105 `}
+          >
+            {"play"}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
-
-export default StartPlayKeno;
+export default PlayKeno;
