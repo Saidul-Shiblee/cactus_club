@@ -154,7 +154,7 @@ useEffect(() => {
                       <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">
                         {selectedCurrency == "ETH" && (winnerCredit*500000)} 
                         {(selectedCurrency == "USDC" || selectedCurrency =="USDT") && (winnerCredit*100)} 
-                       Credits</p>
+                      <span> </span> Credits</p>
                     </div>
                   </div>
                 </div>
