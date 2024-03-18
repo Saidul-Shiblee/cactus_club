@@ -96,9 +96,11 @@ export function hasSelectedTrue(gameNumbers) {
 
 export function generateRandomArray(length) {
   const randomArray = [];
-  for (let i = 0; i < length; i++) {
-      const randomNum = Math.floor(Math.random() * 40) + 1;
+  while (randomArray.length < length) {
+    const randomNum = Math.floor(Math.random() * 40) + 1;
+    if (!randomArray.includes(randomNum)) {
       randomArray.push(randomNum);
+    }
   }
   return randomArray;
 }

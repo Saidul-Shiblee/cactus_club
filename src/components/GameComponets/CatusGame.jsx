@@ -30,6 +30,8 @@ const CatusGame = ({ gameNumbers, setGameNumbers,progress, resultModal, setResul
 
 
   const navigate = useNavigate();
+  const ethBetAmount = (betSize / 10) * 0.00002;
+  const usdcUsdtAmount = (betSize / 10) * 0.1;
 
   const onClose = () => {
     setGameNumbers(gameSelectedNumbers)
@@ -145,10 +147,10 @@ useEffect(() => {
                         {selectedCurrency}
                       </p>
                       <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">
-                        {selectedCurrency == "ETH" && winnerCredit * 500000}
+                        {selectedCurrency == "ETH" && winnerCredit * ethBetAmount * 500000}
                         {(selectedCurrency == "USDC" ||
                           selectedCurrency == "USDT") &&
-                          winnerCredit * 100}
+                          parseFloat(winnerCredit * usdcUsdtAmount * 100).toFixed(2)}
                         <span> </span> Credits
                       </p>
                     </div>

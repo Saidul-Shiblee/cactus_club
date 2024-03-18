@@ -104,8 +104,8 @@ if (!hasSelectedTrue(gameNumbers)) {
                 .filter((item) => item.selected)
                 .map((item) => item.id),
               BetAmount: selectedCurrency === "ETH"
-                ? parseFloat((betSize / 10) * 0.00002).toFixed(5)
-                : parseFloat((betSize / 10) * 0.1).toFixed(5),
+                ? +parseFloat((betSize / 10) * 0.00002).toFixed(5)
+                : +parseFloat((betSize / 10) * 0.1).toFixed(5),
               CoinType: selectedCurrency,
               ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
             },
@@ -138,6 +138,10 @@ if (!hasSelectedTrue(gameNumbers)) {
           if(res?.data?.data?.code == 1){
             setInsufficientFundsError(true);
           }
+
+          if(res?.data?.data?.code == -1){
+            toast.error("something Went Wrong!");
+          }
           if (res?.data?.data?.code === -2) {
             setAuthToken("");
             setIsLoggedIn(false);
@@ -169,6 +173,9 @@ if (!hasSelectedTrue(gameNumbers)) {
           }
           setBetLoading(false);
           setBetsNumber((pre) => pre - 1);
+          if (betsNumber === 0 || stopLoop) {
+            setAuto(false);
+          }
         } catch (error) {
           console.log(error);
         } finally {
@@ -224,7 +231,7 @@ if (!hasSelectedTrue(gameNumbers)) {
           setSelectedNumbers([]);
           localStorage.clear();
         }
-        setWinnerCredit(res?.data?.data?.Profit);
+        setWinnerCredit(res?.data?.data?.Payout);
         console.log("profit", res?.data?.data?.Profit)
         const winFields = res?.data?.data?.WinFields;
         console.log("win Fields", winFields);

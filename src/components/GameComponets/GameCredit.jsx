@@ -51,6 +51,8 @@ const GameCredit = ({
   // const [startAutoPlay, setStartAutoPlay] = useState(true);
   const navigate = useNavigate();
 
+  console.log("auto", auto);
+
   const handleMinus = () => {
     setCount(pv => pv - 1);
     if (count <= 0) {

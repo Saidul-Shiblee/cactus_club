@@ -32,19 +32,8 @@ export const AvartarDropDownItem = [
         label: "KENO",
         href: "/keno",
     },
-
     {
         id: 4,
-        label: "NEWS",
-        href: "/",
-    },
-    {
-        id: 5,
-        label: "SUPPORT",
-        href: "/",
-    },
-    {
-        id: 6,
         label: "FAQ",
         href: "/FAQ",
     },

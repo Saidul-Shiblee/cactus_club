@@ -8,7 +8,7 @@ export default function VerifyData({ data }) {
       const screenWidth = window.innerWidth;
       if (screenWidth <= 640) {
         setScreenSize('small');
-      } else if (screenWidth <= 1024) { // Adjust the threshold as per your definition of a mid-sized screen
+      } else if (screenWidth <= 1024) { 
         setScreenSize('mid');
       } else {
         setScreenSize('large');
@@ -21,7 +21,6 @@ export default function VerifyData({ data }) {
     };
   }, []);
 
-  console.log("historyVerify", data)
   const textTwoLines = (text) => {
     if (!text) {
       return ['', ''];
@@ -195,7 +194,8 @@ export default function VerifyData({ data }) {
                   {hashData.Field}
                   </td>
                   <td className=" text-[#5E3D1C] py-[11px] text-center font-poppins text-[12px] font-normal uppercase">
-                    {hashData.HashPart}
+                    {hashData.NewField}
+                    {/* {console.log(hashData)} */}
                   </td>
                 </tr>
               </tbody>

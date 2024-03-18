@@ -81,7 +81,7 @@ const KenoGame = () => {
   return (
     <MainLayout>
       <Toaster />
-      <div className="bg-keno-bg-lg bg-cover bg-no-repeat h-full ">
+      <div className="max-w-[1920px] mx-auto bg-keno-bg-lg bg-cover bg-no-repeat h-full ">
         <CactusKenoTitle />
         <div className="flex flex-wrap md:flex-wrap lg:flex-nowrap px-[15px] md:pr-0 md:pl-[34px] gap-7 mt-2 ">
           <div className="bg-white rounded-lg w-full md:w-[830px] mb-8">
