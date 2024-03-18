@@ -188,6 +188,7 @@ if (!hasSelectedTrue(gameNumbers)) {
             if (i === betsNumber - 1) {
               abortRef.current = true;
               setStartAutoPlay(true);
+              setshouldIncrease(true);
             }
       }
     } else {

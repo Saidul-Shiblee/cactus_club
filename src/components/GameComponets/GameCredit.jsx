@@ -134,6 +134,10 @@ const GameCredit = ({
 
   }
 
+  // useEffect(() => {
+  //   handleAutoBet();
+  // }, [betsNumber]);
+
   const handleBetNumberChange = (e) => {
     let value = e.target.value;
     if (!/^\d*$/.test(value)) {
@@ -432,84 +436,11 @@ const GameCredit = ({
     setBetSize(10);
   };
 
-  const closeResultModal = () => {
-    setGameNumbers([
-      { id: 1 },
-      { id: 2 },
-      { id: 3 },
-      { id: 4 },
-      { id: 5 },
-      { id: 6 },
-      { id: 7 },
-      { id: 8 },
-      { id: 9 },
-      { id: 10 },
-      { id: 11 },
-      { id: 12 },
-      { id: 13 },
-      { id: 14 },
-      { id: 15 },
-      { id: 16 },
-      { id: 17 },
-      { id: 18 },
-      { id: 19 },
-      { id: 20 },
-      { id: 21 },
-      { id: 22 },
-      { id: 23 },
-      { id: 24 },
-      { id: 25 },
-      { id: 26 },
-      { id: 27 },
-      { id: 28 },
-      { id: 29 },
-      { id: 30 },
-      { id: 31 },
-      { id: 32 },
-      { id: 33 },
-      { id: 34 },
-      { id: 35 },
-      { id: 36 },
-      { id: 37 },
-      { id: 38 },
-      { id: 39 },
-      { id: 40 },
-    ]);
-    setSelectedLength([]);
-    setSelectedNumbers([]);
-    setProgress(0);
-    setSelectedBetData({});
-    setResultModal(false);
-  };
-
-  const handleMax = () => {
-    setBetSize(15500000);
-  };
-  const handleHalf = () => {
-    if (betSize % 2 == 0 && betSize > 20) {
-      setBetSize(betSize / 2);
-    } else {
-      setBetSize(betSize);
-    }
-  };
-  const handle2x = () => {
-    if (betSize >= 15500000) {
-      setBetSize(15500000);
-    } else {
-      setBetSize(betSize * 2);
-    }
-  };
+ 
   const handleSelectError = () => {
     toast.error("Select Atleast 1 Number");
   };
 
-  const handlePlayClick = () => {
-    if (!singleBetLoading && (selectedNumbers.length > 0 || auto)) {
-      handlePlay();
-    } else if (!singleBetLoading) {
-      handleSelectError();
-    }
-  };
   return (
     <div className="px-2 md:px-6 w-full">
       <div className="flex flex-wrap lg:flex-nowrap gap-3 w-full">
