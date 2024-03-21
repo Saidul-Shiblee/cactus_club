@@ -141,9 +141,9 @@ useEffect(() => {
                         You Won
                       </p>
                       <p className="mt-2 font-poppins font-bold text-white text-[12px] uppercase text-center">
-                        {selectedCurrency == "ETH" && (betSize / 10) * 0.00002}
-                        {selectedCurrency == "USDT" && (betSize / 10) * 0.1}
-                        {selectedCurrency == "USDC" && (betSize / 10) * 0.1}
+                        {selectedCurrency == "ETH" && ((betSize / 10) * 0.00002) * winnerCredit}
+                        {selectedCurrency == "USDT" && ((betSize / 10) * 0.1)*winnerCredit}
+                        {selectedCurrency == "USDC" && ((betSize / 10) * 0.1)*winnerCredit}
                         {selectedCurrency}
                       </p>
                       <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">

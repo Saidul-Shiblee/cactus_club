@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 export default function VerifyData({ data }) {
   const [screenSize, setScreenSize] = useState('large');
 
+  console.log("res", data);
+
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -129,7 +131,7 @@ export default function VerifyData({ data }) {
         </div>
       </div>
       <h4 className="text-[#5E3D1C] font-poppins text-[20px] font-bold uppercase pt-[50px]">
-        step 0
+        step {data.data.Step}
       </h4>
       <div>
         <p className=" font-poppins text-primary-title text-xs font-bold my-2 mt-4 uppercase">
