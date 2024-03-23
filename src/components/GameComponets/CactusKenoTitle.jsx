@@ -87,7 +87,7 @@ const CactusKenoTitle = ({winnerCredit, profitAmount, setWinnerCredit,setProfitA
 
   useEffect(() => {
     generateNextClientSeed()
-  },[winnerCredit, profitAmount])
+  },[profitAmount])
 
   const provablyFairData = async () => {
     try {
@@ -98,10 +98,10 @@ const CactusKenoTitle = ({winnerCredit, profitAmount, setWinnerCredit,setProfitA
         }
       }
       );
-      if (!lastClientSeed) {
+      if (lastClientSeed) {
         setLastClientSeed(res?.data?.data?.LastClientSeed)
       }
-      console.log("retrive res", res);
+      // console.log("retrive res", res);
       localStorage.setItem("cactus_last_client_seed", res?.data?.data?.LastClientSeed)
       setProvablyData(res.data);
       setLastServerSeedSHA256(res.data?.data?.LastServerSeedSHA256);
@@ -120,8 +120,7 @@ const CactusKenoTitle = ({winnerCredit, profitAmount, setWinnerCredit,setProfitA
     }
     // setProfitAmoun(0);
     setProfitAmount(0);
-    setWinnerCredit(0);
-  }, [!provablyData, winnerCredit, profitAmount])
+  }, [!provablyData, profitAmount])
   const handleCheckboxChange = () => {
     setCustomSeedField(!customeSeedField);
   };

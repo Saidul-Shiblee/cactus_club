@@ -124,7 +124,7 @@ useEffect(() => {
           )}
           <div>
             {/* Modal  */}
-            {resultModal && winnerCredit > 0 && (
+            {resultModal && (winnerCredit > 0) && (
               <div className="absolute inset-0  z-[10]">
                 <div className="flex items-center justify-center mt-36">
                   <div className="absolute z-50 bg-[#46CBA1E5] p-3 mx-2 md:mx-0 rounded-md shadow">
