@@ -7,12 +7,17 @@ import UiModal from '../Ui/UiModal';
 import cactusLogo from "./../../assets/image/cactus.png";
 import ProbablyFairPolicy from './ProbablyFairPolicy';
 import HowToPlayKenoGames from './HowToPlayKenoGames';
-const CactusKenoTitle = () => {
-  const { isLoggedIn, authToken } = useGlobalContext();
+const CactusKenoTitle = ({winnerCredit}) => {
+  const {
+    isLoggedIn,
+    authToken,
+    nextClientSeed,
+    setNextClientSeed
+  } = useGlobalContext();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isHowToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
   const [provablyData, setProvablyData] = useState();
-  const [nextClientSeed, setNextClientSeed] = useState('');
+  // const [nextClientSeed, setNextClientSeed] = useState('');
   const [customeSeedField, setCustomSeedField] = useState(false);
   const [customeSeedInputValue, setCustomeSeedInputValue] = useState("");
   const [error, setError] = useState(null);
@@ -79,6 +84,11 @@ const CactusKenoTitle = () => {
     setCustomeSeedInputValue(result);
     localStorage.setItem("cactus_next_client_seed", result);
   };
+
+  useEffect(() => {
+    generateNextClientSeed()
+  },[winnerCredit])
+
   const provablyFairData = async () => {
     try {
       const res = await axios.get(`${URL}/getProvablyFair`, {
@@ -91,6 +101,7 @@ const CactusKenoTitle = () => {
       if (!lastClientSeed) {
         setLastClientSeed(res?.data?.data?.LastClientSeed)
       }
+      console.log("retrive res", res);
       localStorage.setItem("cactus_last_client_seed", res?.data?.data?.LastClientSeed)
       setProvablyData(res.data);
       setLastServerSeedSHA256(res.data?.data?.LastServerSeedSHA256);
@@ -107,7 +118,7 @@ const CactusKenoTitle = () => {
     } else {
       setNextClientSeed(nextClient)
     }
-  }, [!provablyData])
+  }, [!provablyData, winnerCredit])
   const handleCheckboxChange = () => {
     setCustomSeedField(!customeSeedField);
   };
@@ -133,7 +144,7 @@ const CactusKenoTitle = () => {
         </h1>
       </div>
       <div className="flex justify-center items-center mx-auto md:mx-0 gap-4">
-        
+
         <h3
           onClick={() => setHowToPlayModalOpen(true)}
           className="text-white underline cursor-pointer font-bold"
@@ -258,11 +269,11 @@ const CactusKenoTitle = () => {
           <div className="px-[12px] md:px-[50px] w-[345px] md:w-[900px]">
             <h2 className=' text-primary-title font-rubik text-[24px] font-normal uppercase pb-3 text-center'>how to play cactus keno</h2>
             <p className=' font-IBM text-base text-[#0E0E0E80]'>
-            Join the excitement of Cactus Club Keno, where your intuition could lead to fantastic rewards! Here's a simple guide on how to play:
-            <br/>
+              Join the excitement of Cactus Club Keno, where your intuition could lead to fantastic rewards! Here's a simple guide on how to play:
+              <br />
             </p>
             <div>
-             
+
             </div>
             <HowToPlayKenoGames />
             {

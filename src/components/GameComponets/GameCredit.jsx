@@ -13,7 +13,7 @@ import reveledKenoSound from "./../../assets/game_sounds/Reveal_Number.mp3";
 import winKenoSound from "./../../assets/game_sounds/win.mp3";
 import useSound from "use-sound";
 import axios from 'axios';
-import { generateRandomArray } from '../../utilities/utilitiesFunction';
+import { generateRandomArray, hasSelectedTrue } from '../../utilities/utilitiesFunction';
 const GameCredit = ({
   setAuto, auto, gameNumbers, setGameNumbers, count, setCount, startAutoPlay,
   setStartAutoPlay,
@@ -25,7 +25,12 @@ const GameCredit = ({
   setWinnerCredit,
   winnerCredit,
   gameSelectedNumbers,
-  setGameSelectedNumbers,}) => {
+  setGameSelectedNumbers,
+  notSelectedTielsError, 
+  setNotSelectedTielsError,
+  InsufficientFundsError, 
+  setInsufficientFundsError
+}) => {
   const {
     betsNumber,
     setBetsNumber,
@@ -42,6 +47,9 @@ const GameCredit = ({
     setSelectedBetData,
     selectedBetData,
     shouldIncrease,
+    setshouldIncrease,
+    nextClientSeed,
+    setNextClientSeed
   } = useGlobalContext();
   const [reveledPlay] = useSound(reveledKenoSound);
   const [winPlay] = useSound(winKenoSound);
@@ -179,192 +187,215 @@ const GameCredit = ({
     setStartAutoPlay(true);
   }
   const handlePlay = async () => {
-    console.log("first");
-    setStartAutoPlay(false)
-    console.log('first')
-    // console.log("Selected Currencty", selectedCurrency,"+", betAmount);
-    if (auto) {
-      setStartAutoPlay(false)
-      for (let i = 0; i < betsNumber; i++) {
-
-        if (abortRef.current) {
-          return;
-        }
-
-        try {
-          const res = await axios.post(
-            "https://apis.yummylabs.io/placeKenoBet",
-            {
-              SelectedField: gameNumbers
-                .filter((item) => item.selected)
-                .map((item) => item.id),
-              BetAmount: selectedCurrency === "ETH"
-                ? (betSize / 10) * 0.00002
-                : (betSize / 10) * 0.1,
-              CoinType: selectedCurrency,
-              ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: authToken,
-              },
-            }
-          );
-          setCurrencyBalance(res?.data?.data?.Balance);
-          const winFields = res?.data?.data?.WinFields;
-          let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
-          let order = 0;
-          const numbersToRenderNext = copiedGameNumbers?.map((el) => {
-            if (winFields.includes(el.id) && el.hasOwnProperty("selected")) {
-              order += 1;
-              return { ...el, matched: true, order };
-            } else if (
-              winFields.includes(el.id) &&
-              !el.hasOwnProperty("selected")
-            ) {
-              order += 1;
-              return { ...el, existInResult: true, order };
-            } else {
-              return el;
-            }
-          });
-          if (res?.data?.code == -2) {
-            setAuthToken("");
-            setIsLoggedIn(false);
-            setCurrencyBalance(null);
-            setSelectedLength([]);
-            setSelectedNumbers([]);
-            localStorage.removeItem("cactus_club_token");
-            localStorage.removeItem("cactus_club_currency_balance");
-            navigate("/");
-          }
-          setGameNumbers(numbersToRenderNext);
-          numbersToRenderNext
-            .filter((el) => el.selected && el.matched)
-            .map((el, i) => {
-              setTimeout(
-                () => setProgress((100 / 10) * (i + 1)),
-                el.order * 400
-              );
-            });
-          numbersToRenderNext
-            .filter((el) => el.matched || el.existInResult)
-            .map((el) => {
-              console.log("going...");
-              setTimeout(() => {
-                reveledPlay();
-              }, el.order * 400);
-            });
-          await new Promise((resolve) => setTimeout(resolve, 5000));
-          if (res?.data?.data?.Profit > 0) {
-            winPlay();
-          }
-          setBetLoading(false);
-          setBetsNumber((pre) => pre - 1);
-        } catch (error) {
-          console.log(error);
-          toast.error("Something went wrong!");
-        } finally {
-          setGameNumbers(gameSelectedNumbers)
-          setProgress(0);
-          if (betsNumber === 0 || stopLoop) {
-            setAuto(false);
-          }
-        }
-      }
-    } else {
-      setSingleBetLoading(true);
-      try {
-        const res = await axios.post(
-          "https://apis.yummylabs.io/placeKenoBet",
-          {
-            SelectedField: gameNumbers
-              .filter((item) => item.selected)
-              .map((item) => item.id),
-            BetAmount:
-              selectedCurrency === "ETH"
-                ? (betSize / 10) * 0.00002
-                : (betSize / 10) * 0.1,
-            CoinType: selectedCurrency,
-            ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: authToken,
-            },
-          }
-        );
-        if (res?.data?.data?.Balance) {
-          setCurrencyBalance(res?.data?.data?.Balance);
-        }
-
-        if (res?.data?.code == -2) {
-          setIsLoggedIn(false);
-          navigate("/");
-          setSelectedLength([]);
-          setSelectedNumbers([]);
-          localStorage.clear();
-        }
-        setWinnerCredit(res?.data?.data?.Profit);
-        const winFields = res?.data?.data?.WinFields;
-        let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
-        let order = 0;
-        const numbersToRenderNext = copiedGameNumbers?.map((el) => {
-          if (winFields.includes(el.id) && el.hasOwnProperty("selected")) {
-            order += 1;
-            return { ...el, matched: true, order };
-          } else if (
-            winFields.includes(el.id) &&
-            !el.hasOwnProperty("selected")
-          ) {
-            order += 1;
-            return { ...el, existInResult: true, order };
-          } else {
-            return el;
-          }
-        });
-        numbersToRenderNext
-          .filter((el) => el.selected && el.matched)
-          .map((el, i) => {
-            setTimeout(() => {
-              setProgress((100 / 10) * (i + 1));
-            }, el.order * 400);
-          });
-
-        numbersToRenderNext
-          .filter((el) => el.matched || el.existInResult)
-          .map((el) => {
-            setTimeout(() => {
-              reveledPlay();
-            }, el.order * 400);
-          });
-
-        setGameNumbers(numbersToRenderNext);
-        const intervalId = setInterval(() => {
-          setSingleBetLoading(false);
-          if (res?.data?.data?.Profit > 0) {
-            winPlay();
-            setResultModal(true);
-          }
-          if (res?.data?.data?.Profit < 0) {
-
-            setSelectedLength([])
-          }
-          setGameNumbers(gameSelectedNumbers)
-          setProgress(0);
-
-          clearInterval(intervalId);
-        }, 5000);
-      } catch (error) {
-        console.log(error);
-        toast.error("Something Went Wrong!");
-      } finally {
-
-      }
+    if (!hasSelectedTrue(gameNumbers)) {
+      setNotSelectedTielsError(true);
+      return;
     }
-  };
+        if (auto) {
+          setshouldIncrease(false);
+          setStartAutoPlay(false)
+          abortRef.current = false;
+          for (let i = 0; i < betsNumber; i++) {
+    
+            if (abortRef.current) {
+              return;
+            }
+    
+            try {
+              const res = await axios.post(
+                "https://apis.yummylabs.io/placeKenoBet",
+                {
+                  SelectedField: gameNumbers
+                    .filter((item) => item.selected)
+                    .map((item) => item.id),
+                  BetAmount: selectedCurrency === "ETH"
+                    ? +parseFloat((betSize / 10) * 0.00002).toFixed(5)
+                    : +parseFloat((betSize / 10) * 0.1).toFixed(5),
+                  CoinType: selectedCurrency,
+                  ClientSeed: nextClientSeed,
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: authToken,
+                  },
+                }
+              );
+              setCurrencyBalance(res?.data?.data?.Balance);
+              const winFields = res?.data?.data?.WinFields;
+              console.log(res)
+              let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
+              let order = 0;
+              const numbersToRenderNext = copiedGameNumbers?.map((el) => {
+                if (winFields.includes(el.id) && el.hasOwnProperty("selected")) {
+                  order += 1;
+                  return { ...el, matched: true, order };
+                } else if (
+                  winFields.includes(el.id) &&
+                  !el.hasOwnProperty("selected")
+                ) {
+                  order += 1;
+                  return { ...el, existInResult: true, order };
+                } else {
+                  return el;
+                }
+              });
+              if(res?.data?.data?.code == 1){
+                setInsufficientFundsError(true);
+              }
+    
+              if(res?.data?.data?.code == -1){
+                toast.error("something Went Wrong!");
+              }
+              if (res?.data?.data?.code === -2) {
+                setAuthToken("");
+                setIsLoggedIn(false);
+                setCurrencyBalance(null);
+                setSelectedLength([]);
+                setSelectedNumbers([]);
+                localStorage.clear();
+                navigate("/");
+              }
+              setGameNumbers(numbersToRenderNext);
+              numbersToRenderNext
+                .filter((el) => el.selected && el.matched)
+                .map((el, i) => {
+                  setTimeout(
+                    () => setProgress((100 / 10) * (i + 1)),
+                    el.order * 400
+                  );
+                });
+              numbersToRenderNext
+                .filter((el) => el.matched || el.existInResult)
+                .map((el) => {
+                  setTimeout(() => {
+                    reveledPlay();
+                  }, el.order * 400);
+                });
+              await new Promise((resolve) => setTimeout(resolve, 5000));
+              if (res?.data?.data?.Profit > 0) {
+                winPlay();
+              }
+              setBetLoading(false);
+              setBetsNumber((pre) => pre - 1);
+              if (betsNumber === 0 || stopLoop) {
+                setAuto(false);
+              }
+            } catch (error) {
+              console.log(error);
+            } finally {
+              setGameNumbers(gameSelectedNumbers)
+              setProgress(0);
+              if (betsNumber === 0 || stopLoop) {
+                setAuto(false);
+              }
+            }
+                if (i === betsNumber - 1) {
+                  abortRef.current = true;
+                  setStartAutoPlay(true);
+                  setshouldIncrease(true);
+                }
+          }
+        } else {
+          setSingleBetLoading(true);
+          try {
+            const res = await axios.post(
+              "https://apis.yummylabs.io/placeKenoBet",
+              {
+                SelectedField: gameNumbers
+                  .filter((item) => item.selected)
+                  .map((item) => item.id),
+                BetAmount: selectedCurrency === "ETH"
+                    ? +parseFloat((betSize / 10) * 0.00002).toFixed(5)
+                    : +parseFloat((betSize / 10) * 0.1).toFixed(5),
+                CoinType: selectedCurrency,
+                ClientSeed: nextClientSeed,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: authToken,
+                },
+              }
+            );
+    
+    
+            if(res?.data?.code == 1){
+              setInsufficientFundsError(true);
+            }
+            if (res?.data?.data?.Balance) {
+              setInsufficientFundsError(false);
+              setCurrencyBalance(res?.data?.data?.Balance);
+            }
+    
+            console.log("res", res);
+    
+            if (res?.data?.code == -2) {
+              setIsLoggedIn(false);
+              navigate("/");
+              setSelectedLength([]);
+              setSelectedNumbers([]);
+              localStorage.clear();
+            }
+            setWinnerCredit(res?.data?.data?.Payout);
+            console.log("profit", res?.data?.data?.Profit)
+            const winFields = res?.data?.data?.WinFields;
+            console.log("win Fields", winFields);
+            let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
+            let order = 0;
+            const numbersToRenderNext = copiedGameNumbers?.map((el) => {
+              if (winFields.includes(el?.id) && el.hasOwnProperty("selected")) {
+                order += 1;
+                return { ...el, matched: true, order };
+              } else if (
+                winFields.includes(el.id) &&
+                !el.hasOwnProperty("selected")
+              ) {
+                order += 1;
+                return { ...el, existInResult: true, order };
+              } else {
+                return el;
+              }
+            });
+            numbersToRenderNext
+              .filter((el) => el.selected && el.matched)
+              .map((el, i) => {
+                setTimeout(() => {
+                  setProgress((100 / 10) * (i + 1));
+                }, el.order * 400);
+              });
+    
+            numbersToRenderNext
+              .filter((el) => el.matched || el.existInResult)
+              .map((el) => {
+                setTimeout(() => {
+                  reveledPlay();
+                }, el.order * 400);
+              });
+    
+            setGameNumbers(numbersToRenderNext);
+            const intervalId = setInterval(() => {
+              setSingleBetLoading(false);
+              if (res?.data?.data?.Profit > 0) {
+                winPlay();
+                setResultModal(true);
+              }
+              if(res?.data?.data?.Profit < 0){
+    
+              setSelectedLength([])
+              }
+              setGameNumbers(gameSelectedNumbers)
+              setProgress(0);
+    
+              clearInterval(intervalId);
+            }, 5000);
+          } catch (error) {
+            console.log(error);
+          } finally {
+    
+          }
+        }
+      };
 
    // Reset Auto play off functionality
 

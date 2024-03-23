@@ -82,7 +82,10 @@ const KenoGame = () => {
     <MainLayout>
       <Toaster />
       <div className="max-w-[1920px] mx-auto bg-keno-bg-lg bg-cover bg-no-repeat h-full ">
-        <CactusKenoTitle />
+        <CactusKenoTitle
+          winnerCredit={winnerCredit}
+          setWinnerCredit={setWinnerCredit}
+        />
         <div className="flex flex-wrap md:flex-wrap lg:flex-nowrap px-[15px] md:pr-0 md:pl-[34px] gap-7 mt-2 ">
           <div className="bg-white rounded-lg w-full md:w-[830px] mb-8">
             <CatusGame
@@ -121,6 +124,10 @@ const KenoGame = () => {
               setWinnerCredit={setWinnerCredit}
               gameSelectedNumbers={gameSelectedNumbers}
               setGameSelectedNumbers={setGameSelectedNumbers}
+              notSelectedTielsError={notSelectedTielsError}
+              setNotSelectedTielsError={setNotSelectedTielsError}
+              InsufficientFundsError={InsufficientFundsError}
+              setInsufficientFundsError={setInsufficientFundsError}
 
             />
             {/* <div className='block md:hidden my-3 mx-2'>

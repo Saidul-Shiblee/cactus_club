@@ -48,6 +48,8 @@ const PlayKeno = ({
     setSelectedBetData,
     selectedBetData,
     setshouldIncrease,
+    nextClientSeed,
+    setNextClientSeed
   } = useGlobalContext();
   const [reveledPlay] = useSound(reveledKenoSound);
   const [winPlay] = useSound(winKenoSound);
@@ -107,7 +109,7 @@ if (!hasSelectedTrue(gameNumbers)) {
                 ? +parseFloat((betSize / 10) * 0.00002).toFixed(5)
                 : +parseFloat((betSize / 10) * 0.1).toFixed(5),
               CoinType: selectedCurrency,
-              ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
+              ClientSeed: nextClientSeed,
             },
             {
               headers: {
@@ -204,7 +206,7 @@ if (!hasSelectedTrue(gameNumbers)) {
                 ? +parseFloat((betSize / 10) * 0.00002).toFixed(5)
                 : +parseFloat((betSize / 10) * 0.1).toFixed(5),
             CoinType: selectedCurrency,
-            ClientSeed: "YH5TKhsykH9obK5UiXbGErFUnBcMClAle7BtG4va",
+            ClientSeed: nextClientSeed,
           },
           {
             headers: {

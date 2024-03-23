@@ -212,7 +212,7 @@ const MyBets = () => {
           </div>
           <div className="flex items-center justify-center mt-[45px]">
             <div onClick={closeModal}>
-              <UiButton label={"OK"} />
+              <UiButton label={"OK"} classes='w-[294px]'/>
             </div>
           </div>
         </UiModal>

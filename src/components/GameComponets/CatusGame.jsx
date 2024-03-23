@@ -147,7 +147,7 @@ useEffect(() => {
                         {selectedCurrency}
                       </p>
                       <p className=" font-poppins font-bold text-white text-2xl uppercase text-center">
-                        {selectedCurrency == "ETH" && winnerCredit * ethBetAmount * 500000}
+                        {selectedCurrency == "ETH" && (winnerCredit * ethBetAmount * 500000).toFixed(2)}
                         {(selectedCurrency == "USDC" ||
                           selectedCurrency == "USDT") &&
                           parseFloat(winnerCredit * usdcUsdtAmount * 100).toFixed(2)}

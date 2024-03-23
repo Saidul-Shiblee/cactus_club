@@ -130,6 +130,8 @@ export function ContextProvider({ children }) {
 
 
 const [shouldIncrease, setshouldIncrease] = useState(true);
+const [nextClientSeed, setNextClientSeed] = useState('');
+
 
 
   return (
@@ -169,6 +171,8 @@ const [shouldIncrease, setshouldIncrease] = useState(true);
         setSelectedBetData,
         shouldIncrease,
         setshouldIncrease,
+        nextClientSeed, 
+        setNextClientSeed
       }}
     >
       {children}
