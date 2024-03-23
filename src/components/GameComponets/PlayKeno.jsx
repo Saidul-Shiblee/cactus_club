@@ -29,7 +29,9 @@ const PlayKeno = ({
   notSelectedTielsError, 
   setNotSelectedTielsError,
   InsufficientFundsError, 
-  setInsufficientFundsError
+  setInsufficientFundsError,
+  profitAmount, 
+  setProfitAmount
 }) => {
   const navigate = useNavigate();
   const {
@@ -119,8 +121,9 @@ if (!hasSelectedTrue(gameNumbers)) {
             }
           );
           setCurrencyBalance(res?.data?.data?.Balance);
+          setProfitAmount(res?.data?.data?.Profit);
           const winFields = res?.data?.data?.WinFields;
-          console.log(res)
+          // console.log(res)
           let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
           let order = 0;
           const numbersToRenderNext = copiedGameNumbers?.map((el) => {
@@ -235,7 +238,9 @@ if (!hasSelectedTrue(gameNumbers)) {
           localStorage.clear();
         }
         setWinnerCredit(res?.data?.data?.Payout);
-        console.log("profit", res?.data?.data?.Profit)
+        setProfitAmount(res?.data?.data?.Profit);
+
+        // console.log("profit", res?.data?.data?.Profit)
         const winFields = res?.data?.data?.WinFields;
         console.log("win Fields", winFields);
         let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));

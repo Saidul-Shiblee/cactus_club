@@ -29,7 +29,9 @@ const GameCredit = ({
   notSelectedTielsError, 
   setNotSelectedTielsError,
   InsufficientFundsError, 
-  setInsufficientFundsError
+  setInsufficientFundsError,
+  profitAmount, 
+  setProfitAmount
 }) => {
   const {
     betsNumber,
@@ -222,6 +224,7 @@ const GameCredit = ({
                 }
               );
               setCurrencyBalance(res?.data?.data?.Balance);
+              setProfitAmount(res?.data?.data?.Profit);
               const winFields = res?.data?.data?.WinFields;
               console.log(res)
               let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
@@ -338,9 +341,10 @@ const GameCredit = ({
               localStorage.clear();
             }
             setWinnerCredit(res?.data?.data?.Payout);
-            console.log("profit", res?.data?.data?.Profit)
+            setProfitAmount(res?.data?.data?.Profit);
+            // console.log("profit", res?.data?.data?.Profit)
             const winFields = res?.data?.data?.WinFields;
-            console.log("win Fields", winFields);
+            // console.log("win Fields", winFields);
             let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
             let order = 0;
             const numbersToRenderNext = copiedGameNumbers?.map((el) => {

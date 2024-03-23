@@ -20,6 +20,7 @@ const KenoGame = () => {
   const [gameSelectedNumbers, setGameSelectedNumbers] = useState();
   const [notSelectedTielsError, setNotSelectedTielsError] = useState(false)
   const [InsufficientFundsError, setInsufficientFundsError] = useState(false)
+  const [profitAmount, setProfitAmount] = useState(0);
   const {
     setSelectedLength,
     setSelectedNumbers,
@@ -85,6 +86,8 @@ const KenoGame = () => {
         <CactusKenoTitle
           winnerCredit={winnerCredit}
           setWinnerCredit={setWinnerCredit}
+          profitAmount={profitAmount}
+          setProfitAmount={setProfitAmount}
         />
         <div className="flex flex-wrap md:flex-wrap lg:flex-nowrap px-[15px] md:pr-0 md:pl-[34px] gap-7 mt-2 ">
           <div className="bg-white rounded-lg w-full md:w-[830px] mb-8">
@@ -128,6 +131,8 @@ const KenoGame = () => {
               setNotSelectedTielsError={setNotSelectedTielsError}
               InsufficientFundsError={InsufficientFundsError}
               setInsufficientFundsError={setInsufficientFundsError}
+              profitAmount={profitAmount}
+              setProfitAmount={setProfitAmount}
 
             />
             {/* <div className='block md:hidden my-3 mx-2'>
@@ -174,6 +179,8 @@ const KenoGame = () => {
               setNotSelectedTielsError={setNotSelectedTielsError}
               InsufficientFundsError={InsufficientFundsError}
               setInsufficientFundsError={setInsufficientFundsError}
+              profitAmount={profitAmount}
+              setProfitAmount={setProfitAmount}
             />
             <BalanceRequirment />
           </div>

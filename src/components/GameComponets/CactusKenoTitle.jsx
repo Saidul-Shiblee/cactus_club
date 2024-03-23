@@ -7,7 +7,7 @@ import UiModal from '../Ui/UiModal';
 import cactusLogo from "./../../assets/image/cactus.png";
 import ProbablyFairPolicy from './ProbablyFairPolicy';
 import HowToPlayKenoGames from './HowToPlayKenoGames';
-const CactusKenoTitle = ({winnerCredit}) => {
+const CactusKenoTitle = ({winnerCredit, profitAmount, setWinnerCredit,setProfitAmount}) => {
   const {
     isLoggedIn,
     authToken,
@@ -87,7 +87,7 @@ const CactusKenoTitle = ({winnerCredit}) => {
 
   useEffect(() => {
     generateNextClientSeed()
-  },[winnerCredit])
+  },[winnerCredit, profitAmount])
 
   const provablyFairData = async () => {
     try {
@@ -118,7 +118,10 @@ const CactusKenoTitle = ({winnerCredit}) => {
     } else {
       setNextClientSeed(nextClient)
     }
-  }, [!provablyData, winnerCredit])
+    // setProfitAmoun(0);
+    setProfitAmount(0);
+    setWinnerCredit(0);
+  }, [!provablyData, winnerCredit, profitAmount])
   const handleCheckboxChange = () => {
     setCustomSeedField(!customeSeedField);
   };
