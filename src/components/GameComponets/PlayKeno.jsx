@@ -237,7 +237,7 @@ if (!hasSelectedTrue(gameNumbers)) {
           setSelectedNumbers([]);
           localStorage.clear();
         }
-        setWinnerCredit(res?.data?.data?.Payout);
+        setWinnerCredit(Number(res?.data?.data?.Payout));
         setProfitAmount(res?.data?.data?.Profit);
 
         // console.log("profit", res?.data?.data?.Profit)
@@ -278,7 +278,7 @@ if (!hasSelectedTrue(gameNumbers)) {
         setGameNumbers(numbersToRenderNext);
         const intervalId = setInterval(() => {
           setSingleBetLoading(false);
-          if (res?.data?.data?.Profit > 0) {
+          if (res?.data?.data?.Payout > 0) {
             winPlay();
             setResultModal(true);
           }
