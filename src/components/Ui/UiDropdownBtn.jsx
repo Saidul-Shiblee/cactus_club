@@ -7,6 +7,7 @@ import Icon1 from './../../assets/icons/USDT.svg';
 import Icon from './../../assets/icons/ETH.svg';
 import Uparrow from './../../assets/icons/uparrow.svg';
 import RightIcon from "./../../assets/icons/chevron-right.svg";
+import { Link } from 'react-router-dom';
 
 const UiDropdownBtn = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -138,14 +139,14 @@ const UiDropdownBtn = () => {
                   <span className="block border-b" />
                 </li>
                 <li className="my-[25px] cursor-pointer px-[24px] ">
-                  <div className='hover:text-orange-primary flex justify-between items-center'>
+                  <Link to={"/transaction"} className='hover:text-orange-primary flex justify-between items-center'>
                     <div className=" block truncate text-[#13BC87] font-poppins font-semibold uppercase hover:text-orange-primary">
                       Deposit
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
-                      <path d="M9 18.877L15 12.877L9 6.87695" stroke="#16BD88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M9 18.877L15 12.877L9 6.87695" stroke="#16BD88" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                  </div>
+                  </Link>
                 </li>
               </ul>
             ) : null}

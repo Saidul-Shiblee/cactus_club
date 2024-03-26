@@ -211,7 +211,6 @@ useEffect(() => {
 
                     const orginalProgress = progress ? progress + 10 : 0;
 
-                    console.log(orginalProgress / 10 - 1 === index);
                     return (
                       <div
                         style={{

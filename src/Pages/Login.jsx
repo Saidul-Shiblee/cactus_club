@@ -1,7 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import UiButton from "../components/Ui/UiButton";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "../utilities/spinner";
 import axios from "axios";
 import { useGlobalContext } from "../context/context";
@@ -13,6 +13,7 @@ const Login = () => {
   const [pending, setPending] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
 
@@ -44,6 +45,7 @@ const Login = () => {
   } = useForm();
   const onSubmit = async (data) => {
     setPending(true);
+    setUsername(data.username);
     try {
       const res = await axios.post("https://apis.yummylabs.io/login", {
         Username: data.username,
@@ -53,9 +55,12 @@ const Login = () => {
         Country: clientInfo.country,
       });
 
+      
+
       if (res?.data?.data?.Token && res?.data?.code === 1) {
         setIsLoggedIn(true);
-        // localStorage.setItem("cactus_club_isLoggedIn", true);
+
+        
         localStorage.setItem("cactus_club_token", res?.data?.data?.Token);
         localStorage.setItem("cactus_club_email_verified", res?.data?.data?.EmailVerified);
         localStorage.setItem(
@@ -84,6 +89,12 @@ const Login = () => {
       setPending(false);
     }
   };
+
+  useEffect(() => {
+    if(isLoggedIn){
+      localStorage.setItem("cactus_club_username", username);
+    }
+  },[isLoggedIn, username])
 
 
   return (

@@ -61,7 +61,6 @@ const GameCredit = ({
   // const [startAutoPlay, setStartAutoPlay] = useState(true);
   const navigate = useNavigate();
 
-  console.log("auto", auto);
 
   const handleMinus = () => {
     setCount(pv => pv - 1);
@@ -86,28 +85,6 @@ const GameCredit = ({
       setBetsNumber(0);
     }
   }
-  // const selectRandomElements = () => {
-  //   console.log("click..")
-  //   // if (selectedNumbers.length > 0) {
-  //   //   setGameNumbers(GameNumber);
-  //   //   setSelectedNumbers([]);
-  //   // }
-  //   // if (selectedNumbers.length <= 0) {
-  //     const randomSelect = new Set();
-  //     while (randomSelect.size < count) {
-  //       randomSelect.add(Math.floor(Math.random() * gameNumbers.length));
-  //     }
-  //     setSelectedNumbers([...randomSelect]);
-  //     const newData = gameNumbers.map((el, index) => {
-  //       if (randomSelect.has(index)) {
-  //         return { ...el, selected: true };
-  //       } else {
-  //         return el;
-  //       }
-  //     });
-  //     setGameNumbers(newData);
-  //   // }
-  // };
 
   const selectRandomElements = () => {
     const randomSelect = generateRandomArray(count)
@@ -226,7 +203,6 @@ const GameCredit = ({
               setCurrencyBalance(res?.data?.data?.Balance);
               setProfitAmount(res?.data?.data?.Profit);
               const winFields = res?.data?.data?.WinFields;
-              console.log(res)
               let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
               let order = 0;
               const numbersToRenderNext = copiedGameNumbers?.map((el) => {
@@ -330,8 +306,6 @@ const GameCredit = ({
               setInsufficientFundsError(false);
               setCurrencyBalance(res?.data?.data?.Balance);
             }
-    
-            console.log("res", res);
     
             if (res?.data?.code == -2) {
               setIsLoggedIn(false);

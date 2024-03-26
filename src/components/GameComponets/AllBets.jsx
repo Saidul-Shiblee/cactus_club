@@ -8,36 +8,22 @@ import BetDetailsModal from './BetDetailsModal';
 import UiButton from '../Ui/UiButton';
 // const apiUrl = 'ws://apis.yummylabs.io/ws/getAllBetHistory';
 const AllBets = () => {
-  const [allBetsData, setAllBetsData] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedBet, setSelectedBet] = useState(null);
   const [selectedHistoryVerfiy, setSelectedHistoryVerify] = useState(null);
-  const [playerbet, setPlayerBet] = useState();
+  // const [playerbet, setPlayerBet] = useState();
   const [loading, setLoading] = useState(false);
 
 
 
   const {
-    setAuthToken,
-    setCurrencyBalance,
-    setIsLoggedIn,
-    authToken, isLoggedIn, 
+
+    authToken, 
+    allBetsData, 
   } = useGlobalContext()
   const navigate = useNavigate();
 
-  const fetchInitialData = async () => {
-    try {
-      const response = await axios.get("https://apis.yummylabs.io/getAllBetHistory");
-      if(response?.data?.code == -2){
-        setIsLoggedIn(false);
-        navigate("/");
-        localStorage.clear();
-      }
-      setAllBetsData(response.data.data.records)
-    } catch (error) {
-      console.error('Error fetching initial data:', error);
-    }
-  };
+ 
 
   const closeModal = () => {
     setModalOpen(false);
@@ -61,7 +47,6 @@ const AllBets = () => {
           Authorization: authToken,
         }
       })
-      console.log("res>>\n", response);
       if (response?.data) {
         setSelectedHistoryVerify(response?.data)
       }
@@ -72,24 +57,6 @@ const AllBets = () => {
   };
 
 
-
-  useEffect(() => {
-    fetchInitialData();
-
-    const ws = new WebSocket("wss://apis.yummylabs.io/ws/getAllBetHistory");
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      setAllBetsData(prevData => {
-        const newData = [data, ...prevData.slice(0, 19)];
-        return newData.slice(0, 20);
-      });
-    };
-
-    // Cleanup WebSocket connection
-    return () => {
-      ws.close();
-    };
-  }, []);
 
   return (
     <div>

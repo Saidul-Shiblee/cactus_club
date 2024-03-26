@@ -44,6 +44,11 @@ export function ContextProvider({ children }) {
   const [selectedCurrency, setSelectedCurrency] = useState(" ")
   const [isEmailVarified, setIsEmailVerified] = useState(false);
 
+  const [playerbet, setPlayerBet] = useState([]);
+  const [allBetsData, setAllBetsData] = useState([]);
+
+
+
 
 
   const [userEmail, setUserEmail] = useState("")
@@ -79,6 +84,9 @@ export function ContextProvider({ children }) {
     if (email) {
       setUserEmail(email)
     }
+    if(isLoggedIn){
+      setAllBetsData(allBetsData);
+    }
     if (emailVerified) {
       setIsEmailVerified(emailVerified)
       if (emailVerified === "true") setIsEmailVerified(true);
@@ -87,6 +95,7 @@ export function ContextProvider({ children }) {
     }
 
   }, [isLoggedIn]);
+
 
 
   useEffect(() => {
@@ -172,7 +181,11 @@ const [nextClientSeed, setNextClientSeed] = useState('');
         shouldIncrease,
         setshouldIncrease,
         nextClientSeed, 
-        setNextClientSeed
+        setNextClientSeed,
+        playerbet, 
+        setPlayerBet,
+        allBetsData, 
+        setAllBetsData
       }}
     >
       {children}

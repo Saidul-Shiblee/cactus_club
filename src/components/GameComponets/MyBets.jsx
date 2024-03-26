@@ -5,11 +5,10 @@ import { formattedTimeOnly } from "../../utilities/utilitiesFunction";
 import BetDetailsModal from "./BetDetailsModal";
 import UiModal from "../Ui/UiModal";
 import { useNavigate } from "react-router-dom";
-import VerifyData from "./VerifyData";
 import UiButton from "../Ui/UiButton";
 const MyBets = () => {
-  const { authToken, isLoggedIn, setIsLoggedIn } = useGlobalContext();
-  const [playerbet, setPlayerBet] = useState();
+  const { authToken, isLoggedIn, setIsLoggedIn, nextClientSeed, playerbet, 
+    setPlayerBet} = useGlobalContext();
   const [loading, setLoading] = useState(false);
   const [selectedBet, setSelectedBet] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -30,7 +29,7 @@ const MyBets = () => {
         }
       );
       setPlayerBet(res?.data?.data?.records);
-      if (res?.data?.code == -2) {
+      if (res?.data?.code === -2) {
         setIsLoggedIn(false);
         navigate("/");
         localStorage.clear();
@@ -41,9 +40,13 @@ const MyBets = () => {
       setLoading(false);
     }
   };
+  
   useEffect(() => {
     playerBetHistory();
+   
   }, []);
+  
+  
 
   const handleSelectBet = async (data) => {
     try {

@@ -85,7 +85,12 @@ const PlayKeno = ({
  abortRef.current = true;
  setStartAutoPlay(true);
   }
+
+
+
   const handlePlay = async () => {
+    setResultModal(false)
+
 if (!hasSelectedTrue(gameNumbers)) {
   setNotSelectedTielsError(true);
   return;
@@ -123,7 +128,6 @@ if (!hasSelectedTrue(gameNumbers)) {
           setCurrencyBalance(res?.data?.data?.Balance);
           setProfitAmount(res?.data?.data?.Profit);
           const winFields = res?.data?.data?.WinFields;
-          // console.log(res)
           let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
           let order = 0;
           const numbersToRenderNext = copiedGameNumbers?.map((el) => {
@@ -173,7 +177,7 @@ if (!hasSelectedTrue(gameNumbers)) {
               }, el.order * 400);
             });
           await new Promise((resolve) => setTimeout(resolve, 5000));
-          if (res?.data?.data?.Profit > 0) {
+          if (res?.data?.data?.Payout > 0) {
             winPlay();
           }
           setBetLoading(false);
@@ -228,8 +232,6 @@ if (!hasSelectedTrue(gameNumbers)) {
           setCurrencyBalance(res?.data?.data?.Balance);
         }
 
-        console.log("res", res);
-
         if (res?.data?.code == -2) {
           setIsLoggedIn(false);
           navigate("/");
@@ -242,7 +244,6 @@ if (!hasSelectedTrue(gameNumbers)) {
 
         // console.log("profit", res?.data?.data?.Profit)
         const winFields = res?.data?.data?.WinFields;
-        console.log("win Fields", winFields);
         let copiedGameNumbers = gameNumbers.map((number) => ({ ...number }));
         let order = 0;
         const numbersToRenderNext = copiedGameNumbers?.map((el) => {

@@ -54,29 +54,12 @@ const PlayKeno = ({
   const [betLoading, setBetLoading] = useState(false);
   const [stopLoop, setStopLoop] = useState(false);
   const [singleBetLoading, setSingleBetLoading] = useState(false);
-  // const [startAutoPlay, setStartAutoPlay] = useState(true);
-
-
-
-  function generateRandomNumbersArray() {
-    const numbersArray = [];
-    while (numbersArray.length < 10) {
-      const randomNumber = Math.floor(Math.random() * 40) + 1;
-      if (!numbersArray.includes(randomNumber)) {
-        numbersArray.push(randomNumber);
-      }
-    }
-    return numbersArray;
-  }
-
-
 
 
   const abortRef = React.useRef(false);
 
 
   const handleAutoPlay =()=>{
-    // console.log('first')
  setshouldIncrease(true);
  abortRef.current = true;
  setStartAutoPlay(true);
@@ -284,18 +267,8 @@ if (!hasSelectedTrue(gameNumbers)) {
     }
   };
 
-  // Reset Auto play off functionality
 
-  // useEffect(() => {
-  //   if(!startAutoPlay && !auto  ){
-  //     setAuto(false)
-  //     setBetsNumber(0);
-  //   }
-  // },[startAutoPlay])
 
-  const handleStopBets = () => {
-    setStopLoop(true);
-  };
 
   const handlePlus = () => {
     setBetSize(betSize + 10);

@@ -1,9 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AllBets from './AllBets';
 import MyBets from './MyBets';
+import { useGlobalContext } from '../../context/context';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const BetHistory = () => {
   const [betHistory, setBetHostory] = useState("allbets");
+  const navigate = useNavigate();
+  const {setAllBetsData, setPlayerBet, setIsLoggedIn} = useGlobalContext()
+
+  const fetchInitialData = async () => {
+    try {
+      const response = await axios.get("https://apis.yummylabs.io/getAllBetHistory");
+      if(response?.data?.code == -2){
+        setIsLoggedIn(false);
+        navigate("/");
+        localStorage.clear();
+      }
+      setAllBetsData(response.data.data.records)
+    } catch (error) {
+      console.error('Error fetching initial data:', error);
+    }
+  };
+  useEffect(() => {
+    fetchInitialData();
+
+    const ws = new WebSocket("wss://apis.yummylabs.io/ws/getAllBetHistory");
+    
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const getUsername = localStorage.getItem("cactus_club_username");
+      if(data.User === getUsername){
+        setPlayerBet(preValue => {
+          const newData = [data, ...preValue?.slice(0, 19)];
+          return newData.slice(0, 20);
+        })
+      }
+      setAllBetsData(prevData => {
+        const newData = [data, ...prevData.slice(0, 19)];
+        return newData.slice(0, 20);
+      });
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-2 items-start md:items-center">

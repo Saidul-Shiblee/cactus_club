@@ -135,26 +135,6 @@ const KenoGame = () => {
               setProfitAmount={setProfitAmount}
 
             />
-            {/* <div className='block md:hidden my-3 mx-2'>
-            <StartPlayKeno 
-            auto={auto}
-            setAuto={setAuto}
-            gameNumbers={gameNumbers}
-            setGameNumbers={setGameNumbers}
-            progress={progress}
-            count = {count}
-            setCount={setCount}
-            setProgress={setProgress}
-            resultModal={resultModal}
-            setResultModal={setResultModal}
-            betAmount={betAmount}
-            setBetAmount={setBetAmount}
-            winnerCredit={winnerCredit}
-            setWinnerCredit={setWinnerCredit}
-            gameSelectedNumbers={gameSelectedNumbers}
-            setGameSelectedNumbers={setGameSelectedNumbers}
-            />
-           </div> */}
 
             <PlayKeno
               auto={auto}

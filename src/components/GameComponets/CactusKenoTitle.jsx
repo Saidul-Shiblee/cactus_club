@@ -7,6 +7,7 @@ import UiModal from '../Ui/UiModal';
 import cactusLogo from "./../../assets/image/cactus.png";
 import ProbablyFairPolicy from './ProbablyFairPolicy';
 import HowToPlayKenoGames from './HowToPlayKenoGames';
+import { useNavigate } from 'react-router-dom';
 const CactusKenoTitle = ({winnerCredit, profitAmount, setWinnerCredit,setProfitAmount}) => {
   const {
     isLoggedIn,
@@ -17,7 +18,6 @@ const CactusKenoTitle = ({winnerCredit, profitAmount, setWinnerCredit,setProfitA
   const [isModalOpen, setModalOpen] = useState(false);
   const [isHowToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
   const [provablyData, setProvablyData] = useState();
-  // const [nextClientSeed, setNextClientSeed] = useState('');
   const [customeSeedField, setCustomSeedField] = useState(false);
   const [customeSeedInputValue, setCustomeSeedInputValue] = useState("");
   const [error, setError] = useState(null);
@@ -25,10 +25,18 @@ const CactusKenoTitle = ({winnerCredit, profitAmount, setWinnerCredit,setProfitA
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [lastServerSeedSHA256, setLastServerSeedSHA256] = useState('');
   const [nextServerSeedSHA256, setNextServerSeedSHA256] = useState('');
+  const navigate = useNavigate()
   const closeModal = () => {
     setModalOpen(false);
     setHowToPlayModalOpen(false);
   };
+  const handleOpenModal = () => {
+    if(isLoggedIn){
+      setModalOpen(true)
+    } else {
+      navigate("/login")
+    }
+  }
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth <= 640);
@@ -155,7 +163,7 @@ const CactusKenoTitle = ({winnerCredit, profitAmount, setWinnerCredit,setProfitA
         </h3>
         <div className="text-white">I</div>
         <h3
-          onClick={() => setModalOpen(true)}
+          onClick={handleOpenModal}
           className="text-white underline cursor-pointer font-bold"
         >
           Provably Fair
